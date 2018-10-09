@@ -11,8 +11,8 @@ import (
 
 func draw() {
 	rand.Seed(time.Now().UTC().UnixNano()) //Init random generator
-	width := 100
-	height := 100
+	width := 512
+	height := 512
 
 	upLeft := image.Point{0, 0}
 	lowRight := image.Point{width, height}
