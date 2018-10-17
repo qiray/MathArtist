@@ -11,6 +11,12 @@ package main
 //http://www.tadviser.ru/index.php/%D0%A1%D1%82%D0%B0%D1%82%D1%8C%D1%8F:%D0%93%D0%B5%D0%BD%D0%B5%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%BE-%D1%81%D0%BE%D1%81%D1%82%D1%8F%D0%B7%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%8B%D0%B5_%D1%81%D0%B5%D1%82%D0%B8_(Generative_adversarial_network,_GAN)
 //https://habr.com/post/309508/ https://habr.com/post/348000/ https://habr.com/company/nordavind/blog/253859/
 
+//https://blog.paperspace.com/implementing-gans-in-tensorflow/
+//https://github.com/uclaacmai/Generative-Adversarial-Network-Tutorial
+//https://github.com/aymericdamien/TensorFlow-Examples
+//https://github.com/MorvanZhou/Tensorflow-Tutorial
+//https://towardsdatascience.com/implementing-a-generative-adversarial-network-gan-dcgan-to-draw-human-faces-8291616904a
+
 //TODO: read about drawing
 
 func main() {
