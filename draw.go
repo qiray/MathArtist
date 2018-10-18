@@ -6,11 +6,9 @@ import (
 	"image/png"
 	"math/rand"
 	"os"
-	"time"
 )
 
 func draw() {
-	rand.Seed(time.Now().UTC().UnixNano()) //Init random generator
 	width := 512
 	height := 512
 
