@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func draw() {
+func draw(path string) {
 	width := 512
 	height := 512
 
@@ -28,7 +28,7 @@ func draw() {
 		}
 	}
 
-	// Encode as PNG.
-	f, _ := os.Create("image.png")
+	// Encode and save as PNG.
+	f, _ := os.Create(path)
 	png.Encode(f, img)
 }

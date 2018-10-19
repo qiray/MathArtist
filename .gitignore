@@ -1,3 +1,6 @@
 ANN_painter*
 ann_painter*
 *.png
+__pycache__
+.vscode
+*.csv

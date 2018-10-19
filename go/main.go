@@ -18,15 +18,16 @@ import (
 //https://vbystricky.github.io/2017/09/gan.html
 
 //TODO: https://blog.paperspace.com/implementing-gans-in-tensorflow/
+//https://pgaleone.eu/tensorflow/go/2017/05/29/understanding-tensorflow-using-go/
 //https://github.com/uclaacmai/Generative-Adversarial-Network-Tutorial
 //https://github.com/aymericdamien/TensorFlow-Examples
 //https://github.com/MorvanZhou/Tensorflow-Tutorial
 //https://towardsdatascience.com/implementing-a-generative-adversarial-network-gan-dcgan-to-draw-human-faces-8291616904a
 
-//TODO: read about drawing
-
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano()) //Init random generator
-	draw()
+	var path string
+	path = "image.png"
+	draw(path)
 	tfTest()
 }
