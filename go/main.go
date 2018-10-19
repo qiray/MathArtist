@@ -22,7 +22,6 @@ import (
 //https://github.com/uclaacmai/Generative-Adversarial-Network-Tutorial
 //https://github.com/aymericdamien/TensorFlow-Examples
 //https://github.com/MorvanZhou/Tensorflow-Tutorial
-//https://towardsdatascience.com/implementing-a-generative-adversarial-network-gan-dcgan-to-draw-human-faces-8291616904a
 
 func main() {
 	rand.Seed(time.Now().UTC().UnixNano()) //Init random generator
