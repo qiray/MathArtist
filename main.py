@@ -8,6 +8,8 @@ from plot import draw_plot
 
 #Code from https://github.com/aadilh/blogs/tree/new/basic-gans/basic-gans/code
 
+#TODO: https://github.com/znxlwm/pytorch-MNIST-CelebA-GAN-DCGAN
+
 #Functions for creating ANN
 
 def generator(input_data,hsize=[16, 16],reuse=False):
