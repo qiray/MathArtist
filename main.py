@@ -19,6 +19,7 @@ from plot import draw_plot
 # TODO: find many strange images to teach our network to generate them
 # TODO: or mix some real images like here:
 # https://nucl.ai/blog/enhance-pixel-art/
+# https://github.com/alexjc/neural-doodle
 
 #TODO: Or mix some abstract generated art with random images from internet (find them using google and generate requests)?
 # Random art - http://color-wander.surge.sh/
