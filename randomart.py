@@ -236,7 +236,7 @@ class Mix():
         w = 0.5 * (self.w.eval(x,y)[0] + 1.0)
         c1 = self.e1.eval(x,y)
         c2 = self.e2.eval(x,y)
-        return average(c1,c2,) #TODO: add w argument?
+        return average(c1,c2,) #TODO: think about w argument
 
 # The following list of all classes that are used for generation of expressions is
 # used by the generate function below.
@@ -271,16 +271,18 @@ class Art():
        and the 'Again!' button."""
 
     def __init__(self, master, size=512, draw_style=CANVAS):
-        master.title('Random art')
+        self.root = master
+        self.root.title('Random art')
         random.seed(1) #TODO: remove or change
         self.draw_style = draw_style
         self.size = size
+        self.filepath = '1.png'
         self.img = Image.new('RGB', (size, size))
         self.imageDraw = ImageDraw.Draw(self.img)
         self.photoImage = ImageTk.PhotoImage(image=self.img)
-        self.canvas = Canvas(master, width=size, height=size)
+        self.canvas = Canvas(self.root, width=size, height=size)
         self.canvas.grid(row=0,column=0)
-        b = Button(master, text='Again!', command=self.redraw)
+        b = Button(self.root, text='Again!', command=self.redraw)
         b.grid(row=1,column=0)
         self.draw_alarm = None
         self.redraw()
@@ -297,9 +299,8 @@ class Art():
         self.draw()
         if self.draw_style == IMAGE:
             self.photoImage = ImageTk.PhotoImage(image=self.img)
-            self.img.save("1.png")
+            self.img.save(self.filepath)
             self.canvas.create_image(0,0,image=self.photoImage,anchor="nw")
-        
 
     def draw(self):
         if self.y >= self.size:
@@ -307,6 +308,7 @@ class Art():
             self.d = self.d // 4
         if self.d >= 1:
             for x in range(0, self.size, self.d):
+                #Convert coordinates to diapason [-1, 1]
                 u = 2 * float(x + self.d/2)/self.size - 1.0
                 v = 2 * float(self.y + self.d/2)/self.size - 1.0
                 # print(x, self.y, self.d, u, v)
@@ -333,5 +335,5 @@ class Art():
 
 # Main program
 win = Tk()
-arg = Art(win, draw_style=IMAGE)
+arg = Art(win)
 win.mainloop()

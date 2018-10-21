@@ -16,6 +16,7 @@ https://github.com/mattdesl/impressionist
 * ANN rates generated image and maybe tell program to redraw it (?)
 * Post-processing (filters, noise etc)
 * Create image file
+* Post in Instagram and twitter as human
 
 ### Instruments
 
