@@ -66,7 +66,12 @@
 
 import math
 import random
-from tkinter import * # Change "Tkinter" to "tkinter" in Python 3
+import time
+from tkinter import Tk, ALL, Canvas, Button # Change "Tkinter" to "tkinter" in Python 3
+from PIL import Image, ImageDraw, ImageTk
+
+CANVAS = 1
+IMAGE = 2
 
 # Utility functions
 
@@ -231,7 +236,7 @@ class Mix():
         w = 0.5 * (self.w.eval(x,y)[0] + 1.0)
         c1 = self.e1.eval(x,y)
         c2 = self.e2.eval(x,y)
-        return average(c1,c2,)
+        return average(c1,c2,) #TODO: add w argument?
 
 # The following list of all classes that are used for generation of expressions is
 # used by the generate function below.
@@ -265,9 +270,14 @@ class Art():
     """A simple graphical user interface for random art. It displays the image,
        and the 'Again!' button."""
 
-    def __init__(self, master, size=512):
+    def __init__(self, master, size=512, draw_style=CANVAS):
         master.title('Random art')
-        self.size=size
+        random.seed(1) #TODO: remove or change
+        self.draw_style = draw_style
+        self.size = size
+        self.img = Image.new('RGB', (size, size))
+        self.imageDraw = ImageDraw.Draw(self.img)
+        self.photoImage = ImageTk.PhotoImage(image=self.img)
         self.canvas = Canvas(master, width=size, height=size)
         self.canvas.grid(row=0,column=0)
         b = Button(master, text='Again!', command=self.redraw)
@@ -276,12 +286,20 @@ class Art():
         self.redraw()
 
     def redraw(self):
-        if self.draw_alarm: self.canvas.after_cancel(self.draw_alarm)
+        self.start = time.time()
+        if self.draw_alarm: 
+            self.canvas.after_cancel(self.draw_alarm)
         self.canvas.delete(ALL)
         self.art = generate(random.randrange(20,150))
+        print(self.art, '\n') #draw art tree
         self.d = 64   # current square size
         self.y = 0    # current row
         self.draw()
+        if self.draw_style == IMAGE:
+            self.photoImage = ImageTk.PhotoImage(image=self.img)
+            self.img.save("1.png")
+            self.canvas.create_image(0,0,image=self.photoImage,anchor="nw")
+        
 
     def draw(self):
         if self.y >= self.size:
@@ -289,21 +307,31 @@ class Art():
             self.d = self.d // 4
         if self.d >= 1:
             for x in range(0, self.size, self.d):
-                    u = 2 * float(x + self.d/2)/self.size - 1.0
-                    v = 2 * float(self.y + self.d/2)/self.size - 1.0
-                    (r,g,b) = self.art.eval(u, v)
-                    # print(self.art.__repr__()) #Print drawing tree
-                    self.canvas.create_rectangle(x,
-                                                 self.y,
-                                                 x+self.d,
-                                                 self.y+self.d,
-                                                 width=0, fill=rgb(r,g,b))
+                u = 2 * float(x + self.d/2)/self.size - 1.0
+                v = 2 * float(self.y + self.d/2)/self.size - 1.0
+                # print(x, self.y, self.d, u, v)
+                (r,g,b) = self.art.eval(u, v)
+                if self.draw_style == IMAGE:
+                    self.imageDraw.rectangle(
+                        ((x, self.y), (x+self.d, self.y+self.d)), 
+                        fill=rgb(r,g,b)
+                    )
+                else:
+                    self.canvas.create_rectangle(
+                        x, self.y, x+self.d, self.y+self.d,
+                        width=0, fill=rgb(r,g,b)
+                    )
             self.y += self.d
-            self.draw_alarm = self.canvas.after(1, self.draw)
+            if self.draw_style == IMAGE:
+                self.draw()
+            else:
+                self.draw_alarm = self.canvas.after(1, self.draw)
         else:
             self.draw_alarm = None
+            self.end = time.time()
+            print("Time for drawing:", self.end - self.start)
 
 # Main program
 win = Tk()
-arg = Art(win)
+arg = Art(win, draw_style=IMAGE)
 win.mainloop()

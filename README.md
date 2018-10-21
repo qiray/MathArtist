@@ -13,11 +13,12 @@ https://github.com/mattdesl/impressionist
 * ANN generates name
 * ANN generates palette
 * Draw: select instruments and use them
+* ANN rates generated image and maybe tell program to redraw it (?)
 * Post-processing (filters, noise etc)
 * Create image file
 
 ### Instruments
 
 * functions from randomart.py
-* some more math functions (maybe generate them)
+* some more math and other functions (maybe generate them)
 * particles (color, size, velocity, maybe use some pregenerated contours for trajectories, or maybe let ANN generate these paths)
