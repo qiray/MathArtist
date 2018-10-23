@@ -7,6 +7,7 @@ http://www.random-art.org/online/
 http://color-wander.surge.sh/
 https://github.com/mattdesl/color-wander
 https://github.com/mattdesl/impressionist
+https://github.com/vshymanskyy/randomart
 
 ### Algorithm
 

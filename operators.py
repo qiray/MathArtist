@@ -10,10 +10,12 @@
 
 import random
 import math
-from common import average, well, tent
+from common import average, well, tent, parse_color, invert
+from palettes import palettes
 
 class VariableX():
     arity = 0
+    mindepth = 4
     def __init__(self): pass
     def __repr__(self): return "x"
 
@@ -21,20 +23,24 @@ class VariableX():
 
 class VariableY():
     arity = 0
+    mindepth = 4
     def __init__(self): pass
     def __repr__(self): return "y"
     def eval(self,x,y): return (y,y,y)
 
-class Constant():
+class Random():
     arity = 0
+    mindepth = 4
     def __init__(self):
         self.c = (random.uniform(0,1), random.uniform(0,1), random.uniform(0,1))
     def __repr__(self):
-        return 'Constant(%g,%g,%g)' % self.c
-    def eval(self,x,y): return self.c
+        return 'Random(%g,%g,%g)' % self.c
+    def eval(self,x,y): 
+        return self.c
 
 class Sum():
     arity = 2
+    mindepth = 2
     def __init__(self, e1, e2):
         self.e1 = e1
         self.e2 = e2
@@ -45,6 +51,7 @@ class Sum():
 
 class Product():
     arity = 2
+    mindepth = 2
     def __init__(self, e1, e2):
         self.e1 = e1
         self.e2 = e2
@@ -60,6 +67,7 @@ class Product():
 
 class Mod():
     arity = 2
+    mindepth = 3
     def __init__(self, e1, e2):
         self.e1 = e1
         self.e2 = e2
@@ -78,6 +86,7 @@ class Mod():
 
 class Well():
     arity = 1
+    mindepth = 3
     def __init__(self, e):
         self.e = e
     def __repr__(self):
@@ -88,6 +97,7 @@ class Well():
 
 class Tent():
     arity = 1
+    mindepth = 3
     def __init__(self, e):
         self.e = e
     def __repr__(self):
@@ -98,6 +108,7 @@ class Tent():
 
 class Sin():
     arity = 1
+    mindepth = 0
     def __init__(self, e):
         self.e = e
         self.phase = random.uniform(0, math.pi)
@@ -113,6 +124,7 @@ class Sin():
 
 class Level():
     arity = 3
+    mindepth = 0
     def __init__(self, level, e1, e2):
         self.treshold = random.uniform(-1.0,1.0)
         self.level = level
@@ -131,6 +143,7 @@ class Level():
 
 class Mix():
     arity = 3
+    mindepth = 0
     def __init__(self, w, e1, e2):
         self.w = w
         self.e1 = e1
@@ -142,3 +155,159 @@ class Mix():
         c1 = self.e1.eval(x,y)
         c2 = self.e2.eval(x,y)
         return average(c1,c2,w)
+
+class Palette():
+    arity = 0
+    mindepth = 3
+    palette = palettes[0]
+    paletteIndex = 0
+    def __init__(self):
+        self.hex = Palette.palette[Palette.paletteIndex]
+        Palette.paletteIndex += 1
+        if Palette.paletteIndex >= len(Palette.palette):
+            Palette.paletteIndex = 0
+        self.c = tuple([x/128.0 - 1.0 for x in parse_color(self.hex)])
+    def __repr__(self):
+        return "Const(%g, %g, %g)" % self.c
+    def eval(self, x, y):
+        return self.c
+
+    @staticmethod
+    def randomPalette(): #set random palette
+        Palette.palette = random.choice(palettes)
+        Palette.paletteIndex = 0
+
+class Not():
+    arity = 1
+    mindepth = 3
+    def __init__(self, e):
+        self.e = e
+    def __repr__(self):
+        return "Not(%s)" % self.e
+    def eval(self, x, y):
+        c = self.e.eval(x, y)
+        return invert(c)
+
+# class CVarT {
+#     static get arity() { return 0 }
+#     static get mindepth() { return 4 }
+
+#     constructor() {
+#     }
+#     toString() {
+#         return "frmT";
+#     }
+# }
+
+# class CBW {
+#     static get arity() { return 0 }
+#     static get mindepth() { return 4 }
+
+#     constructor() {
+#         this.c = random.uniform(-0.8, 0.8);
+#     }
+#     toString() {
+#         return `BW(${fixStr(this.c)})`;
+#     }
+# }
+
+# class CRandom {
+#     static get arity() { return 0 }
+#     static get mindepth() { return 4 }
+
+#     constructor() {
+#         this.c = [random.uniform(-1, 1), random.uniform(-1, 1), random.uniform(-1, 1)];
+#     }
+#     toString() {
+#         return `Const(${fixStr(this.c[0])}, ${fixStr(this.c[1])}, ${fixStr(this.c[2])})`;
+#     }
+# }
+
+# /*
+#  * Mixers
+#  */
+
+# class CRGB {
+#     static get arity() { return 3 }
+#     static get mindepth() { return 4 }
+
+#     constructor(e1,e2,e3) {
+#         this.e1 = e1;
+#         this.e2 = e2;
+#         this.e3 = e3;
+#     }
+#     toString() {
+#         return `RGB(${this.e1}, ${this.e2}, ${this.e3})`;
+#     }
+# }
+
+# /*
+# class CChBoard {
+#     static get arity() { return 0 }
+#     static get mindepth() { return 5 }
+
+#     constructor(e1, e2) {
+#         this.wX = random.uniform(0.1, 1.0);
+#         this.wY = random.uniform(0.1, 1.0);
+#     }
+#     toString() {
+#         return `ChBoard()`;
+#     }
+#     eval(x, y) {
+#         let isOdd = false;
+#         isOdd ^= Math.floor(x/this.wX) & 1;
+#         isOdd ^= Math.floor(y/this.wY) & 1;
+
+#         return (isOdd) ? [-1,-1,-1] : [1,1,1];
+#     }
+# }
+
+# class CTurbulence {
+#     static get arity() { return 1 }
+#     static get mindepth() { return 2 }
+
+#     constructor(e) {
+#         this.e = e;
+
+#         this.octaves = random.randrange(3, 6);
+#         this.freq = random.uniform(0.1, 4);
+#         this.ampl = random.uniform(0.1, 5);
+#     }
+#     toString() {
+#         return `Turbulence(${this.e})`;
+#     }
+#     eval(x, y) {
+#         let r = 0, g = 0, b = 0;
+#         let amp = this.ampl;
+
+#         x *= this.freq;
+#         y *= this.freq;
+
+#         for (let i=0; i<this.octaves; i++) {
+#             let r0, g0, b0;
+#             [r0, g0, b0] = this.e.eval(x, y);
+#             r += r0 * amp;
+#             g += g0 * amp;
+#             b += b0 * amp;
+#             x *= 2.0;
+#             y *= 2.0;
+#             amp *= 0.5;
+#         }
+#         return [r, g, b];
+#     }
+# }
+# */
+
+# class CClosest {
+#     static get arity() { return 3 }
+#     static get mindepth() { return 3 }
+
+#     constructor(tgt, e1, e2) {
+#         this.tgt = tgt;
+#         this.e1 = e1;
+#         this.e2 = e2;
+#     }
+#     toString() {
+#         return `Closest(${this.tgt}, ${this.e1}, ${this.e2})`;
+#     }
+# }
