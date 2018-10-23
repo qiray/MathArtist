@@ -32,24 +32,28 @@ import math
 import random
 import time
 import hashlib
+import sys
+import signal
 from datetime import datetime
 from tkinter import Tk, ALL, Canvas, Button # Change "Tkinter" to "tkinter" in Python 3
 from PIL import Image, ImageDraw, ImageTk
 
 from common import rgb, IMAGE, CANVAS
-from operators import VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, Well, Level, Mix, Palette, Not
+from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, 
+    Tent, Well, Level, Mix, Palette, Not, RGB, Closest)
 
 # The following list of all classes that are used for generation of expressions is
 # used by the generate function below.
 
-operatorsList = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, Well, Level, Mix, Palette, Not)
+operatorsList = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, 
+    Well, Level, Mix, Palette, Not, RGB, Closest)
+
 # operatorsList = (VariableX, VariableY, Mix, Well)
 # operatorsList = (VariableX, VariableY, Random, Mix, Well)
+# operatorsList = (VariableX, VariableY, Palette, Mix, Well)
 
 # const operators = [
 #     CBW, CVarT,
-#     CNot, CRGB,
-#     CClosest,
 # ];
 
 #TODO: generate pallettes and operators' lists
@@ -63,20 +67,19 @@ nonterminals = [op for op in operatorsList if op.arity > 0]
 
 def generate(k=8, depth=0):
     '''Randonly generate an expession of a given size.'''
-    if k <= depth: 
+    if k <= depth:
         # We used up available size, generate a leaf of the expression tree
         op = random.choice(terminals)
         return op()
-    else:
-        # randomly pick an operator whose arity > 0 and mindepth <= depth
-        # op = random.choice([x for x in nonterminals if x.mindepth <= depth]) #TODO: don't use depth sometimes
-        op = random.choice(nonterminals)
-        # generate subexpressions
-        args = [] # the list of generated subexpression
-        depth += 1
-        for _ in range(0, op.arity):
-            args.append(generate(k, depth))
-        return op(*args)
+    # randomly pick an operator whose arity > 0 and mindepth <= depth
+    op = random.choice([x for x in nonterminals if x.mindepth <= depth]) #TODO: don't use depth sometimes
+    # op = random.choice(nonterminals)
+    # generate subexpressions
+    args = [] # the list of generated subexpression
+    depth += 1
+    for _ in range(0, op.arity):
+        args.append(generate(k, depth))
+    return op(*args)
 
 class Art():
     """A simple graphical user interface for random art. It displays the image,
@@ -85,6 +88,12 @@ class Art():
     def __init__(self, master, size=256, draw_style=CANVAS, hash_string=None):
         self.root = master
         self.root.title('Random art')
+
+        def close(event):
+            self.root.withdraw()
+            sys.exit()
+        self.root.bind('<Escape>', close)
+
         if hash_string:
             hex_string = hashlib.md5(hash_string.encode('utf-8'))
             hexdigest = hex_string.hexdigest()
@@ -119,7 +128,7 @@ class Art():
         if self.draw_style == IMAGE:
             self.photoImage = ImageTk.PhotoImage(image=self.img)
             self.img.save(self.filepath)
-            self.canvas.create_image(0,0,image=self.photoImage,anchor="nw")
+            self.canvas.create_image(0, 0, image=self.photoImage, anchor="nw")
 
     def draw(self):
         if self.y >= self.size:
@@ -131,16 +140,16 @@ class Art():
                 #TODO: add multiple conversions
                 u = 2 * float(x)/self.size - 1.0
                 v = 2 * float(self.y)/self.size - 1.0
-                (r,g,b) = self.art.eval(u, v)
+                (r, g, b) = self.art.eval(u, v)
                 if self.draw_style == IMAGE:
                     self.imageDraw.rectangle(
-                        ((x, self.y), (x+self.d, self.y+self.d)), 
-                        fill=rgb(r,g,b)
+                        ((x, self.y), (x + self.d, self.y + self.d)),
+                        fill=rgb(r, g, b)
                     )
                 else:
                     self.canvas.create_rectangle(
                         x, self.y, x+self.d, self.y+self.d,
-                        width=0, fill=rgb(r,g,b)
+                        width=0, fill=rgb(r, g, b)
                     )
             self.y += self.d
             if self.draw_style == IMAGE:
@@ -153,6 +162,12 @@ class Art():
             print("Time for drawing:", self.end - self.start)
 
 # Main program
+
+def sigint_handler(sig, frame):
+    print("Closing...")
+    sys.exit(0)
+signal.signal(signal.SIGINT, sigint_handler)
+
 win = Tk()
 arg = Art(win)
 win.mainloop()
