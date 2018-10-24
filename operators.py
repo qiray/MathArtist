@@ -10,7 +10,7 @@
 
 import random
 import math
-from common import average, well, tent, parse_color, invert, sin_curve
+from common import average, well, tent, parse_color, invert, sin_curve, abs_sqrt
 from palettes import palettes
 
 class VariableX():
@@ -247,3 +247,15 @@ class SinCurve():
     def eval(self,x, y):
         (r,g,b) = self.e.eval(x, y)
         return (sin_curve(r), sin_curve(g), sin_curve(b))
+
+class AbsSqrt():
+    arity = 1
+    mindepth = 3
+    def __init__(self, e):
+        self.e = e
+    def __repr__(self):
+        return 'AbsSqrt(%s)' % self.e
+    def eval(self,x, y):
+        (r,g,b) = self.e.eval(x, y)
+        return (abs_sqrt(r), abs_sqrt(g), abs_sqrt(b))
+

@@ -35,24 +35,26 @@ import hashlib
 import sys
 import signal
 from datetime import datetime
-from tkinter import Tk, ALL, Canvas, Button # Change "Tkinter" to "tkinter" in Python 3
+from tkinter import Tk, ALL, Canvas, Button
 from PIL import Image, ImageDraw, ImageTk
 
 from common import rgb, IMAGE, CANVAS
 from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin,
-    Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve)
+    Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSqrt)
 
 # The following list of all classes that are used for generation of expressions is
 # used by the generate function below.
 
 operatorsLists = [
-    (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent,
-    Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve),
+    (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSqrt,
+        Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve),
     (VariableX, VariableY, Mix, Well),
     (VariableX, VariableY, Random, Mix, Well),
     (VariableX, VariableY, Palette, Mix, Well),
     (VariableX, VariableY, Palette, Mix, Well, Tent),
-    (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve)
+    (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve),
+    (VariableX, VariableY, Palette, Sin, SinCurve, Mix),
+    (VariableX, VariableY, Palette, AbsSqrt, Sin, Mix),
 ]
 
 #TODO: generate and operators' lists

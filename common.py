@@ -35,6 +35,9 @@ def sin_curve(x):
     val = x if x != 0 else 1
     return math.sin(1/val)
 
+def abs_sqrt(x):
+    return math.sin(math.fabs(x))
+
 def parse_color(str):
     h = str.lstrip('#')
     return tuple(int(h[i:i+2], 16) for i in (0, 2 ,4))
