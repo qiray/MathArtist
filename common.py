@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import math
+
 CANVAS = 1
 IMAGE = 2
 
@@ -29,10 +31,14 @@ def tent(x):
     '''A function that looks a bit like a tent.'''
     return 1 - 2 * abs(x)
 
+def sin_curve(x):
+    val = x if x != 0 else 1
+    return math.sin(1/val)
+
 def parse_color(str):
     h = str.lstrip('#')
     return tuple(int(h[i:i+2], 16) for i in (0, 2 ,4))
 
 def invert(color):
-    (r1,g1,b1) = color
+    (r1, g1, b1) = color
     return (-r1, -g1, -b1)

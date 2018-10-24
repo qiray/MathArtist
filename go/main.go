@@ -17,7 +17,7 @@ import (
 //http://robocraft.ru/blog/machinelearning/3693.html
 //https://vbystricky.github.io/2017/09/gan.html
 
-//TODO: https://blog.paperspace.com/implementing-gans-in-tensorflow/
+//https://blog.paperspace.com/implementing-gans-in-tensorflow/
 //https://pgaleone.eu/tensorflow/go/2017/05/29/understanding-tensorflow-using-go/
 //https://github.com/uclaacmai/Generative-Adversarial-Network-Tutorial
 //https://github.com/aymericdamien/TensorFlow-Examples

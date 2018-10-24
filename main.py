@@ -39,55 +39,59 @@ from tkinter import Tk, ALL, Canvas, Button # Change "Tkinter" to "tkinter" in P
 from PIL import Image, ImageDraw, ImageTk
 
 from common import rgb, IMAGE, CANVAS
-from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, 
-    Tent, Well, Level, Mix, Palette, Not, RGB, Closest)
+from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin,
+    Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve)
 
 # The following list of all classes that are used for generation of expressions is
 # used by the generate function below.
 
-operatorsList = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, 
-    Well, Level, Mix, Palette, Not, RGB, Closest)
+operatorsLists = [
+    (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent,
+    Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve),
+    (VariableX, VariableY, Mix, Well),
+    (VariableX, VariableY, Random, Mix, Well),
+    (VariableX, VariableY, Palette, Mix, Well),
+    (VariableX, VariableY, Palette, Mix, Well, Tent),
+    (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve)
+]
 
-# operatorsList = (VariableX, VariableY, Mix, Well)
-# operatorsList = (VariableX, VariableY, Random, Mix, Well)
-# operatorsList = (VariableX, VariableY, Palette, Mix, Well)
-
-# const operators = [
-#     CBW, CVarT,
-# ];
-
-#TODO: generate pallettes and operators' lists
-#TODO: read https://github.com/vshymanskyy/randomart
+#TODO: generate and operators' lists
 #TODO: make 2 versions: Python and Golang
-
-# We precompute those operators that have arity 0 and arity > 0
-
-terminals = [op for op in operatorsList if op.arity == 0]
-nonterminals = [op for op in operatorsList if op.arity > 0]
-
-def generate(k=8, depth=0):
-    '''Randonly generate an expession of a given size.'''
-    if k <= depth:
-        # We used up available size, generate a leaf of the expression tree
-        op = random.choice(terminals)
-        return op()
-    # randomly pick an operator whose arity > 0 and mindepth <= depth
-    op = random.choice([x for x in nonterminals if x.mindepth <= depth]) #TODO: don't use depth sometimes
-    # op = random.choice(nonterminals)
-    # generate subexpressions
-    args = [] # the list of generated subexpression
-    depth += 1
-    for _ in range(0, op.arity):
-        args.append(generate(k, depth))
-    return op(*args)
 
 class Art():
     """A simple graphical user interface for random art. It displays the image,
        and the 'Again!' button."""
+    operatorsList = random.choice(operatorsLists)
+    terminals = [op for op in operatorsList if op.arity == 0]
+    nonterminals = [op for op in operatorsList if op.arity > 0]
+
+    @staticmethod
+    def init_lists():
+        Art.operatorsList = random.choice(operatorsLists)
+        Art.terminals = [op for op in Art.operatorsList if op.arity == 0]
+        Art.nonterminals = [op for op in Art.operatorsList if op.arity > 0]
+
+    @staticmethod
+    def generate(k=8, depth=0):
+        '''Randonly generate an expession of a given size.'''
+        if k <= depth:
+            # We used up available size, generate a leaf of the expression tree
+            op = random.choice(Art.terminals)
+            return op()
+        # randomly pick an operator whose arity > 0 and mindepth <= depth
+        op = random.choice([x for x in Art.nonterminals if x.mindepth <= depth]) #TODO: sometimes we shouldn't use depth
+        # op = random.choice(Art.nonterminals)
+        # generate subexpressions
+        args = [] # the list of generated subexpression
+        depth += 1
+        for _ in range(0, op.arity):
+            args.append(Art.generate(k, depth))
+        return op(*args)
 
     def __init__(self, master, size=256, draw_style=CANVAS, hash_string=None):
         self.root = master
         self.root.title('Random art')
+        # We precompute those operators that have arity 0 and arity > 0
 
         def close(event):
             self.root.withdraw()
@@ -116,11 +120,12 @@ class Art():
         self.redraw()
 
     def redraw(self):
+        Art.init_lists()
         self.start = time.time()
         if self.draw_alarm: 
             self.canvas.after_cancel(self.draw_alarm)
         self.canvas.delete(ALL)
-        self.art = generate(random.randrange(1, self.size_log)) #TODO: use depth, these numbers
+        self.art = Art.generate(random.randrange(4, 8))
         print(self.art, '\n') #draw art tree
         self.d = 64   # current square size
         self.y = 0    # current row

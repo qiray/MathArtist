@@ -8,20 +8,20 @@ from plot import draw_plot
 
 #Code from https://github.com/aadilh/blogs/tree/new/basic-gans/basic-gans/code
 
-#TODO: https://github.com/znxlwm/pytorch-MNIST-CelebA-GAN-DCGAN
+#https://github.com/znxlwm/pytorch-MNIST-CelebA-GAN-DCGAN
 # https://github.com/uclaacmai/Generative-Adversarial-Network-Tutorial/blob/master/gan_train.py
-#TODO:  https://towardsdatascience.com/implementing-a-generative-adversarial-network-gan-dcgan-to-draw-human-faces-8291616904a
+#https://towardsdatascience.com/implementing-a-generative-adversarial-network-gan-dcgan-to-draw-human-faces-8291616904a
 # https://medium.com/tensorflow/neural-style-transfer-creating-art-with-deep-learning-using-tf-keras-and-eager-execution-7d541ac31398
 # https://github.com/tensorflow/models/tree/master/research/nst_blogpost
 
 # https://medium.freecodecamp.org/how-ai-can-learn-to-generate-pictures-of-cats-ba692cb6eae4 
 # 
-# TODO: find many strange images to teach our network to generate them
-# TODO: or mix some real images like here:
+# find many strange images to teach our network to generate them
+# or mix some real images like here:
 # https://nucl.ai/blog/enhance-pixel-art/
 # https://github.com/alexjc/neural-doodle
 
-#TODO: Or mix some abstract generated art with random images from internet (find them using google and generate requests)?
+# Or mix some abstract generated art with random images from internet (find them using google and generate requests)?
 # Random art - http://color-wander.surge.sh/
 
 #Functions for creating ANN
