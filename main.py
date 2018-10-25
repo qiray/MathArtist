@@ -57,7 +57,7 @@ operatorsLists = [
     (VariableX, VariableY, Palette, AbsSqrt, Sin, Mix),
 ]
 
-def coord1(x, y, d, size):
+def coord_default(x, y, d, size):
     u = 2 * float(x + d/2)/size - 1.0
     v = 2 * float(y + d/2)/size - 1.0
     return u, v
@@ -77,7 +77,7 @@ def sin_coord(x, y, d, size):
     v = math.sin(y/size)
     return u, v
 
-coord_transforms = [coord1, simple_linear_coord, tent_coord, sin_coord] #TODO: add multiple conversions
+coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord] #TODO: add multiple conversions
 
 #TODO: generate operators' lists or find nice examples and make them predefined
 #TODO: make 2 versions: Python and Golang
@@ -107,7 +107,7 @@ class Art():
             op = random.choice(Art.terminals)
             return op()
         # randomly pick an operator whose arity > 0 and mindepth <= depth
-        if Art.use_depth:
+        if Art.use_depth and False:
             op = random.choice([x for x in Art.nonterminals if x.mindepth <= depth])
         else:
             op = random.choice(Art.nonterminals)
@@ -155,7 +155,7 @@ class Art():
         if self.draw_alarm: 
             self.canvas.after_cancel(self.draw_alarm)
         self.canvas.delete(ALL)
-        self.art = Art.generate(random.randrange(4, 8))
+        self.art = Art.generate(random.randrange(1, self.size_log + 1))
         self.print_art()
         self.d = 64   # current square size
         self.y = 0    # current row
@@ -210,3 +210,13 @@ signal.signal(signal.SIGINT, sigint_handler)
 win = Tk()
 arg = Art(win)
 win.mainloop()
+
+# Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
+# Use depth: False
+# Coordinates transfrom: sin_coord
+# SinCurve(Sin(1.00736 + 3.24802 * Mix(y, x, Const(0.960938, 0.539062, 0.195312))))
+
+# Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
+# Use depth: False
+# Coordinates transfrom: tent_coord
+# Tent(Mix(x, y, Const(0.820312, 0.75, 0.632812)))

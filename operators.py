@@ -239,7 +239,7 @@ class White():
 
 class SinCurve():
     arity = 1
-    mindepth = 3
+    mindepth = 0
     def __init__(self, e):
         self.e = e
     def __repr__(self):
@@ -259,3 +259,29 @@ class AbsSqrt():
         (r,g,b) = self.e.eval(x, y)
         return (abs_sqrt(r), abs_sqrt(g), abs_sqrt(b))
 
+# TODO:
+# and
+# or
+# torus
+#fclosest
+#pclosestmax
+# pfoci
+# close
+# even
+# negative
+# fless
+# inrange
+# abs
+# max
+# sqrt
+# fatan
+# ftimes
+# discretize
+# rotate
+# dist
+# fold
+# protfold
+# scalar
+# saturate
+# palette_pf
+# palette_pp
