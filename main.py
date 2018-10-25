@@ -57,7 +57,29 @@ operatorsLists = [
     (VariableX, VariableY, Palette, AbsSqrt, Sin, Mix),
 ]
 
-#TODO: generate and operators' lists
+def coord1(x, y, d, size):
+    u = 2 * float(x + d/2)/size - 1.0
+    v = 2 * float(y + d/2)/size - 1.0
+    return u, v
+
+def simple_linear_coord(x, y, d, size):
+    u = 2 * float(x)/size - 1.0
+    v = 2 * float(y)/size - 1.0
+    return u, v
+
+def tent_coord(x, y, d, size):
+    u = 1 - 2 * abs(float(x)/size)
+    v = 1 - 2 * abs(float(y)/size)
+    return u, v
+
+def sin_coord(x, y, d, size):
+    u = math.sin(x/size)
+    v = math.sin(y/size)
+    return u, v
+
+coord_transforms = [coord1, simple_linear_coord, tent_coord, sin_coord] #TODO: add multiple conversions
+
+#TODO: generate operators' lists or find nice examples and make them predefined
 #TODO: make 2 versions: Python and Golang
 
 class Art():
@@ -66,12 +88,16 @@ class Art():
     operatorsList = random.choice(operatorsLists)
     terminals = [op for op in operatorsList if op.arity == 0]
     nonterminals = [op for op in operatorsList if op.arity > 0]
+    use_depth = True
+    coord_transform = coord_transforms[0]
 
     @staticmethod
-    def init_lists():
+    def init_static_data():
         Art.operatorsList = random.choice(operatorsLists)
         Art.terminals = [op for op in Art.operatorsList if op.arity == 0]
         Art.nonterminals = [op for op in Art.operatorsList if op.arity > 0]
+        Art.use_depth = True if random.random() >= 0.5 else False
+        Art.coord_transform = random.choice(coord_transforms)
 
     @staticmethod
     def generate(k=8, depth=0):
@@ -81,8 +107,10 @@ class Art():
             op = random.choice(Art.terminals)
             return op()
         # randomly pick an operator whose arity > 0 and mindepth <= depth
-        op = random.choice([x for x in Art.nonterminals if x.mindepth <= depth]) #TODO: sometimes we shouldn't use depth
-        # op = random.choice(Art.nonterminals)
+        if Art.use_depth:
+            op = random.choice([x for x in Art.nonterminals if x.mindepth <= depth])
+        else:
+            op = random.choice(Art.nonterminals)
         # generate subexpressions
         args = [] # the list of generated subexpression
         depth += 1
@@ -109,7 +137,6 @@ class Art():
         self.draw_style = draw_style
         self.size = size
         self.size_log = int(math.log(self.size, 2))
-        Palette.randomPalette()
         self.filepath = '1.png'
         self.img = Image.new('RGB', (size, size))
         self.imageDraw = ImageDraw.Draw(self.img)
@@ -122,13 +149,14 @@ class Art():
         self.redraw()
 
     def redraw(self):
-        Art.init_lists()
+        Art.init_static_data()
+        Palette.randomPalette()
         self.start = time.time()
         if self.draw_alarm: 
             self.canvas.after_cancel(self.draw_alarm)
         self.canvas.delete(ALL)
         self.art = Art.generate(random.randrange(4, 8))
-        print(self.art, '\n') #draw art tree
+        self.print_art()
         self.d = 64   # current square size
         self.y = 0    # current row
         self.draw()
@@ -144,9 +172,7 @@ class Art():
         if self.d >= 1:
             for x in range(0, self.size, self.d):
                 #Convert coordinates to diapason [-1, 1]
-                #TODO: add multiple conversions
-                u = 2 * float(x)/self.size - 1.0
-                v = 2 * float(self.y)/self.size - 1.0
+                u, v = Art.coord_transform(x, self.y, self.d, self.size)
                 (r, g, b) = self.art.eval(u, v)
                 if self.draw_style == IMAGE:
                     self.imageDraw.rectangle(
@@ -167,6 +193,12 @@ class Art():
             self.draw_alarm = None
             self.end = time.time()
             print("Time for drawing:", self.end - self.start)
+
+    def print_art(self):
+        print("Using operators:", [x.__name__ for x in Art.operatorsList])
+        print("Use depth:", Art.use_depth)
+        print("Coordinates transfrom:", Art.coord_transform.__name__)
+        print(self.art, '\n') #draw art tree
 
 # Main program
 
