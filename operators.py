@@ -10,7 +10,8 @@
 
 import random
 import math
-from common import average, well, tent, parse_color, invert, sin_curve, abs_sqrt
+from common import (average, well, tent, parse_color, sin_curve, abs_sqrt, 
+    color_and, color_or, color_xor)
 from palettes import palettes
 
 class VariableX():
@@ -190,8 +191,8 @@ class Not():
     def __repr__(self):
         return "Not(%s)" % self.e
     def eval(self, x, y):
-        c = self.e.eval(x, y)
-        return invert(c)
+        (r, g, b) = self.e.eval(x, y)
+        return (-r, -g, -b)
 
 class RGB():
     arity = 3
@@ -259,16 +260,46 @@ class AbsSqrt():
         (r,g,b) = self.e.eval(x, y)
         return (abs_sqrt(r), abs_sqrt(g), abs_sqrt(b))
 
+class And():
+    arity = 2
+    mindepth = 0
+    def __init__(self, e1, e2):
+        self.e1 = e1
+        self.e2 = e2
+    def __repr__(self):
+        return 'And(%s, %s)' % (self.e1, self.e2)
+    def eval(self, x, y):
+        return color_and(self.e1.eval(x, y), self.e2.eval(x, y))
+
+class Or():
+    arity = 2
+    mindepth = 0
+    def __init__(self, e1, e2):
+        self.e1 = e1
+        self.e2 = e2
+    def __repr__(self):
+        return 'Or(%s, %s)' % (self.e1, self.e2)
+    def eval(self, x, y):
+        return color_or(self.e1.eval(x, y), self.e2.eval(x, y))
+
+class Xor():
+    arity = 2
+    mindepth = 0
+    def __init__(self, e1, e2):
+        self.e1 = e1
+        self.e2 = e2
+    def __repr__(self):
+        return 'Xor(%s, %s)' % (self.e1, self.e2)
+    def eval(self, x, y):
+        return color_xor(self.e1.eval(x, y), self.e2.eval(x, y))
+
 # TODO:
-# and
-# or
 # torus
 #fclosest
 #pclosestmax
 # pfoci
 # close
 # even
-# negative
 # fless
 # inrange
 # abs

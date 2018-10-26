@@ -1,11 +1,15 @@
 #!/usr/bin/python
 
 import math
+import itertools
 
 CANVAS = 1
 IMAGE = 2
 
 # Utility functions
+
+def float_color_to_int(c):
+    return max(0, min(255, int(128 * (c + 1))))
 
 def average(c1, c2, w=0.5):
     '''Compute the weighted average of two colors. With w = 0.5 we get the average.'''
@@ -18,9 +22,9 @@ def average(c1, c2, w=0.5):
 
 def rgb(r,g,b):
     '''Convert a color represented by (r,g,b) to a string understood by tkinter.'''
-    u = max(0, min(255, int(128 * (r + 1))))
-    v = max(0, min(255, int(128 * (g + 1))))
-    w = max(0, min(255, int(128 * (b + 1))))
+    u = float_color_to_int(r)
+    v = float_color_to_int(g)
+    w = float_color_to_int(b)
     return '#%02x%02x%02x' % (u, v, w)
 
 def well(x):
@@ -42,6 +46,17 @@ def parse_color(str):
     h = str.lstrip('#')
     return tuple(int(h[i:i+2], 16) for i in (0, 2 ,4))
 
-def invert(color):
-    (r1, g1, b1) = color
-    return (-r1, -g1, -b1)
+def color_and(c1, c2):
+    colors1 = tuple([float_color_to_int(x) for x in c1])
+    colors2 = tuple([float_color_to_int(x) for x in c2])
+    return tuple([2*(x1 & x2)/255.0 - 1 for x1, x2 in zip(colors1, colors2)])
+
+def color_or(c1, c2):
+    colors1 = tuple([float_color_to_int(x) for x in c1])
+    colors2 = tuple([float_color_to_int(x) for x in c2])
+    return tuple([2*(x1 | x2)/255.0 - 1 for x1, x2 in zip(colors1, colors2)])
+
+def color_xor(c1, c2):
+    colors1 = tuple([float_color_to_int(x) for x in c1])
+    colors2 = tuple([float_color_to_int(x) for x in c2])
+    return tuple([2*(x1 | x2)/255.0 - 1 for x1, x2 in zip(colors1, colors2)])
