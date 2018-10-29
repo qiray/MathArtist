@@ -1,0 +1,29 @@
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
+Use depth: False
+Coordinates transfrom: sin_coord
+SinCurve(Sin(1.00736 + 3.24802 * Mix(y, x, Const(0.960938, 0.539062, 0.195312))))
+
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
+Use depth: False
+Coordinates transfrom: tent_coord
+Tent(Mix(x, y, Const(0.820312, 0.75, 0.632812)))
+
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent', 'SinCurve']
+Use depth: True
+Coordinates transfrom: simple_linear_coord
+Tent(SinCurve(Mix(Well(Tent(Tent(y))), Tent(Tent(SinCurve(x))), SinCurve(Mix(Mix(x, Const(0.976562, 0.617188, 0.492188), x), Mix(x, Const(0.984375, 0.4375, 0.242188), x), SinCurve(Const(0.765625, -0.523438, -0.0859375)))))))
+
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
+Use depth: False
+Coordinates transfrom: tent_coord
+SinCurve(Mix(Sin(2.59752 + 2.50746 * x), Sin(0.768903 + 4.21003 * y), Mix(Const(-0.398438, -0.539062, -0.539062), x, x)))
+
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
+Use depth: True
+Coordinates transfrom: sin_coord
+Tent(Well(Well(Mix(Mix(Tent(Const(-0.335938, -0.484375, -0.578125)), Well(x), Tent(Const(0.929688, -0.0625, -0.710938))), Well(Mix(y, y, Const(0.648438, 0.609375, -0.523438))), Mix(Mix(y, y, y), Tent(x), Mix(Const(0.882812, 0.867188, 0.289062), x, y))))))
+
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
+Use depth: False
+Coordinates transfrom: simple_linear_coord
+SinCurve(Mix(SinCurve(y), Sin(0.294927 + 2.06359 * Const(-0.46875, -0.09375, 0.226562)), Mix(Const(0.546875, 0.65625, 0.757812), x, x)))

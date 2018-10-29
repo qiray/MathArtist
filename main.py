@@ -83,6 +83,7 @@ coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord] #
 
 #TODO: generate operators' lists or find nice examples and make them predefined
 #TODO: make 2 versions: Python and Golang
+#TODO: read params and generate image using them.
 
 class Art():
     """A simple graphical user interface for random art. It displays the image,
@@ -212,13 +213,3 @@ signal.signal(signal.SIGINT, sigint_handler)
 win = Tk()
 arg = Art(win)
 win.mainloop()
-
-# Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
-# Use depth: False
-# Coordinates transfrom: sin_coord
-# SinCurve(Sin(1.00736 + 3.24802 * Mix(y, x, Const(0.960938, 0.539062, 0.195312))))
-
-# Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
-# Use depth: False
-# Coordinates transfrom: tent_coord
-# Tent(Mix(x, y, Const(0.820312, 0.75, 0.632812)))
