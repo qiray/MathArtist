@@ -60,18 +60,18 @@ operatorsLists = [
 ]
 
 def coord_default(x, y, d, size):
-    u = 2 * float(x + d/2)/size - 1.0
-    v = 2 * float(y + d/2)/size - 1.0
+    u = 2 * (x + d/2)/size - 1.0
+    v = 2 * (y + d/2)/size - 1.0
     return u, v
 
 def simple_linear_coord(x, y, d, size):
-    u = 2 * float(x)/size - 1.0
-    v = 2 * float(y)/size - 1.0
+    u = 2 * x/size - 1.0
+    v = 2 * y/size - 1.0
     return u, v
 
 def tent_coord(x, y, d, size):
-    u = 1 - 2 * abs(float(x)/size)
-    v = 1 - 2 * abs(float(y)/size)
+    u = 1 - 2 * abs(x/size)
+    v = 1 - 2 * abs(y/size)
     return u, v
 
 def sin_coord(x, y, d, size):
@@ -79,9 +79,11 @@ def sin_coord(x, y, d, size):
     v = math.sin(y/size)
     return u, v
 
-def polar(x, y, d, size): #TODO: add shift or some polar pivots: NW, NE, SE, SW corners and image center
+def polar(x, y, d, size):
+    x -= Art.polar_shift[0]*size
+    y -= Art.polar_shift[1]*size
     u = math.sqrt(x*x + y*y)/size
-    v = 0 if x == 0 else math.atan(float(y)/x)*2/math.pi
+    v = 0 if x == 0 else math.atan(y/x)*2/math.pi
     return u, v
 
 coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord, polar] #TODO: add more conversions and probabilities for each one
@@ -100,6 +102,8 @@ class Art():
     nonterminals = [op for op in operatorsList if op.arity > 0]
     use_depth = True
     coord_transform = coord_transforms[0]
+    polar_shifts = [[0.5, 0.5], [0, 0], [0, 1], [1, 0], [1, 1]]
+    polar_shift = [0, 0]
 
     @staticmethod
     def init_static_data():
@@ -108,6 +112,11 @@ class Art():
         Art.nonterminals = [op for op in Art.operatorsList if op.arity > 0]
         Art.use_depth = True if random.random() >= 0.5 else False
         Art.coord_transform = random.choice(coord_transforms)
+        index = random.randint(-1, len(Art.polar_shifts) - 1)
+        if index == -1:
+            Art.polar_shift = [random.random(), random.random()]
+        else:
+            Art.polar_shift = Art.polar_shifts[index]
 
     @staticmethod
     def generate(k=8, depth=0):
@@ -208,6 +217,8 @@ class Art():
         print("Using operators:", [x.__name__ for x in Art.operatorsList])
         print("Use depth:", Art.use_depth)
         print("Coordinates transfrom:", Art.coord_transform.__name__)
+        if Art.coord_transform.__name__ == 'polar':
+            print("Polar shift:", Art.polar_shift)
         print(self.art, '\n') #draw art tree
 
 # Main program

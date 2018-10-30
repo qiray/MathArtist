@@ -36,7 +36,7 @@
 import random
 import math
 from common import (average, well, tent, parse_color, sin_curve, abs_sqrt, 
-    color_and, color_or, color_xor)
+    color_binary)
 from palettes import palettes
 
 class VariableX():
@@ -294,7 +294,7 @@ class And():
     def __repr__(self):
         return 'And(%s, %s)' % (self.e1, self.e2)
     def eval(self, x, y):
-        return color_and(self.e1.eval(x, y), self.e2.eval(x, y))
+        return color_binary(self.e1.eval(x, y), self.e2.eval(x, y), lambda x1, x2 : x1 & x2)
 
 class Or():
     arity = 2
@@ -305,7 +305,7 @@ class Or():
     def __repr__(self):
         return 'Or(%s, %s)' % (self.e1, self.e2)
     def eval(self, x, y):
-        return color_or(self.e1.eval(x, y), self.e2.eval(x, y))
+        return color_binary(self.e1.eval(x, y), self.e2.eval(x, y), lambda x1, x2 : x1 | x2)
 
 class Xor():
     arity = 2
@@ -316,7 +316,7 @@ class Xor():
     def __repr__(self):
         return 'Xor(%s, %s)' % (self.e1, self.e2)
     def eval(self, x, y):
-        return color_xor(self.e1.eval(x, y), self.e2.eval(x, y))
+        return color_binary(self.e1.eval(x, y), self.e2.eval(x, y), lambda x1, x2 : x1 ^ x2)
 
 # TODO:
 # torus

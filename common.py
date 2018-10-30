@@ -71,17 +71,7 @@ def parse_color(str):
     h = str.lstrip('#')
     return tuple(int(h[i:i+2], 16) for i in (0, 2 ,4))
 
-def color_and(c1, c2):
+def color_binary(c1, c2, operator):
     colors1 = tuple([float_color_to_int(x) for x in c1])
     colors2 = tuple([float_color_to_int(x) for x in c2])
-    return tuple([2*(x1 & x2)/255.0 - 1 for x1, x2 in zip(colors1, colors2)])
-
-def color_or(c1, c2):
-    colors1 = tuple([float_color_to_int(x) for x in c1])
-    colors2 = tuple([float_color_to_int(x) for x in c2])
-    return tuple([2*(x1 | x2)/255.0 - 1 for x1, x2 in zip(colors1, colors2)])
-
-def color_xor(c1, c2):
-    colors1 = tuple([float_color_to_int(x) for x in c1])
-    colors2 = tuple([float_color_to_int(x) for x in c2])
-    return tuple([2*(x1 | x2)/255.0 - 1 for x1, x2 in zip(colors1, colors2)])
+    return tuple([2*operator(x1, x2)/255.0 - 1 for x1, x2 in zip(colors1, colors2)])
