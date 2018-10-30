@@ -79,8 +79,15 @@ def sin_coord(x, y, d, size):
     v = math.sin(y/size)
     return u, v
 
-coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord] #TODO: add multiple conversions
+def polar(x, y, d, size): #TODO: add shift or some polar pivots: NW, NE, SE, SW corners and image center
+    u = math.sqrt(x*x + y*y)/size
+    v = 0 if x == 0 else math.atan(float(y)/x)*2/math.pi
+    return u, v
 
+coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord, polar] #TODO: add more conversions and probabilities for each one
+
+#TODO: rename project
+#TODO: some refactoring
 #TODO: generate operators' lists or find nice examples and make them predefined
 #TODO: make 2 versions: Python and Golang
 #TODO: read params and generate image using them.
@@ -104,7 +111,7 @@ class Art():
 
     @staticmethod
     def generate(k=8, depth=0):
-        '''Randonly generate an expession of a given size.'''
+        '''Randomly generate an expession of a given size.'''
         if k <= depth:
             # We used up available size, generate a leaf of the expression tree
             op = random.choice(Art.terminals)

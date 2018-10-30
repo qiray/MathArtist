@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+#palettes from https://github.com/mattdesl/color-wander/blob/master/lib/color-palettes.json
+
 palettes = [
     ["#69D2E7","#A7DBD8","#E0E4CC","#F38630","#FA6900"],
     ["#FE4365","#FC9D9A","#F9CDAD","#C8C8A9","#83AF9B"],
