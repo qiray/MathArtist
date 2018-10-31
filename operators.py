@@ -318,23 +318,28 @@ class Xor():
     def eval(self, x, y):
         return color_binary(self.e1.eval(x, y), self.e2.eval(x, y), lambda x1, x2 : x1 ^ x2)
 
+class Atan():
+    arity = 1
+    mindepth = 0
+    def __init__(self, e):
+        self.e = e
+    def __repr__(self):
+        return 'Atan(%s)' % (self.e)
+    def eval(self, x, y):
+        (r,g,b) = self.e.eval(x, y)
+        return (math.atan(r)*2/math.pi, math.atan(g)*2/math.pi, math.atan(b)*2/math.pi)
+
 # TODO:
 # torus
-#fclosest
 #pclosestmax
 # pfoci
 # close
-# even
-# fless
-# inrange
 # abs
 # max
 # sqrt
-# fatan
 # ftimes
 # discretize
 # rotate
-# dist
 # fold
 # protfold
 # scalar
