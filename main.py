@@ -41,7 +41,7 @@ from PIL import Image, ImageDraw, ImageTk
 from common import rgb, IMAGE, CANVAS
 from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And,
     Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSqrt, 
-    Or, Xor, Atan)
+    Or, Xor, Atan, Far, Wave)
 
 # The following list of all classes that are used for generation of expressions is
 # used by the generate function below.
@@ -49,7 +49,8 @@ from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And
 operatorsLists = [
     (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSqrt, Xor,
         Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, And, Or,
-        Atan),
+        Atan, Far, Wave),
+    (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, Well, Level, Mix, Palette),
     (VariableX, VariableY, Mix, Well),
     (VariableX, VariableY, Random, Mix, Well),
     (VariableX, VariableY, Palette, Mix, Well),
@@ -64,6 +65,10 @@ operatorsLists = [
         Sum, Mod, Well, Tent),
     (VariableX, VariableY, White, Palette, Random, RGB),
     (VariableX, VariableY, White, Palette, Random, RGB, Sin, SinCurve, Atan, Mix, Closest),
+    (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well),
+    (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well, Wave),
+    (VariableX, VariableY, Palette, Sin, SinCurve, Mix, Wave),
+    (VariableX, VariableY, Palette, Sin, SinCurve, Atan, Wave),
 ]
 
 def coord_default(x, y, d, size):

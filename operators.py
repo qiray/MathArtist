@@ -36,7 +36,7 @@
 import random
 import math
 from common import (average, well, tent, parse_color, sin_curve, abs_sqrt, 
-    color_binary)
+    color_binary, wave)
 from palettes import palettes
 
 class VariableX():
@@ -253,6 +253,25 @@ class Closest():
 
         return (r2, g2, b2) if d1 < d2 else (r3, g3, b3)
 
+class Far():
+    arity = 3
+    mindepth = 3
+    def __init__(self, target, e1, e2):
+        self.target = target
+        self.e1 = e1
+        self.e2 = e2
+    def __repr__(self):
+        return 'Far(%s, %s, %s)' % (self.target, self.e1, self.e2)
+    def eval(self, x, y):
+        (r1, g1, b1) = self.target.eval(x, y)
+        (r2, g2, b2) = self.e1.eval(x, y)
+        (r3, g3, b3) = self.e2.eval(x, y)
+        #distances between colors:
+        d1 = math.sqrt((r2-r1)**2+(g2-g1)**2+(b2-b1)**2)
+        d2 = math.sqrt((r3-r1)**2+(g3-g1)**2+(b3-b1)**2)
+
+        return (r2, g2, b2) if d1 > d2 else (r3, g3, b3)
+
 class White():
     arity = 0
     mindepth = 4
@@ -329,20 +348,15 @@ class Atan():
         (r,g,b) = self.e.eval(x, y)
         return (math.atan(r)*2/math.pi, math.atan(g)*2/math.pi, math.atan(b)*2/math.pi)
 
-# TODO:
-# torus
-#pclosestmax
-# pfoci
-# close
-# abs
-# max
-# sqrt
-# ftimes
-# discretize
-# rotate
-# fold
-# protfold
-# scalar
-# saturate
-# palette_pf
-# palette_pp
+class Wave():
+    arity = 2
+    mindepth = 0
+    def __init__(self, e1, e2):
+        self.e1 = e1
+        self.e2 = e2
+    def __repr__(self):
+        return 'Wave(%s, %s)' % (self.e1, self.e2)
+    def eval(self, x, y):
+        (r1,g1,b1) = self.e1.eval(x, y)
+        (r2,g2,b2) = self.e2.eval(x, y)
+        return (wave(r1, r2), wave(g1, g2), wave(b1, b2))

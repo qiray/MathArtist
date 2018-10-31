@@ -54,7 +54,9 @@ def rgb(r,g,b):
 
 def well(x):
     '''A function which looks a bit like a well.'''
-    return 1 - 2 / (1 + x*x) ** 8
+    result = 1 - 2 / (1 + x*x) ** 8
+    result = 1 if result < -1 else result
+    return result
 
 def tent(x):
     '''A function that looks a bit like a tent.'''
@@ -66,6 +68,9 @@ def sin_curve(x):
 
 def abs_sqrt(x):
     return math.sin(math.fabs(x))
+
+def wave(x, y):
+    return math.sin(math.sqrt(x**2 + y**2))
 
 def parse_color(str):
     h = str.lstrip('#')
