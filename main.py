@@ -94,8 +94,13 @@ def tent_coord(x, y, d, size):
     return u, v
 
 def sin_coord(x, y, d, size):
-    u = math.sin(x/size)
-    v = math.sin(y/size)
+    u = math.sin(2*math.pi*x/size)
+    v = math.sin(2*math.pi*y/size)
+    return u, v
+
+def rotate_coord(x, y, d, size):
+    u = (x - y)/size
+    v = math.sqrt(2*(x*x + y*y - u*u))/size - 1
     return u, v
 
 def polar(x, y, d, size):
@@ -105,13 +110,15 @@ def polar(x, y, d, size):
     v = 0 if x == 0 else math.atan(y/x)*2/math.pi
     return u, v
 
-coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord, polar] #TODO: add more conversions and probabilities for each one
+coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord, polar, rotate_coord] #TODO: add more conversions and probabilities for each one
 
 #TODO: rename project
 #TODO: some refactoring
 #TODO: generate operators' lists or find nice examples and make them predefined
 #TODO: make 2 versions: Python and Golang
 #TODO: read params and generate image using them.
+
+#TODO: For check if image is good or bad compare it with noise image
 
 class Art():
     """A simple graphical user interface for random art. It displays the image,

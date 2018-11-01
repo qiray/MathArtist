@@ -70,3 +70,9 @@ Use depth: True
 Coordinates transfrom: polar
 Polar shift: [0.5, 0.5]
 And(Sum(Well(Sum(SinCurve(Level(0.562283, Random(0.14543,0.0719313,0.708717), White(1,1,1), y)), Xor(SinCurve(White(1,1,1)), Sin(1.66952 + 3.12385 * White(1,1,1))))), Xor(Or(Or(Closest(y, White(1,1,1), White(1,1,1)), AbsSqrt(x)), RGB(Mix(Random(0.421675,0.222685,0.401171), White(1,1,1), Const(-0.625, -1, -0.625)), Not(Const(-0.4375, -1, -0.4375)), And(x, x))), Sin(0.25099 + 3.52247 * RGB(Level(-0.989373, x, White(1,1,1), x), SinCurve(Random(0.460635,0.968284,0.768944)), Well(Random(0.596107,0.462497,0.926276)))))), Level(-0.312889, Atan(Or(Tent(Tent(x)),AbsSqrt(Xor(White(1,1,1), White(1,1,1))))), Tent(And(Product(RGB(White(1,1,1), Const(-0.25, -0.8125, -0.4375), y), Level(-0.500537, y, y, Random(0.449178,0.094108,0.873117))), Atan(Far(Const(0.5, -0.4375, -0.4375), White(1,1,1), Random(0.944703,0.852125,0.414432))))), SinCurve(Sum(SinCurve(Product(x, x)), Atan(Not(x))))))
+
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix', 'Wave']
+Use depth: True
+Coordinates transfrom: sin_coord
+Sin(0.824872 + 5.89621 * Mix(Mix(Wave(SinCurve(x), SinCurve(y)), SinCurve(Wave(y, x)), SinCurve(SinCurve(x))), SinCurve(Sin(2.63811 +
+3.65718 * Mix(y, x, y))), SinCurve(SinCurve(Mix(y, x, y)))))
