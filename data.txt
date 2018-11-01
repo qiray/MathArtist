@@ -58,3 +58,15 @@ Use depth: True
 Coordinates transfrom: polar
 Polar shift: [1, 0]
 Tent(Well(Tent(Tent(Tent(Mix(Mix(Well(Tent(x)), Tent(Well(Const(-0.773438, -0.851562, -0.851562))), Mix(Tent(x), Well(x), Tent(y))), Well(Tent(Mix(y, Const(-0.71875, 0.421875, 0.15625), Const(0.640625, -0.75, -0.484375)))), Tent(Mix(Tent(x), Tent(x), Mix(x, Const(0.273438, 0.4375, -0.9375), x)))))))))
+
+Using operators: ['White', 'Palette', 'Random', 'VariableX', 'VariableY', 'Far', 'Well', 'Sin', 'AbsSqrt', 'Product']
+Use depth: False
+Coordinates transfrom: polar
+Polar shift: [0.5, 0.5]
+Far(Well(x), Product(Random(0.574928,0.255763,0.100623), y), Sin(2.85516 + 5.24514 * Random(0.03488,0.156455,0.524925)))
+
+Using operators: ['White', 'VariableX', 'Palette', 'Random', 'VariableY', 'RGB', 'Atan', 'Mix', 'SinCurve', 'AbsSqrt', 'Level', 'Not', 'Xor', 'And', 'Well', 'Sin', 'Mod', 'Sum', 'Closest', 'Far', 'Product', 'Or', 'Tent']
+Use depth: True
+Coordinates transfrom: polar
+Polar shift: [0.5, 0.5]
+And(Sum(Well(Sum(SinCurve(Level(0.562283, Random(0.14543,0.0719313,0.708717), White(1,1,1), y)), Xor(SinCurve(White(1,1,1)), Sin(1.66952 + 3.12385 * White(1,1,1))))), Xor(Or(Or(Closest(y, White(1,1,1), White(1,1,1)), AbsSqrt(x)), RGB(Mix(Random(0.421675,0.222685,0.401171), White(1,1,1), Const(-0.625, -1, -0.625)), Not(Const(-0.4375, -1, -0.4375)), And(x, x))), Sin(0.25099 + 3.52247 * RGB(Level(-0.989373, x, White(1,1,1), x), SinCurve(Random(0.460635,0.968284,0.768944)), Well(Random(0.596107,0.462497,0.926276)))))), Level(-0.312889, Atan(Or(Tent(Tent(x)),AbsSqrt(Xor(White(1,1,1), White(1,1,1))))), Tent(And(Product(RGB(White(1,1,1), Const(-0.25, -0.8125, -0.4375), y), Level(-0.500537, y, y, Random(0.449178,0.094108,0.873117))), Atan(Far(Const(0.5, -0.4375, -0.4375), White(1,1,1), Random(0.944703,0.852125,0.414432))))), SinCurve(Sum(SinCurve(Product(x, x)), Atan(Not(x))))))

@@ -42,14 +42,18 @@ from common import rgb, IMAGE, CANVAS
 from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And,
     Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSqrt, 
     Or, Xor, Atan, Far, Wave)
+from operator_lists import generate_lists
 
-# The following list of all classes that are used for generation of expressions is
-# used by the generate function below.
+# The following lists of classes that are used for generation of expressions is
+# used by the generate function below. Each list should contain at least one
+# terminal and nonterminal class.
+
+fulllist = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSqrt,
+        Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, And, Or,
+        Atan, Xor, Far, Wave)
 
 operatorsLists = [
-    (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSqrt, Xor,
-        Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, And, Or,
-        Atan, Far, Wave),
+    fulllist,
     (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, Well, Level, Mix, Palette),
     (VariableX, VariableY, Mix, Well),
     (VariableX, VariableY, Random, Mix, Well),
@@ -69,6 +73,9 @@ operatorsLists = [
     (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well, Wave),
     (VariableX, VariableY, Palette, Sin, SinCurve, Mix, Wave),
     (VariableX, VariableY, Palette, Sin, SinCurve, Atan, Wave),
+
+    #these lists are made by this program
+    (White, Palette, Random, VariableX, VariableY, Far, Well, Sin, AbsSqrt, Product),
 ]
 
 def coord_default(x, y, d, size):
@@ -116,12 +123,15 @@ class Art():
     coord_transform = coord_transforms[0]
     polar_shifts = [[0.5, 0.5], [0, 0], [0, 1], [1, 0], [1, 1]]
     polar_shift = [0, 0]
+    use_random_lists = True
 
     @staticmethod
     def init_static_data():
-        Art.operatorsList = random.choice(operatorsLists)
-        Art.terminals = [op for op in Art.operatorsList if op.arity == 0]
-        Art.nonterminals = [op for op in Art.operatorsList if op.arity > 0]
+        if Art.use_random_lists:
+            Art.operatorsList = random.choice(operatorsLists)
+            Art.terminals = [op for op in Art.operatorsList if op.arity == 0]
+            Art.nonterminals = [op for op in Art.operatorsList if op.arity > 0]
+
         Art.use_depth = True if random.random() >= 0.5 else False
         Art.coord_transform = random.choice(coord_transforms)
         index = random.randint(-1, len(Art.polar_shifts) - 1)
@@ -149,6 +159,13 @@ class Art():
             args.append(Art.generate(k, depth))
         return op(*args)
 
+    @staticmethod
+    def generate_lists():
+        Art.terminals, Art.nonterminals = generate_lists(fulllist)
+        Art.operatorsList = Art.terminals + Art.nonterminals
+        Art.use_random_lists = False
+        print([x.__name__ for x in Art.operatorsList])
+
     def __init__(self, master, size=256, draw_style=CANVAS, hash_string=None):
         self.root = master
         self.root.title('Random art')
@@ -173,9 +190,11 @@ class Art():
         self.imageDraw = ImageDraw.Draw(self.img)
         self.photoImage = ImageTk.PhotoImage(image=self.img)
         self.canvas = Canvas(self.root, width=size, height=size)
-        self.canvas.grid(row=0,column=0)
-        b = Button(self.root, text='Again!', command=self.redraw)
+        self.canvas.grid(row=0,column=0, columnspan=2)
+        b = Button(self.root, text='New image', command=self.redraw)
         b.grid(row=1,column=0)
+        b1 = Button(self.root, text='Generate lists', command=Art.generate_lists)
+        b1.grid(row=1,column=1)
         self.draw_alarm = None
         self.redraw()
 
