@@ -60,7 +60,7 @@ operatorsLists = [
     (VariableX, VariableY, Palette, Mix, Well),
     (VariableX, VariableY, Palette, Mix, Well, Tent),
     (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve),
-    (VariableX, VariableY, Palette, Sin, SinCurve, Mix),
+    (VariableX, VariableY, Palette, Sin, SinCurve, Mix), #50/50
     (VariableX, VariableY, Palette, AbsSqrt, Sin, Mix),
     (VariableX, VariableY, Palette, And, Or, Xor),
     (VariableX, VariableY, Random, Palette, Mix, Well, Sin, SinCurve, Tent, AbsSqrt),
@@ -70,12 +70,17 @@ operatorsLists = [
     (VariableX, VariableY, White, Palette, Random, RGB),
     (VariableX, VariableY, White, Palette, Random, RGB, Sin, SinCurve, Atan, Mix, Closest),
     (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well),
-    (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well, Wave),
+    (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well, Wave), #Not bad but...
     (VariableX, VariableY, Palette, Sin, SinCurve, Mix, Wave),
-    (VariableX, VariableY, Palette, Sin, SinCurve, Atan, Wave),
+    (VariableX, VariableY, Palette, Sin, SinCurve, Atan, Wave), #not impressive
+    (VariableX, VariableY, Mix, Well, Not, Palette),
 
-    #these lists are made by this program
+    # these lists were made by this program
     (White, Palette, Random, VariableX, VariableY, Far, Well, Sin, AbsSqrt, Product),
+    (Random, White, VariableY, VariableX, Palette, SinCurve, Level, Atan, Not, Far, Wave, Or, Xor),
+    (Palette, Random, VariableY, White, VariableX, Well, Mix, Sin, Sum, Not, Tent, Level, Far, And),
+    (VariableY, VariableX, Random, Product, SinCurve, Mod, Closest, Tent, Well, Sum, RGB, Atan, Xor, 
+        Not, And, Wave, Mix, Level, AbsSqrt),
 ]
 
 def coord_default(x, y, d, size):
