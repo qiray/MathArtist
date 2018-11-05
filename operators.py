@@ -73,7 +73,7 @@ class Random():
         self.c = (random.uniform(0, 1), random.uniform(0, 1), random.uniform(0, 1))
     def __repr__(self):
         return 'Random(%g,%g,%g)' % self.c
-    def eval(self,x, y): 
+    def eval(self, x, y): 
         return self.c
 
 class Palette():

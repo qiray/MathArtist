@@ -37,6 +37,7 @@ import signal
 from datetime import datetime
 from tkinter import Tk, ALL, Canvas, Button
 from PIL import Image, ImageDraw, ImageTk
+import pyscreenshot as ImageGrab
 
 from common import rgb, IMAGE, CANVAS
 from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And,
@@ -81,6 +82,7 @@ operatorsLists = [
     (Palette, Random, VariableY, White, VariableX, Well, Mix, Sin, Sum, Not, Tent, Level, Far, And),
     (VariableY, VariableX, Random, Product, SinCurve, Mod, Closest, Tent, Well, Sum, RGB, Atan, Xor, 
         Not, And, Wave, Mix, Level, AbsSqrt),
+    (VariableX, VariableY, SinCurve, AbsSqrt, Sum, Level),
 ]
 
 def coord_default(x, y, d, size):
@@ -233,7 +235,7 @@ class Art():
             self.d = self.d // 4
         if self.d >= 1:
             for x in range(0, self.size, self.d):
-                #Convert coordinates to diapason [-1, 1]
+                #Convert coordinates to range [-1, 1]
                 u, v = Art.coord_transform(x, self.y, self.d, self.size)
                 (r, g, b) = self.art.eval(u, v)
                 if self.draw_style == IMAGE:
@@ -255,6 +257,7 @@ class Art():
             self.draw_alarm = None
             self.end = time.time()
             print("Time for drawing:", self.end - self.start)
+            self.get_screenshot()
 
     def print_art(self):
         print("Using operators:", [x.__name__ for x in Art.operatorsList])
@@ -263,6 +266,14 @@ class Art():
         if Art.coord_transform.__name__ == 'polar':
             print("Polar shift:", Art.polar_shift)
         print(self.art, '\n') #draw art tree
+
+    def get_screenshot(self):
+        shift = 2 #TODO: test it
+        x = self.root.winfo_rootx() + self.canvas.winfo_x() + shift
+        y = self.root.winfo_rooty() + self.canvas.winfo_y() + shift
+        x1 = x + self.size
+        y1 = y + self.size
+        ImageGrab.grab().crop((x, y, x1, y1)).save(self.filepath)
 
 # Main program
 
