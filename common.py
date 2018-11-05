@@ -49,7 +49,7 @@ def sin_curve(x):
     val = x if x != 0 else 1
     return math.sin(1/val)
 
-def abs_sqrt(x):
+def abs_sin(x):
     return math.sin(math.fabs(x))
 
 def wave(x, y):

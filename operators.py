@@ -27,7 +27,7 @@
 
 import random
 import math
-from common import (average, well, tent, parse_color, sin_curve, abs_sqrt, 
+from common import (average, well, tent, parse_color, sin_curve, abs_sin, 
     color_binary, wave)
 from palettes import palettes
 
@@ -169,16 +169,16 @@ class SinCurve():
         (r,g,b) = self.e.eval(x, y)
         return (sin_curve(r), sin_curve(g), sin_curve(b))
 
-class AbsSqrt():
+class AbsSin():
     arity = 1
     mindepth = 3
     def __init__(self, e):
         self.e = e
     def __repr__(self):
-        return 'AbsSqrt(%s)' % self.e
+        return 'AbsSin(%s)' % self.e
     def eval(self,x, y):
         (r,g,b) = self.e.eval(x, y)
-        return (abs_sqrt(r), abs_sqrt(g), abs_sqrt(b))
+        return (abs_sin(r), abs_sin(g), abs_sin(b))
 
 class Atan():
     arity = 1

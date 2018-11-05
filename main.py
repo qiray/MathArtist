@@ -41,7 +41,7 @@ import pyscreenshot as ImageGrab
 
 from common import rgb, IMAGE, CANVAS
 from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And,
-    Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSqrt, 
+    Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSin, 
     Or, Xor, Atan, Far, Wave)
 from operator_lists import generate_lists
 
@@ -49,7 +49,7 @@ from operator_lists import generate_lists
 # used by the generate function below. Each list should contain at least one
 # terminal and nonterminal class.
 
-fulllist = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSqrt,
+fulllist = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSin,
         Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, And, Or,
         Atan, Xor, Far, Wave)
 
@@ -62,11 +62,11 @@ operatorsLists = [
     (VariableX, VariableY, Palette, Mix, Well, Tent),
     (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve),
     (VariableX, VariableY, Palette, Sin, SinCurve, Mix), #50/50
-    (VariableX, VariableY, Palette, AbsSqrt, Sin, Mix),
+    (VariableX, VariableY, Palette, AbsSin, Sin, Mix),
     (VariableX, VariableY, Palette, And, Or, Xor),
-    (VariableX, VariableY, Random, Palette, Mix, Well, Sin, SinCurve, Tent, AbsSqrt),
-    (VariableX, VariableY, White, Palette, Random, AbsSqrt, Mix, Level, RGB, Sum, Mod),
-    (VariableX, VariableY, White, Palette, Random, AbsSqrt, Mix, Level, RGB, Product, 
+    (VariableX, VariableY, Random, Palette, Mix, Well, Sin, SinCurve, Tent, AbsSin),
+    (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Sum, Mod),
+    (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Product, 
         Sum, Mod, Well, Tent),
     (VariableX, VariableY, White, Palette, Random, RGB),
     (VariableX, VariableY, White, Palette, Random, RGB, Sin, SinCurve, Atan, Mix, Closest),
@@ -77,12 +77,14 @@ operatorsLists = [
     (VariableX, VariableY, Mix, Well, Not, Palette),
 
     # these lists were made by this program
-    (White, Palette, Random, VariableX, VariableY, Far, Well, Sin, AbsSqrt, Product),
+    (White, Palette, Random, VariableX, VariableY, Far, Well, Sin, AbsSin, Product),
     (Random, White, VariableY, VariableX, Palette, SinCurve, Level, Atan, Not, Far, Wave, Or, Xor),
     (Palette, Random, VariableY, White, VariableX, Well, Mix, Sin, Sum, Not, Tent, Level, Far, And),
     (VariableY, VariableX, Random, Product, SinCurve, Mod, Closest, Tent, Well, Sum, RGB, Atan, Xor, 
-        Not, And, Wave, Mix, Level, AbsSqrt),
-    (VariableX, VariableY, SinCurve, AbsSqrt, Sum, Level),
+        Not, And, Wave, Mix, Level, AbsSin),
+    (VariableX, VariableY, SinCurve, AbsSin, Sum, Level),
+    (Random, Palette, VariableY, VariableX, And, Sum, Mod),
+    (Palette, VariableX, Random, White, VariableY, Atan, Xor, Closest, Mix, Product, RGB, Not, Well),
 ]
 
 def coord_default(x, y, d, size):
@@ -117,6 +119,11 @@ def polar(x, y, d, size):
     v = 0 if x == 0 else math.atan(y/x)*2/math.pi
     return u, v
 
+def aaaaa(x, y, d, size):
+    u = (x - y)/size
+    v = 2 * y/size - 1.0
+    return u, v
+
 coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord, polar, rotate_coord] #TODO: add more conversions and probabilities for each one
 
 #TODO: rename project
@@ -128,8 +135,7 @@ coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord, p
 #TODO: For check if image is good or bad compare it with noise image
 
 class Art():
-    """A simple graphical user interface for random art. It displays the image,
-       and the 'Again!' button."""
+    """A simple graphical user interface for random art."""
     operatorsList = random.choice(operatorsLists)
     terminals = [op for op in operatorsList if op.arity == 0]
     nonterminals = [op for op in operatorsList if op.arity > 0]
@@ -180,7 +186,7 @@ class Art():
         Art.use_random_lists = False
         print([x.__name__ for x in Art.operatorsList])
 
-    def __init__(self, master, size=256, draw_style=CANVAS, hash_string=None):
+    def __init__(self, master, size=512, draw_style=CANVAS, hash_string=None):
         self.root = master
         self.root.title('Random art')
         # We precompute those operators that have arity 0 and arity > 0
@@ -204,11 +210,13 @@ class Art():
         self.imageDraw = ImageDraw.Draw(self.img)
         self.photoImage = ImageTk.PhotoImage(image=self.img)
         self.canvas = Canvas(self.root, width=size, height=size)
-        self.canvas.grid(row=0,column=0, columnspan=2)
+        self.canvas.grid(row=0,column=0, columnspan=3)
         b = Button(self.root, text='New image', command=self.redraw)
         b.grid(row=1,column=0)
-        b1 = Button(self.root, text='Generate lists', command=Art.generate_lists)
+        b1 = Button(self.root, text='Save image', command=self.get_screenshot)
         b1.grid(row=1,column=1)
+        b2 = Button(self.root, text='Generate lists', command=Art.generate_lists)
+        b2.grid(row=1,column=2)
         self.draw_alarm = None
         self.redraw()
 
@@ -257,7 +265,6 @@ class Art():
             self.draw_alarm = None
             self.end = time.time()
             print("Time for drawing:", self.end - self.start)
-            self.get_screenshot()
 
     def print_art(self):
         print("Using operators:", [x.__name__ for x in Art.operatorsList])
@@ -268,12 +275,16 @@ class Art():
         print(self.art, '\n') #draw art tree
 
     def get_screenshot(self):
-        shift = 2 #TODO: test it
-        x = self.root.winfo_rootx() + self.canvas.winfo_x() + shift
-        y = self.root.winfo_rooty() + self.canvas.winfo_y() + shift
-        x1 = x + self.size
-        y1 = y + self.size
-        ImageGrab.grab().crop((x, y, x1, y1)).save(self.filepath)
+        if __name__ != '__main__':
+            return
+        margin = 2 #I don't know where did this value came from
+        x = self.root.winfo_rootx() + self.canvas.winfo_x() + margin
+        y = self.root.winfo_rooty() + self.canvas.winfo_y() + margin
+        x1 = x + self.canvas.winfo_width() - 3*margin
+        y1 = y + self.canvas.winfo_height() - 3*margin
+        ImageGrab.grab(bbox=(x, y, x1, y1), childprocess=False).save(
+            str(datetime.now().strftime('%Y-%m-%d %H-%M')) + ".png"
+        )
 
 # Main program
 
