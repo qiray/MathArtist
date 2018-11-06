@@ -1,32 +1,32 @@
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
 Use depth: False
 Coordinates transfrom: sin_coord
-SinCurve(Sin(1.00736 + 3.24802 * Mix(y, x, Const(0.960938, 0.539062, 0.195312))))
+SinCurve(Sin(1.00736, 3.24802, Mix(y, x, Palette(0.960938, 0.539062, 0.195312))))
 
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
 Use depth: False
 Coordinates transfrom: tent_coord
-Tent(Mix(x, y, Const(0.820312, 0.75, 0.632812)))
+Tent(Mix(x, y, Palette(0.820312, 0.75, 0.632812)))
 
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent', 'SinCurve']
 Use depth: True
 Coordinates transfrom: simple_linear_coord
-Tent(SinCurve(Mix(Well(Tent(Tent(y))), Tent(Tent(SinCurve(x))), SinCurve(Mix(Mix(x, Const(0.976562, 0.617188, 0.492188), x), Mix(x, Const(0.984375, 0.4375, 0.242188), x), SinCurve(Const(0.765625, -0.523438, -0.0859375)))))))
+Tent(SinCurve(Mix(Well(Tent(Tent(y))), Tent(Tent(SinCurve(x))), SinCurve(Mix(Mix(x, Palette(0.976562, 0.617188, 0.492188), x), Mix(x, Palette(0.984375, 0.4375, 0.242188), x), SinCurve(Palette(0.765625, -0.523438, -0.0859375)))))))
 
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
 Use depth: False
 Coordinates transfrom: tent_coord
-SinCurve(Mix(Sin(2.59752 + 2.50746 * x), Sin(0.768903 + 4.21003 * y), Mix(Const(-0.398438, -0.539062, -0.539062), x, x)))
+SinCurve(Mix(Sin(2.59752, 2.50746, x), Sin(0.768903, 4.21003, y), Mix(Palette(-0.398438, -0.539062, -0.539062), x, x)))
 
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
 Use depth: True
 Coordinates transfrom: sin_coord
-Tent(Well(Well(Mix(Mix(Tent(Const(-0.335938, -0.484375, -0.578125)), Well(x), Tent(Const(0.929688, -0.0625, -0.710938))), Well(Mix(y, y, Const(0.648438, 0.609375, -0.523438))), Mix(Mix(y, y, y), Tent(x), Mix(Const(0.882812, 0.867188, 0.289062), x, y))))))
+Tent(Well(Well(Mix(Mix(Tent(Palette(-0.335938, -0.484375, -0.578125)), Well(x), Tent(Palette(0.929688, -0.0625, -0.710938))), Well(Mix(y, y, Palette(0.648438, 0.609375, -0.523438))), Mix(Mix(y, y, y), Tent(x), Mix(Palette(0.882812, 0.867188, 0.289062), x, y))))))
 
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
 Use depth: False
 Coordinates transfrom: simple_linear_coord
-SinCurve(Mix(SinCurve(y), Sin(0.294927 + 2.06359 * Const(-0.46875, -0.09375, 0.226562)), Mix(Const(0.546875, 0.65625, 0.757812), x, x)))
+SinCurve(Mix(SinCurve(y), Sin(0.294927, 2.06359, Palette(-0.46875, -0.09375, 0.226562)), Mix(Palette(0.546875, 0.65625, 0.757812), x, x)))
 
 Using operators: ['VariableX', 'VariableY', 'Palette', 'And', 'Or', 'Xor']
 Use depth: False
@@ -41,47 +41,46 @@ Mod(Level(-0.947116, y, y, x), Sum(y, White(1,1,1)))
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
 Use depth: True
 Coordinates transfrom: coord_default
-Well(Tent(Tent(Tent(Mix(Tent(Mix(Well(x), Well(Const(0.8125, 0.664062, 0.429688)), Well(x))), Tent(Tent(Mix(Const(-0.890625, -0.71875, -0.625), Const(0.96875, -0.546875, -0.367188), y))), Mix(Well(Well(y)), Tent(Well(y)), Well(Tent(x))))))))
+Well(Tent(Tent(Tent(Mix(Tent(Mix(Well(x), Well(Palette(0.8125, 0.664062, 0.429688)), Well(x))), Tent(Tent(Mix(Palette(-0.890625, -0.71875, -0.625), Palette(0.96875, -0.546875, -0.367188), y))), Mix(Well(Well(y)), Tent(Well(y)), Well(Tent(x))))))))
 
 Using operators: ['VariableX', 'VariableY', 'Random', 'Palette', 'Mix', 'Well', 'Sin', 'SinCurve', 'Tent', 'AbsSin']
 Use depth: False
 Coordinates transfrom: sin_coord
-Tent(Well(Well(AbsSin(AbsSin(Mix(x, y, Const(0.296875, 0.234375, 0)))))))
+Tent(Well(Well(AbsSin(AbsSin(Mix(x, y, Palette(0.296875, 0.234375, 0)))))))
 
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent', 'SinCurve']
 Use depth: True
 Coordinates transfrom: coord_default
-Tent(Tent(SinCurve(SinCurve(Well(Mix(SinCurve(Tent(Tent(Const(-0.0859375, -0.242188, -0.164062)))), Tent(Well(Mix(Const(0.492188, 0.617188, 0.929688), Const(0.71875, 0.78125, 0.929688), Const(0.9375, 0.898438, 0.492188)))), Tent(Mix(Mix(x, x, y), Mix(y, Const(0.648438, -0.5, -0.820312), Const(-0.0859375, -0.242188, -0.164062)), Mix(x, y, Const(0.492188, 0.617188, 0.929688))))))))))
+Tent(Tent(SinCurve(SinCurve(Well(Mix(SinCurve(Tent(Tent(Palette(-0.0859375, -0.242188, -0.164062)))), Tent(Well(Mix(Palette(0.492188, 0.617188, 0.929688), Palette(0.71875, 0.78125, 0.929688), Palette(0.9375, 0.898438, 0.492188)))), Tent(Mix(Mix(x, x, y), Mix(y, Palette(0.648438, -0.5, -0.820312), Palette(-0.0859375, -0.242188, -0.164062)), Mix(x, y, Palette(0.492188, 0.617188, 0.929688))))))))))
 
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
 Use depth: True
 Coordinates transfrom: polar
 Polar shift: [1, 0]
-Tent(Well(Tent(Tent(Tent(Mix(Mix(Well(Tent(x)), Tent(Well(Const(-0.773438, -0.851562, -0.851562))), Mix(Tent(x), Well(x), Tent(y))), Well(Tent(Mix(y, Const(-0.71875, 0.421875, 0.15625), Const(0.640625, -0.75, -0.484375)))), Tent(Mix(Tent(x), Tent(x), Mix(x, Const(0.273438, 0.4375, -0.9375), x)))))))))
+Tent(Well(Tent(Tent(Tent(Mix(Mix(Well(Tent(x)), Tent(Well(Palette(-0.773438, -0.851562, -0.851562))), Mix(Tent(x), Well(x), Tent(y))), Well(Tent(Mix(y, Palette(-0.71875, 0.421875, 0.15625), Palette(0.640625, -0.75, -0.484375)))), Tent(Mix(Tent(x), Tent(x), Mix(x, Palette(0.273438, 0.4375, -0.9375), x)))))))))
 
 Using operators: ['White', 'Palette', 'Random', 'VariableX', 'VariableY', 'Far', 'Well', 'Sin', 'AbsSin', 'Product']
 Use depth: False
 Coordinates transfrom: polar
 Polar shift: [0.5, 0.5]
-Far(Well(x), Product(Random(0.574928,0.255763,0.100623), y), Sin(2.85516 + 5.24514 * Random(0.03488,0.156455,0.524925)))
+Far(Well(x), Product(Random(0.574928,0.255763,0.100623), y), Sin(2.85516, 5.24514, Random(0.03488,0.156455,0.524925)))
 
 Using operators: ['White', 'VariableX', 'Palette', 'Random', 'VariableY', 'RGB', 'Atan', 'Mix', 'SinCurve', 'AbsSin', 'Level', 'Not', 'Xor', 'And', 'Well', 'Sin', 'Mod', 'Sum', 'Closest', 'Far', 'Product', 'Or', 'Tent']
 Use depth: True
 Coordinates transfrom: polar
 Polar shift: [0.5, 0.5]
-And(Sum(Well(Sum(SinCurve(Level(0.562283, Random(0.14543,0.0719313,0.708717), White(1,1,1), y)), Xor(SinCurve(White(1,1,1)), Sin(1.66952 + 3.12385 * White(1,1,1))))), Xor(Or(Or(Closest(y, White(1,1,1), White(1,1,1)), AbsSin(x)), RGB(Mix(Random(0.421675,0.222685,0.401171), White(1,1,1), Const(-0.625, -1, -0.625)), Not(Const(-0.4375, -1, -0.4375)), And(x, x))), Sin(0.25099 + 3.52247 * RGB(Level(-0.989373, x, White(1,1,1), x), SinCurve(Random(0.460635,0.968284,0.768944)), Well(Random(0.596107,0.462497,0.926276)))))), Level(-0.312889, Atan(Or(Tent(Tent(x)),AbsSin(Xor(White(1,1,1), White(1,1,1))))), Tent(And(Product(RGB(White(1,1,1), Const(-0.25, -0.8125, -0.4375), y), Level(-0.500537, y, y, Random(0.449178,0.094108,0.873117))), Atan(Far(Const(0.5, -0.4375, -0.4375), White(1,1,1), Random(0.944703,0.852125,0.414432))))), SinCurve(Sum(SinCurve(Product(x, x)), Atan(Not(x))))))
+And(Sum(Well(Sum(SinCurve(Level(0.562283, Random(0.14543,0.0719313,0.708717), White(1,1,1), y)), Xor(SinCurve(White(1,1,1)), Sin(1.66952, 3.12385, White(1,1,1))))), Xor(Or(Or(Closest(y, White(1,1,1), White(1,1,1)), AbsSin(x)), RGB(Mix(Random(0.421675,0.222685,0.401171), White(1,1,1), Palette(-0.625, -1, -0.625)), Not(Palette(-0.4375, -1, -0.4375)), And(x, x))), Sin(0.25099, 3.52247, RGB(Level(-0.989373, x, White(1,1,1), x), SinCurve(Random(0.460635,0.968284,0.768944)), Well(Random(0.596107,0.462497,0.926276)))))), Level(-0.312889, Atan(Or(Tent(Tent(x)),AbsSin(Xor(White(1,1,1), White(1,1,1))))), Tent(And(Product(RGB(White(1,1,1), Palette(-0.25, -0.8125, -0.4375), y), Level(-0.500537, y, y, Random(0.449178,0.094108,0.873117))), Atan(Far(Palette(0.5, -0.4375, -0.4375), White(1,1,1), Random(0.944703,0.852125,0.414432))))), SinCurve(Sum(SinCurve(Product(x, x)), Atan(Not(x))))))
 
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix', 'Wave']
 Use depth: True
 Coordinates transfrom: sin_coord
-Sin(0.824872 + 5.89621 * Mix(Mix(Wave(SinCurve(x), SinCurve(y)), SinCurve(Wave(y, x)), SinCurve(SinCurve(x))), SinCurve(Sin(2.63811 +
-3.65718 * Mix(y, x, y))), SinCurve(SinCurve(Mix(y, x, y)))))
+Sin(0.824872, 5.89621, Mix(Mix(Wave(SinCurve(x), SinCurve(y)), SinCurve(Wave(y, x)), SinCurve(SinCurve(x))), SinCurve(Sin(2.63811, 3.65718, Mix(y, x, y))), SinCurve(SinCurve(Mix(y, x, y)))))
 
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
 Use depth: False
 Coordinates transfrom: polar
 Polar shift: [1, 0]
-SinCurve(Mix(Mix(x, y, y), SinCurve(x), Mix(Const(-0.21875, -0.757812, -0.265625), Const(-0.195312, -0.25, -0.0703125), y)))
+SinCurve(Mix(Mix(x, y, y), SinCurve(x), Mix(Palette(-0.21875, -0.757812, -0.265625), Palette(-0.195312, -0.25, -0.0703125), y)))
 
 Using operators: ['VariableY', 'VariableX', 'Random', 'Product', 'SinCurve', 'Mod', 'Closest', 'Tent', 'Well', 'Sum', 'RGB', 'Atan', 'Xor', 'Not', 'And', 'Wave', 'Mix', 'Level', 'AbsSqrt']
 Use depth: True

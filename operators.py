@@ -69,7 +69,10 @@ class VariableY():
 class Random():
     arity = 0
     mindepth = 4
-    def __init__(self):
+    def __init__(self, r = None, g = None, b = None):
+        if r and g and b: #for parsing
+            self.c = (r, g, b)
+            return
         self.c = (random.uniform(0, 1), random.uniform(0, 1), random.uniform(0, 1))
     def __repr__(self):
         return 'Random(%g,%g,%g)' % self.c
@@ -81,14 +84,17 @@ class Palette():
     mindepth = 3
     palette = palettes[0]
     paletteIndex = 0
-    def __init__(self):
+    def __init__(self, r = None, g = None, b = None):
+        if r and g and b: #for parsing
+            self.c = (r, g, b)
+            return
         self.hex = Palette.palette[Palette.paletteIndex]
         Palette.paletteIndex += 1
         if Palette.paletteIndex >= len(Palette.palette):
             Palette.paletteIndex = 0
         self.c = tuple([x/128.0 - 1.0 for x in parse_color(self.hex)])
     def __repr__(self):
-        return "Const(%g, %g, %g)" % self.c
+        return "Palette(%g, %g, %g)" % self.c
     def eval(self, x, y):
         return self.c
 
@@ -100,12 +106,29 @@ class Palette():
 class White():
     arity = 0
     mindepth = 4
-    def __init__(self):
+    def __init__(self, r = None, g = None, b = None): #unused arguments for parsing
         self.c = (1, 1, 1)
     def __repr__(self):
-        return 'White(%g,%g,%g)' % self.c
+        return 'White(%g, %g, %g)' % self.c
     def eval(self,x, y): 
         return self.c
+
+class Chess():
+    arity = 0
+    mindepth = 5
+    def __init__(self, wX = None, wY = None):
+        if wX and wY: #for parsing
+            self.wX = wX
+            self.wY = wY
+        self.wX = random.uniform(0.1, 1.0)
+        self.wY = random.uniform(0.1, 1.0)
+    def __repr__(self):
+        return "Chess(%g, %g)" % (self.wX, self.wY)
+    def eval(self, x, y):
+        isOdd = False
+        isOdd ^= math.floor(x/self.wX) & 1
+        isOdd ^= math.floor(y/self.wY) & 1
+        return (-1, -1, -1) if isOdd else (1, 1, 1)
 
 # Nonterminals:
 
@@ -134,12 +157,12 @@ class Tent():
 class Sin():
     arity = 1
     mindepth = 0
-    def __init__(self, e):
+    def __init__(self, e): #TODO: fix init for parsing
         self.e = e
         self.phase = random.uniform(0, math.pi)
         self.freq = random.uniform(1.0, 6.0)
     def __repr__(self):
-        return 'Sin(%g + %g * %s)' % (self.phase, self.freq, self.e)
+        return 'Sin(%g, %g, %s)' % (self.phase, self.freq, self.e)
     def eval(self,x, y):
         (r1,g1,b1) = self.e.eval(x, y)
         r2 = math.sin(self.phase + self.freq * r1)
@@ -286,7 +309,7 @@ class Wave():
 class Level():
     arity = 3
     mindepth = 0
-    def __init__(self, level, e1, e2):
+    def __init__(self, level, e1, e2): #TODO: fix init for parsing
         self.treshold = random.uniform(-1.0,1.0)
         self.level = level
         self.e1 = e1

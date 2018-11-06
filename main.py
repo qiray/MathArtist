@@ -42,7 +42,7 @@ import pyscreenshot as ImageGrab
 from common import rgb, IMAGE, CANVAS
 from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And,
     Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSin, 
-    Or, Xor, Atan, Far, Wave)
+    Or, Xor, Atan, Far, Wave, Chess)
 from operator_lists import generate_lists
 
 # The following lists of classes that are used for generation of expressions is
@@ -51,7 +51,7 @@ from operator_lists import generate_lists
 
 fulllist = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSin,
         Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, And, Or,
-        Atan, Xor, Far, Wave)
+        Atan, Xor, Far, Wave, Chess)
 
 operatorsLists = [
     fulllist,
@@ -75,6 +75,9 @@ operatorsLists = [
     (VariableX, VariableY, Palette, Sin, SinCurve, Mix, Wave),
     (VariableX, VariableY, Palette, Sin, SinCurve, Atan, Wave), #not impressive
     (VariableX, VariableY, Mix, Well, Not, Palette),
+    (VariableX, VariableY, Palette, Random, Mix, Well, Tent, Chess),
+    (VariableX, VariableY, Palette, Random, Mix, Well, Tent, SinCurve),
+    (VariableX, VariableY, Palette, Random, Mix, SinCurve, Sin, AbsSin, Atan),
 
     # these lists were made by this program
     (White, Palette, Random, VariableX, VariableY, Far, Well, Sin, AbsSin, Product),
@@ -85,6 +88,9 @@ operatorsLists = [
     (VariableX, VariableY, SinCurve, AbsSin, Sum, Level),
     (Random, Palette, VariableY, VariableX, And, Sum, Mod),
     (Palette, VariableX, Random, White, VariableY, Atan, Xor, Closest, Mix, Product, RGB, Not, Well),
+    (Chess, White, RGB, Xor, Far, Well, And, Level, Wave, SinCurve, Mod, Atan),
+    (Random, Chess, White, Level, Mix, Closest, Xor, Tent, Sin, Wave, Product, Or, Sum, Well, Mod,
+        Far, Not),
 ]
 
 def coord_default(x, y, d, size):
@@ -131,8 +137,7 @@ coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord, p
 #TODO: generate operators' lists or find nice examples and make them predefined
 #TODO: make 2 versions: Python and Golang
 #TODO: read params and generate image using them.
-
-#TODO: For check if image is good or bad compare it with noise image
+#TODO: check if image is good or bad, for example remove monochrome images, compare it with noise image and do something else
 
 class Art():
     """A simple graphical user interface for random art."""
