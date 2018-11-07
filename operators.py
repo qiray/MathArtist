@@ -157,8 +157,12 @@ class Tent():
 class Sin():
     arity = 1
     mindepth = 0
-    def __init__(self, e): #TODO: fix init for parsing
+    def __init__(self, e, phase = None, freq = None):
         self.e = e
+        if phase and freq: #for parsing
+            self.phase = phase
+            self.freq = freq
+            return
         self.phase = random.uniform(0, math.pi)
         self.freq = random.uniform(1.0, 6.0)
     def __repr__(self):
@@ -309,8 +313,8 @@ class Wave():
 class Level():
     arity = 3
     mindepth = 0
-    def __init__(self, level, e1, e2): #TODO: fix init for parsing
-        self.treshold = random.uniform(-1.0,1.0)
+    def __init__(self, level, e1, e2, treshold = None):
+        self.treshold = treshold if treshold else random.uniform(-1.0,1.0) #for parsing
         self.level = level
         self.e1 = e1
         self.e2 = e2

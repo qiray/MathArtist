@@ -35,108 +35,21 @@ import hashlib
 import sys
 import signal
 from datetime import datetime
-from tkinter import Tk, ALL, Canvas, Button
+from tkinter import Tk, ALL, Canvas, Button, Entry
 from PIL import Image, ImageDraw, ImageTk
 import pyscreenshot as ImageGrab
 
 from common import rgb, IMAGE, CANVAS
-from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And,
-    Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSin, 
-    Or, Xor, Atan, Far, Wave, Chess)
-from operator_lists import generate_lists
-
-# The following lists of classes that are used for generation of expressions is
-# used by the generate function below. Each list should contain at least one
-# terminal and nonterminal class.
-
-fulllist = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSin,
-        Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, And, Or,
-        Atan, Xor, Far, Wave, Chess)
-
-operatorsLists = [
-    fulllist,
-    (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, Well, Level, Mix, Palette),
-    (VariableX, VariableY, Mix, Well),
-    (VariableX, VariableY, Random, Mix, Well),
-    (VariableX, VariableY, Palette, Mix, Well),
-    (VariableX, VariableY, Palette, Mix, Well, Tent),
-    (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve),
-    (VariableX, VariableY, Palette, Sin, SinCurve, Mix), #50/50
-    (VariableX, VariableY, Palette, AbsSin, Sin, Mix),
-    (VariableX, VariableY, Palette, And, Or, Xor),
-    (VariableX, VariableY, Random, Palette, Mix, Well, Sin, SinCurve, Tent, AbsSin),
-    (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Sum, Mod),
-    (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Product, 
-        Sum, Mod, Well, Tent),
-    (VariableX, VariableY, White, Palette, Random, RGB),
-    (VariableX, VariableY, White, Palette, Random, RGB, Sin, SinCurve, Atan, Mix, Closest),
-    (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well),
-    (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well, Wave), #Not bad but...
-    (VariableX, VariableY, Palette, Sin, SinCurve, Mix, Wave),
-    (VariableX, VariableY, Palette, Sin, SinCurve, Atan, Wave), #not impressive
-    (VariableX, VariableY, Mix, Well, Not, Palette),
-    (VariableX, VariableY, Palette, Random, Mix, Well, Tent, Chess),
-    (VariableX, VariableY, Palette, Random, Mix, Well, Tent, SinCurve),
-    (VariableX, VariableY, Palette, Random, Mix, SinCurve, Sin, AbsSin, Atan),
-
-    # these lists were made by this program
-    (White, Palette, Random, VariableX, VariableY, Far, Well, Sin, AbsSin, Product),
-    (Random, White, VariableY, VariableX, Palette, SinCurve, Level, Atan, Not, Far, Wave, Or, Xor),
-    (Palette, Random, VariableY, White, VariableX, Well, Mix, Sin, Sum, Not, Tent, Level, Far, And),
-    (VariableY, VariableX, Random, Product, SinCurve, Mod, Closest, Tent, Well, Sum, RGB, Atan, Xor, 
-        Not, And, Wave, Mix, Level, AbsSin),
-    (VariableX, VariableY, SinCurve, AbsSin, Sum, Level),
-    (Random, Palette, VariableY, VariableX, And, Sum, Mod),
-    (Palette, VariableX, Random, White, VariableY, Atan, Xor, Closest, Mix, Product, RGB, Not, Well),
-    (Chess, White, RGB, Xor, Far, Well, And, Level, Wave, SinCurve, Mod, Atan),
-    (Random, Chess, White, Level, Mix, Closest, Xor, Tent, Sin, Wave, Product, Or, Sum, Well, Mod,
-        Far, Not),
-]
-
-def coord_default(x, y, d, size):
-    u = 2 * (x + d/2)/size - 1.0
-    v = 2 * (y + d/2)/size - 1.0
-    return u, v
-
-def simple_linear_coord(x, y, d, size):
-    u = 2 * x/size - 1.0
-    v = 2 * y/size - 1.0
-    return u, v
-
-def tent_coord(x, y, d, size):
-    u = 1 - 2 * abs(x/size)
-    v = 1 - 2 * abs(y/size)
-    return u, v
-
-def sin_coord(x, y, d, size):
-    u = math.sin(2*math.pi*x/size)
-    v = math.sin(2*math.pi*y/size)
-    return u, v
-
-def rotate_coord(x, y, d, size):
-    u = (x - y)/size
-    v = math.sqrt(2*(x*x + y*y - u*u))/size - 1
-    return u, v
-
-def polar(x, y, d, size):
-    x -= Art.polar_shift[0]*size
-    y -= Art.polar_shift[1]*size
-    u = math.sqrt(x*x + y*y)/size
-    v = 0 if x == 0 else math.atan(y/x)*2/math.pi
-    return u, v
-
-def aaaaa(x, y, d, size):
-    u = (x - y)/size
-    v = 2 * y/size - 1.0
-    return u, v
-
-coord_transforms = [coord_default, simple_linear_coord, tent_coord, sin_coord, polar, rotate_coord] #TODO: add more conversions and probabilities for each one
+from operators import Palette
+from operator_lists import operatorsLists, fulllist, generate_lists
+from coords import coord_transforms
+from read_data import parse_formula, read_file
 
 #TODO: rename project
 #TODO: some refactoring
+#TODO: name generator
 #TODO: generate operators' lists or find nice examples and make them predefined
-#TODO: make 2 versions: Python and Golang
-#TODO: read params and generate image using them.
+#TODO: make 2 versions: Python and Golang/C++
 #TODO: check if image is good or bad, for example remove monochrome images, compare it with noise image and do something else
 
 class Art():
@@ -214,6 +127,7 @@ class Art():
         self.img = Image.new('RGB', (size, size))
         self.imageDraw = ImageDraw.Draw(self.img)
         self.photoImage = ImageTk.PhotoImage(image=self.img)
+
         self.canvas = Canvas(self.root, width=size, height=size)
         self.canvas.grid(row=0,column=0, columnspan=3)
         b = Button(self.root, text='New image', command=self.redraw)
@@ -222,6 +136,12 @@ class Art():
         b1.grid(row=1,column=1)
         b2 = Button(self.root, text='Generate lists', command=Art.generate_lists)
         b2.grid(row=1,column=2)
+        b3 = Button(self.root, text='Read file', command=self.read_file)
+        b3.grid(row=2,column=0)
+        self.e1 = Entry(self.root)
+        self.e1.insert(0, "samples/1.txt")
+        self.e1.grid(row=2,column=1)
+
         self.draw_alarm = None
         self.redraw()
 
@@ -229,10 +149,13 @@ class Art():
         Art.init_static_data()
         Palette.randomPalette()
         self.start = time.time()
-        if self.draw_alarm: 
+        if self.draw_alarm:
             self.canvas.after_cancel(self.draw_alarm)
         self.canvas.delete(ALL)
         self.art = Art.generate(random.randrange(1, self.size_log + 1))
+        self.start_drawing()
+
+    def start_drawing(self):
         self.print_art()
         self.d = 64   # current square size
         self.y = 0    # current row
@@ -246,30 +169,44 @@ class Art():
         if self.y >= self.size:
             self.y = 0
             self.d = self.d // 4
-        if self.d >= 1:
-            for x in range(0, self.size, self.d):
-                #Convert coordinates to range [-1, 1]
-                u, v = Art.coord_transform(x, self.y, self.d, self.size)
-                (r, g, b) = self.art.eval(u, v)
-                if self.draw_style == IMAGE:
-                    self.imageDraw.rectangle(
-                        ((x, self.y), (x + self.d, self.y + self.d)),
-                        fill=rgb(r, g, b)
-                    )
-                else:
-                    self.canvas.create_rectangle(
-                        x, self.y, x+self.d, self.y+self.d,
-                        width=0, fill=rgb(r, g, b)
-                    )
-            self.y += self.d
-            if self.draw_style == IMAGE:
-                self.draw()
-            else:
-                self.draw_alarm = self.canvas.after(1, self.draw)
-        else:
+        if self.d < 1:
             self.draw_alarm = None
             self.end = time.time()
             print("Time for drawing:", self.end - self.start)
+            return
+        for x in range(0, self.size, self.d):
+            #Convert coordinates to range [-1, 1]
+            u, v = Art.coord_transform(x, self.y, self.d, self.size, Art.polar_shift)
+            (r, g, b) = self.art.eval(u, v)
+            if self.draw_style == IMAGE:
+                self.imageDraw.rectangle(
+                    ((x, self.y), (x + self.d, self.y + self.d)),
+                    fill=rgb(r, g, b)
+                )
+            else:
+                self.canvas.create_rectangle(
+                    x, self.y, x+self.d, self.y+self.d,
+                    width=0, fill=rgb(r, g, b)
+                )
+        self.y += self.d
+        if self.draw_style == IMAGE:
+            self.draw()
+        else:
+            self.draw_alarm = self.canvas.after(1, self.draw)
+
+    def read_file(self):
+        art, use_depth, coord_transform, polar_shift = read_file(self.e1.get())
+        self.read_art_params(art, use_depth, coord_transform, polar_shift)
+
+    def read_art_params(self, art, use_depth, coord_transform, polar_shift=None):
+        self.art = parse_formula(art)
+        Art.use_depth = parse_formula(use_depth)
+        Art.coord_transform = parse_formula(coord_transform)
+        if polar_shift:
+            Art.polar_shift = parse_formula(polar_shift)
+        self.start = time.time()
+        self.canvas.delete(ALL)
+        self.start_drawing() #draw image with new params
 
     def print_art(self):
         print("Using operators:", [x.__name__ for x in Art.operatorsList])
@@ -277,7 +214,7 @@ class Art():
         print("Coordinates transfrom:", Art.coord_transform.__name__)
         if Art.coord_transform.__name__ == 'polar':
             print("Polar shift:", Art.polar_shift)
-        print(self.art, '\n') #draw art tree
+        print("Formula:", self.art, '\n') #draw art tree
 
     def get_screenshot(self):
         if __name__ != '__main__':
@@ -296,8 +233,9 @@ class Art():
 def sigint_handler(sig, frame):
     print("Closing...")
     sys.exit(0)
-signal.signal(signal.SIGINT, sigint_handler)
 
-win = Tk()
-arg = Art(win)
-win.mainloop()
+if __name__ == '__main__':
+    signal.signal(signal.SIGINT, sigint_handler)
+    win = Tk()
+    art = Art(win)
+    win.mainloop()
