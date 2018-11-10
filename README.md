@@ -12,8 +12,6 @@ https://github.com/vshymanskyy/randomart
 ### Algorithm
 
 * Generate name
-* Draw: select operators and use them
-* Rates generated image and maybe redraw it (?)
-* Post-processing (filters, noise etc)
+* Draw: select operators, coordinate transforms and use them
 * Create image file
 * Post in Internet

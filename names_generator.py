@@ -24,14 +24,13 @@ adjectives = file_to_list("data/adjectives.txt")
 pronouns = file_to_list("data/pronouns.txt")
 prepositions = file_to_list("data/prepositions.txt")
 
-def adj_noun():
+def adj_or_pronoun():
+    return random.choice(adjectives) if random.random() > 0.5 else random.choice(pronouns)
+
+def two_words():
+    word = adj_or_pronoun()
     return "%s %s" % (
-        random.choice(adjectives),
-        random.choice(nouns))
-        
-def pronoun_noun():
-    return "%s %s" % (
-        random.choice(pronouns),
+        word,
         random.choice(nouns))
 
 def pronoun_adj_noun():
@@ -53,44 +52,38 @@ def noun_prep_adj_noun():
         random.choice(adjectives),
         random.choice(nouns))
 
-def adj_noun_noun():
+def desc_noun_noun():
+    word = adj_or_pronoun()
     return "%s %s %s" % (
-        random.choice(adjectives),
+        word,
         random.choice(nouns),
         random.choice(nouns))
 
-def pronoun_noun_noun():
-    return "%s %s %s" % (
-        random.choice(pronouns),
-        random.choice(nouns),
-        random.choice(nouns))
-
-def adj_noun_prep_adj_noun():
+def five_words():
+    word1 = adj_or_pronoun()
+    word2 = adj_or_pronoun()
     return "%s %s %s %s %s" % (
-        random.choice(adjectives),
+        word1,
         random.choice(nouns),
         random.choice(prepositions),
-        random.choice(adjectives),
+        word2,
         random.choice(nouns))
 
-def pronoun_noun_prep_pronoun_noun():
-    return "%s %s %s %s %s" % (
-        random.choice(pronouns),
-        random.choice(nouns),
-        random.choice(prepositions),
-        random.choice(pronouns),
-        random.choice(nouns))
+def word_chain():
+    length = random.randint(1, 2)
+    result = five_words()
+    for _ in range(length):
+        word = adj_or_pronoun()
+        result += " %s %s %s" % (
+            random.choice(prepositions),
+            word,
+            random.choice(nouns))
+    return result
 
-def combined():
-    # TODO:
-    pass
-
-generators = [adj_noun, pronoun_noun, pronoun_adj_noun, noun_prep_noun, noun_prep_adj_noun,
-    adj_noun_noun, pronoun_noun_noun, adj_noun_prep_adj_noun, pronoun_noun_prep_pronoun_noun]
+generators = [two_words, pronoun_adj_noun, noun_prep_noun, noun_prep_adj_noun,
+    desc_noun_noun, five_words, word_chain]
 
 def generate_name():
     result = random.choice(generators)()
     result = result.lower().capitalize()
     return result
-
-print (generate_name())

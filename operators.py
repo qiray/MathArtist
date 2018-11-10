@@ -33,7 +33,7 @@ from palettes import palettes
 
 # We next define classes that represent expression trees.
 
-# Each object that reprents and expression should have an eval(self,x, y) method
+# Each object that reprents and expression should have an eval(self, x, y) method
 # which computes the value of the expression at (x, y). The __init__ should
 # accept the objects representing its subexpressions. The class definition
 # should contain the arity attribute which tells how many subexpressions should
@@ -110,7 +110,7 @@ class White():
         self.c = (1, 1, 1)
     def __repr__(self):
         return 'White(%g, %g, %g)' % self.c
-    def eval(self,x, y): 
+    def eval(self, x, y): 
         return self.c
 
 class Chess():
@@ -139,8 +139,8 @@ class Well():
         self.e = e
     def __repr__(self):
         return 'Well(%s)' % self.e
-    def eval(self,x, y):
-        (r,g,b) = self.e.eval(x, y)
+    def eval(self, x, y):
+        (r, g, b) = self.e.eval(x, y)
         return (well(r), well(g), well(b))
 
 class Tent():
@@ -150,8 +150,8 @@ class Tent():
         self.e = e
     def __repr__(self):
         return 'Tent(%s)' % self.e
-    def eval(self,x, y):
-        (r,g,b) = self.e.eval(x, y)
+    def eval(self, x, y):
+        (r, g, b) = self.e.eval(x, y)
         return (tent(r), tent(g), tent(b))
 
 class Sin():
@@ -167,12 +167,12 @@ class Sin():
         self.freq = random.uniform(1.0, 6.0)
     def __repr__(self):
         return 'Sin(%g, %g, %s)' % (self.phase, self.freq, self.e)
-    def eval(self,x, y):
-        (r1,g1,b1) = self.e.eval(x, y)
+    def eval(self, x, y):
+        (r1, g1, b1) = self.e.eval(x, y)
         r2 = math.sin(self.phase + self.freq * r1)
         g2 = math.sin(self.phase + self.freq * g1)
         b2 = math.sin(self.phase + self.freq * b1)
-        return (r2,g2,b2)
+        return (r2, g2, b2)
 
 class Not():
     arity = 1
@@ -192,8 +192,8 @@ class SinCurve():
         self.e = e
     def __repr__(self):
         return 'SinCurve(%s)' % self.e
-    def eval(self,x, y):
-        (r,g,b) = self.e.eval(x, y)
+    def eval(self, x, y):
+        (r, g, b) = self.e.eval(x, y)
         return (sin_curve(r), sin_curve(g), sin_curve(b))
 
 class AbsSin():
@@ -203,8 +203,8 @@ class AbsSin():
         self.e = e
     def __repr__(self):
         return 'AbsSin(%s)' % self.e
-    def eval(self,x, y):
-        (r,g,b) = self.e.eval(x, y)
+    def eval(self, x, y):
+        (r, g, b) = self.e.eval(x, y)
         return (abs_sin(r), abs_sin(g), abs_sin(b))
 
 class Atan():
@@ -215,7 +215,7 @@ class Atan():
     def __repr__(self):
         return 'Atan(%s)' % (self.e)
     def eval(self, x, y):
-        (r,g,b) = self.e.eval(x, y)
+        (r, g, b) = self.e.eval(x, y)
         return (math.atan(r)*2/math.pi, math.atan(g)*2/math.pi, math.atan(b)*2/math.pi)
 
 class Sum():
@@ -237,7 +237,7 @@ class Product():
         self.e2 = e2
     def __repr__(self):
         return 'Product(%s, %s)' % (self.e1, self.e2)
-    def eval(self,x, y):
+    def eval(self, x, y):
         (r1, g1, b1) = self.e1.eval(x, y)
         (r2, g2, b2) = self.e2.eval(x, y)
         r3 = r1 * r2
@@ -306,28 +306,28 @@ class Wave():
     def __repr__(self):
         return 'Wave(%s, %s)' % (self.e1, self.e2)
     def eval(self, x, y):
-        (r1,g1,b1) = self.e1.eval(x, y)
-        (r2,g2,b2) = self.e2.eval(x, y)
+        (r1, g1, b1) = self.e1.eval(x, y)
+        (r2, g2, b2) = self.e2.eval(x, y)
         return (wave(r1, r2), wave(g1, g2), wave(b1, b2))
 
 class Level():
     arity = 3
     mindepth = 0
     def __init__(self, level, e1, e2, treshold = None):
-        self.treshold = treshold if treshold else random.uniform(-1.0,1.0) #for parsing
+        self.treshold = treshold if treshold else random.uniform(-1.0, 1.0) #for parsing
         self.level = level
         self.e1 = e1
         self.e2 = e2
     def __repr__(self):
         return 'Level(%g, %s, %s, %s)' % (self.treshold, self.level, self.e1, self.e2)
-    def eval(self,x, y):
+    def eval(self, x, y):
         (r1, g1, b1) = self.level.eval(x, y)
         (r2, g2, b2) = self.e1.eval(x, y)
         (r3, g3, b3) = self.e2.eval(x, y)
         r4 = r2 if r1 < self.treshold else r3
         g4 = g2 if g1 < self.treshold else g3
         b4 = b2 if b1 < self.treshold else b3
-        return (r4,g4,b4)
+        return (r4, g4, b4)
 
 class Mix():
     arity = 3
@@ -338,11 +338,11 @@ class Mix():
         self.e2 = e2
     def __repr__(self):
         return 'Mix(%s, %s, %s)' % (self.w, self.e1, self.e2)
-    def eval(self,x, y):
+    def eval(self, x, y):
         w = 0.5 * (self.w.eval(x, y)[0] + 1.0)
         c1 = self.e1.eval(x, y)
         c2 = self.e2.eval(x, y)
-        return average(c1,c2,w)
+        return average(c1, c2, w)
 
 class RGB():
     arity = 3

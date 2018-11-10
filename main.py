@@ -44,13 +44,14 @@ from operators import Palette
 from operator_lists import operatorsLists, fulllist, generate_lists
 from coords import coord_transforms
 from read_data import parse_formula, read_file
+from names_generator import generate_name
 
 #TODO: rename project
+#TODO: readme
+#TODO: license
 #TODO: some refactoring
-#TODO: name generator
-#TODO: generate operators' lists or find nice examples and make them predefined
-#TODO: make 2 versions: Python and Golang/C++
-#TODO: check if image is good or bad, for example remove monochrome images, compare it with noise image and do something else
+#TODO: debug and release versions (Tk canvas and console image)
+#TODO: generate operators' lists or find nice examples and make them predefined, find more operators
 
 class Art():
     """A simple graphical user interface for random art."""
@@ -118,8 +119,10 @@ class Art():
             hex_string = hashlib.md5(hash_string.encode('utf-8'))
             hexdigest = hex_string.hexdigest()
             random.seed(int(hexdigest, 16))
+            self.name = hash_string
         else:
             random.seed(datetime.now())
+            self.name = generate_name()
         self.draw_style = draw_style
         self.size = size
         self.size_log = int(math.log(self.size, 2))
@@ -149,6 +152,7 @@ class Art():
         Art.init_static_data()
         Palette.randomPalette()
         self.start = time.time()
+        self.name = generate_name()
         if self.draw_alarm:
             self.canvas.after_cancel(self.draw_alarm)
         self.canvas.delete(ALL)
@@ -209,6 +213,7 @@ class Art():
         self.start_drawing() #draw image with new params
 
     def print_art(self):
+        print("Name:", self.name)
         print("Using operators:", [x.__name__ for x in Art.operatorsList])
         print("Use depth:", Art.use_depth)
         print("Coordinates transfrom:", Art.coord_transform.__name__)

@@ -32,4 +32,4 @@ def polar(x, y, d, size, polar_shift):
     v = 0 if x == 0 else math.atan(y/x)*2/math.pi
     return u, v
 
-coord_transforms = [linear_coord, tent_coord, sin_coord, polar, rotate_coord] #TODO: add more conversions
+coord_transforms = [linear_coord, tent_coord, sin_coord, polar, rotate_coord] #TODO: it's nice to find more conversions

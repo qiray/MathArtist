@@ -5,7 +5,6 @@ from
 into
 towards
 upon
-to
 in
 for
 on

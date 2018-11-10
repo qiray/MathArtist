@@ -27,6 +27,7 @@ operatorsLists = [
     (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve),
     (VariableX, VariableY, Palette, Sin, SinCurve, Mix), #50/50
     (VariableX, VariableY, Palette, AbsSin, Sin, Mix),
+    (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve, AbsSin),
     (VariableX, VariableY, Palette, And, Or, Xor),
     (VariableX, VariableY, Random, Palette, Mix, Well, Sin, SinCurve, Tent, AbsSin),
     (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Sum, Mod),
@@ -55,6 +56,11 @@ operatorsLists = [
     (Chess, White, RGB, Xor, Far, Well, And, Level, Wave, SinCurve, Mod, Atan),
     (Random, Chess, White, Level, Mix, Closest, Xor, Tent, Sin, Wave, Product, Or, Sum, Well, Mod,
         Far, Not),
+    (White, Random, VariableY, Palette, Xor, Far, Sin, Not, Mod, And, Atan, Sum, Wave, Level, Well),
+    (Random, Palette, VariableY, VariableX, Not, Sin, AbsSin, Product, Far, Or, Atan, Tent, Mod, Xor,
+        Wave, Sum),
+    (VariableX, VariableY, White, Mod, Product, Atan, RGB, Mix, SinCurve, Xor, And, Level, Sin, 
+        AbsSin, Well, Tent),
 ]
 
 def generate_lists(fulllist):
