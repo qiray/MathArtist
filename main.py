@@ -28,6 +28,8 @@
 # http://www.random-art.org/
 # http://math.andrej.com/category/random-art/
 
+#pyinstaller --onefile --windowed main.py --hidden-import='PIL._tkinter_finder'
+
 import math
 import random
 import time

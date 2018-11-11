@@ -166,7 +166,7 @@ class Sin():
         self.phase = random.uniform(0, math.pi)
         self.freq = random.uniform(1.0, 6.0)
     def __repr__(self):
-        return 'Sin(%g, %g, %s)' % (self.phase, self.freq, self.e)
+        return 'Sin(%s, %g, %g)' % (self.e, self.phase, self.freq)
     def eval(self, x, y):
         (r1, g1, b1) = self.e.eval(x, y)
         r2 = math.sin(self.phase + self.freq * r1)
@@ -319,7 +319,7 @@ class Level():
         self.e1 = e1
         self.e2 = e2
     def __repr__(self):
-        return 'Level(%g, %s, %s, %s)' % (self.treshold, self.level, self.e1, self.e2)
+        return 'Level(%s, %s, %s, %g)' % (self.level, self.e1, self.e2, self.treshold)
     def eval(self, x, y):
         (r1, g1, b1) = self.level.eval(x, y)
         (r2, g2, b2) = self.e1.eval(x, y)

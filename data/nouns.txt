@@ -116,7 +116,6 @@ Square
 Element
 Improvement
 book
-St George
 Investigation
 Cannibalism
 Sphere
