@@ -1,0 +1,5 @@
+Name: Their education except splendid shape
+Using operators: ['VariableX', 'VariableY', 'White', 'Mod', 'Product', 'Atan', 'RGB', 'Mix', 'SinCurve', 'Xor', 'And', 'Level', 'Sin', 'AbsSin', 'Well', 'Tent']
+Use depth: False
+Coordinates transfrom: linear_coord
+Formula: AbsSin(Level(-0.254855, Level(0.300284, SinCurve(And(White(1, 1, 1), y)), Atan(RGB(White(1, 1, 1), White(1, 1, 1), White(1, 1, 1))), Mix(Mix(White(1, 1, 1), y, y), RGB(y, y, y), Mod(White(1, 1, 1), y))), AbsSin(Xor(SinCurve(White(1, 1, 1)), Tent(x))), Product(Level(-0.553345,RGB(x, x, x), Product(White(1, 1, 1), x), Mod(White(1, 1, 1), White(1, 1, 1))), Mod(Level(0.780113, y, White(1, 1, 1), y), And(x, y)))))

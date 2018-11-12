@@ -1,0 +1,4 @@
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
+Use depth: True
+Coordinates transfrom: linear_coord
+Formula: Well(Tent(Tent(Tent(Mix(Tent(Mix(Well(x), Well(Palette(0.8125, 0.664062, 0.429688)), Well(x))), Tent(Tent(Mix(Palette(-0.890625, -0.71875, -0.625), Palette(0.96875, -0.546875, -0.367188), y))), Mix(Well(Well(y)), Tent(Well(y)), Well(Tent(x))))))))

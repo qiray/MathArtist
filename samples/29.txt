@@ -1,0 +1,5 @@
+Name: Your jolly despair
+Using operators: ['VariableX', 'VariableY', 'Palette', 'AbsSin', 'Sin', 'Mix']
+Use depth: True
+Coordinates transfrom: curved_rotate_coord
+Formula: Sin(AbsSin(AbsSin(Sin(Mix(Mix(AbsSin(Sin(Sin(Palette(0.460938, 0.460938, 0.0625), 2.27908, 3.87572), 0.224145, 1.39203)), Sin(Sin(AbsSin(Palette(0.59375, 0.546875, 0.101562)), 0.606463, 4.1096), 0.430546, 2.91053), Sin(Sin(Sin(y, 0.256139, 4.65898), 0.0179289, 4.43246), 0.760295, 4.61378)), Sin(Mix(AbsSin(Sin(y, 2.54422, 3.84986)), Mix(Sin(Palette(0.859375, 0.726562, 0.195312), 1.42256, 5.11668), Sin(Palette(0.859375, 0.515625, 0.125), 1.67943, 2.07746), Mix(Palette(0.859375, 0.328125, 0.0625), y, Palette(0.460938, 0.460938, 0.0625))), Sin(Mix(y, x, x), 0.264898, 4.24099)), 1.95491, 2.87881), Mix(AbsSin(AbsSin(Sin(y, 0.928111, 4.35093))), AbsSin(Sin(AbsSin(y), 2.2441, 3.62377)), AbsSin(AbsSin(Mix(y, y, x))))), 1.40754, 3.51971))), 0.561892, 5.29625)

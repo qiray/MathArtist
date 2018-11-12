@@ -1,0 +1,5 @@
+Name: Velocity within point
+Using operators: ['VariableX', 'VariableY', 'Random', 'Palette', 'Mix', 'Well', 'Sin', 'SinCurve', 'Tent', 'AbsSin']
+Use depth: False
+Coordinates transfrom: linear_coord
+Formula: SinCurve(Mix(Sin(1.67504, 3.6473, Well(Well(AbsSin(AbsSin(Tent(y)))))), SinCurve(AbsSin(Tent(AbsSin(Tent(Mix(y, Palette(0.648438, 0.664062, 0.375), Palette(0.414062, 0.609375, 0.28125))))))), Sin(3.02643, 1.04586, SinCurve(Mix(Tent(AbsSin(Sin(1.38864, 4.95517, x))), Sin(1.81643, 2.6157, Sin(1.33181, 4.12144, Tent(y))), Sin(0.929822, 5.65076, Mix(AbsSin(Random(0.0223482,0.67068,0.771686)), SinCurve(Random(0.958236,0.0929607,0.522756)), Tent(Random(0.753181,0.0351527,0.0635145)))))))))

@@ -1,0 +1,6 @@
+Name: Your friendly others
+Using operators: ['VariableX', 'VariableY', 'Random', 'Sum', 'Product', 'Mod', 'Sin', 'Tent', 'Well', 'Level', 'Mix', 'Palette']
+Use depth: False
+Coordinates transfrom: polar
+Polar shift: [0.5, 0.5]
+Formula: Sin(Sin(Tent(Mod(Well(Palette(0.992188, 0.867188, 0.648438)), Mod(x, Palette(0.992188, 0.984375, 0.78125)))), 1.83104, 1.43092), 2.40113, 2.07643)

@@ -1,7 +1,28 @@
-#!/usr/bin/python
+
+# Copyright (c) 2018, Yaroslav Zotov, https://github.com/qiray/
+# All rights reserved.
+
+# This file is part of MathArtist.
+
+# MathArtist is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# MathArtist is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with MathArtist.  If not, see <https://www.gnu.org/licenses/>.
+
+################################################################################
+
+# This file uses code from Andrej Bauer's randomart project under 
+# following conditions:
 
 # Copyright (c) 2010, Andrej Bauer, http://andrej.com/
-# Copyright (c) 2018, Yaroslav Zotov, https://github.com/qiray/
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -28,8 +49,8 @@
 import math
 import itertools
 
-CANVAS = 1
-IMAGE = 2
+CONSOLE = 1
+GUI = 2
 
 # File with utility functions
 

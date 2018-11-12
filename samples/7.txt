@@ -1,0 +1,4 @@
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
+Use depth: False
+Coordinates transfrom: linear_coord
+Formula: SinCurve(Mix(SinCurve(y), Sin(Palette(-0.46875, -0.09375, 0.226562), 0.294927, 2.06359), Mix(Palette(0.546875, 0.65625, 0.757812), x, x)))

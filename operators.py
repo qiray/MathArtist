@@ -1,7 +1,28 @@
-#!/usr/bin/python
+
+# Copyright (c) 2018, Yaroslav Zotov, https://github.com/qiray/
+# All rights reserved.
+
+# This file is part of MathArtist.
+
+# MathArtist is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# MathArtist is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with MathArtist.  If not, see <https://www.gnu.org/licenses/>.
+
+################################################################################
+
+# This file uses code from Andrej Bauer's randomart project under 
+# following conditions:
 
 # Copyright (c) 2010, Andrej Bauer, http://andrej.com/
-# Copyright (c) 2018, Yaroslav Zotov, https://github.com/qiray/
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +48,7 @@
 
 import random
 import math
-from common import (average, well, tent, parse_color, sin_curve, abs_sin, 
+from common import (average, well, tent, parse_color, sin_curve, abs_sin,
     color_binary, wave)
 from palettes import palettes
 
@@ -37,9 +58,9 @@ from palettes import palettes
 # which computes the value of the expression at (x, y). The __init__ should
 # accept the objects representing its subexpressions. The class definition
 # should contain the arity attribute which tells how many subexpressions should
-# be passed to the __init__ constructor. Classes with arity == 0 are called 
-# terminals, the others are called nonterminals.The __repr__ method is used to 
-# print each object as a string. The mindepth attribute shows depth of 
+# be passed to the __init__ constructor. Classes with arity == 0 are called
+# terminals, the others are called nonterminals.The __repr__ method is used to
+# print each object as a string. The mindepth attribute shows depth of
 # expression tree where it is allowed to use this object.
 
 # Some operators are copied from https://github.com/vshymanskyy/randomart
@@ -110,13 +131,13 @@ class White():
         self.c = (1, 1, 1)
     def __repr__(self):
         return 'White(%g, %g, %g)' % self.c
-    def eval(self, x, y): 
+    def eval(self, x, y):
         return self.c
 
 class Chess():
     arity = 0
     mindepth = 5
-    def __init__(self, wX = None, wY = None):
+    def __init__(self, wX=None, wY=None):
         if wX and wY: #for parsing
             self.wX = wX
             self.wY = wY
@@ -273,7 +294,7 @@ class And():
     def __repr__(self):
         return 'And(%s, %s)' % (self.e1, self.e2)
     def eval(self, x, y):
-        return color_binary(self.e1.eval(x, y), self.e2.eval(x, y), lambda x1, x2 : x1 & x2)
+        return color_binary(self.e1.eval(x, y), self.e2.eval(x, y), lambda x1,x2 : x1 & x2)
 
 class Or():
     arity = 2
@@ -284,7 +305,7 @@ class Or():
     def __repr__(self):
         return 'Or(%s, %s)' % (self.e1, self.e2)
     def eval(self, x, y):
-        return color_binary(self.e1.eval(x, y), self.e2.eval(x, y), lambda x1, x2 : x1 | x2)
+        return color_binary(self.e1.eval(x, y), self.e2.eval(x, y), lambda x1,x2 : x1 | x2)
 
 class Xor():
     arity = 2
@@ -295,7 +316,7 @@ class Xor():
     def __repr__(self):
         return 'Xor(%s, %s)' % (self.e1, self.e2)
     def eval(self, x, y):
-        return color_binary(self.e1.eval(x, y), self.e2.eval(x, y), lambda x1, x2 : x1 ^ x2)
+        return color_binary(self.e1.eval(x, y), self.e2.eval(x, y), lambda x1,x2 : x1 ^ x2)
 
 class Wave():
     arity = 2

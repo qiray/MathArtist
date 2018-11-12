@@ -1,0 +1,4 @@
+Using operators: ['VariableX', 'VariableY', 'White', 'Palette', 'Random', 'AbsSin', 'Mix', 'Level', 'RGB', 'Sum', 'Mod']
+Use depth: False
+Coordinates transfrom: linear_coord
+Formula: Mod(Level(y, y, x, -0.947116), Sum(y, White(1,1,1)))

@@ -1,0 +1,5 @@
+Name: Their repressed insight
+Using operators: ['VariableX', 'VariableY', 'White', 'Palette', 'Random', 'AbsSin', 'Mix', 'Level', 'RGB', 'Product', 'Sum', 'Mod', 'Well', 'Tent']
+Use depth: True
+Coordinates transfrom: curved_rotate_coord
+Formula: Product(Tent(RGB(Level(0.0563609, y, y, x), Sum(x, White(1, 1, 1)), AbsSin(Random(0.720201,0.321649,0.302112)))), AbsSin(AbsSin(Level(-0.350706, Palette(-0.0546875, -0.710938, -0.421875), White(1, 1, 1), White(1, 1, 1)))))

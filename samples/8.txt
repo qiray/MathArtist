@@ -1,0 +1,4 @@
+Using operators: ['VariableX', 'VariableY', 'Palette', 'And', 'Or', 'Xor']
+Use depth: False
+Coordinates transfrom: polar
+Formula: Or(Xor(x, x), And(y, x))

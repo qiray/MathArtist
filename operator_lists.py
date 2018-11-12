@@ -1,7 +1,21 @@
-#!/usr/bin/python
 
 # Copyright (c) 2018, Yaroslav Zotov, https://github.com/qiray/
 # All rights reserved.
+
+# This file is part of MathArtist.
+
+# MathArtist is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# MathArtist is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with MathArtist.  If not, see <https://www.gnu.org/licenses/>.
 
 import random
 
@@ -20,15 +34,15 @@ fulllist = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSin,
 operatorsLists = [
     fulllist,
     (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, Well, Level, Mix, Palette),
-    (VariableX, VariableY, Mix, Well),
+    (VariableX, VariableY, Mix, Well), #minimalism
     (VariableX, VariableY, Random, Mix, Well),
     (VariableX, VariableY, Palette, Mix, Well),
     (VariableX, VariableY, Palette, Mix, Well, Tent),
-    (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve),
-    (VariableX, VariableY, Palette, Sin, SinCurve, Mix), #50/50
+    (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve), #nice curves
+    (VariableX, VariableY, Palette, Sin, SinCurve, Mix), #multiple colors
     (VariableX, VariableY, Palette, AbsSin, Sin, Mix),
     (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve, AbsSin),
-    (VariableX, VariableY, Palette, And, Or, Xor),
+    (VariableX, VariableY, Palette, And, Or, Xor), #squares
     (VariableX, VariableY, Random, Palette, Mix, Well, Sin, SinCurve, Tent, AbsSin),
     (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Sum, Mod),
     (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Product, 

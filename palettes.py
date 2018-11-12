@@ -1,4 +1,3 @@
-#!/usr/bin/python
 
 #palettes from https://github.com/mattdesl/color-wander/blob/master/lib/color-palettes.json
 

@@ -1,0 +1,4 @@
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
+Use depth: False
+Coordinates transfrom: tent_coord
+Formula: SinCurve(Mix(Sin(x, 2.59752, 2.50746), Sin(y, 0.768903, 4.21003), Mix(Palette(-0.398438, -0.539062, -0.539062), x, x)))

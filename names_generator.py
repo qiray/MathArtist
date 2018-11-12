@@ -3,6 +3,21 @@
 # Copyright (c) 2018, Yaroslav Zotov, https:github.com/qiray/
 # All rights reserved.
 
+# This file is part of MathArtist.
+
+# MathArtist is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# MathArtist is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with MathArtist.  If not, see <https://www.gnu.org/licenses/>.
+
 # Text data from 
 # https://www.espressoenglish.net/100-common-nouns-in-english/
 # https://grammar.yourdictionary.com/parts-of-speech/adjectives/list-of-adjective-words.html
