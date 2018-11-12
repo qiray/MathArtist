@@ -1,0 +1,5 @@
+Name: Appendix of contrast
+Using operators: ['VariableX', 'VariableY', 'Palette', 'AbsSin', 'Sin', 'Mix']
+Use depth: False
+Coordinates transfrom: rotate_coord
+Formula: Sin(Sin(Sin(Mix(Mix(Sin(Palette(-0.578125, -0.945312, -0.460938), 2.1658, 2.7498), Mix(y, x, x), AbsSin(y)), Sin(Mix(Palette(0.671875, -0.78125, -0.304688), y, x), 1.79861, 4.40506), Mix(Mix(y, Palette(0.804688, 0.6875, -0.414062), x), Mix(x, y, y), Mix(Palette(0.867188, 0.828125, 0.539062), x, Palette(-0.789062, 0.0546875, 0.1875)))), 0.509853, 1.94753), 1.60346, 4.52132), 0.666452, 2.83759)

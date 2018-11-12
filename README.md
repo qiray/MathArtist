@@ -2,6 +2,21 @@
 
 Tool for generating pictures using mathematical formulas.
 
+### Algorithm
+
+* Generate name
+* Draw: select operators, coordinate transforms and use them
+* Create image
+* (optional) Save image file and formula
+
+### Samples
+
+There is samples folder with some nice images in text-format. You can use app's read file option to convert these texts into images.
+
+### Usage
+
+There are 2 work modes: console and GUI.
+
 ### Additional info
 
 http://ironigardinen.net/generatorer/art2/index.html
@@ -10,13 +25,6 @@ http://color-wander.surge.sh/
 https://github.com/mattdesl/color-wander
 https://github.com/mattdesl/impressionist
 https://github.com/vshymanskyy/randomart
-
-### Algorithm
-
-* Generate name
-* Draw: select operators, coordinate transforms and use them
-* Create image
-* (optional) Save image file and formula
 
 ### License
 

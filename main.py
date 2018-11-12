@@ -75,6 +75,7 @@ VERSION_MINOR = 9
 VERSION_BUILD = 0
 
 #TODO: readme
+#TODO: console version read text file - draw image
 #TODO: some refactoring
 #TODO: checker for image quality?
 #TODO: generate operators' lists or find nice examples and make them predefined, find more operators
