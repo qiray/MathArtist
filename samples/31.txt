@@ -1,0 +1,5 @@
+Name: Philosophy between state
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent', 'SinCurve']
+Use depth: False
+Coordinates transfrom: rotate_coord
+Formula: Tent(SinCurve(Tent(Mix(x, Palette(0.9375, 0.382812, 0.164062), y))))

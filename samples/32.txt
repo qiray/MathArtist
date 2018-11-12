@@ -1,0 +1,5 @@
+Name: Quant mind guy
+Using operators: ['VariableX', 'VariableY', 'Palette', 'AbsSin', 'Sin', 'Mix']
+Use depth: False
+Coordinates transfrom: center
+Formula: Sin(Mix(Mix(Sin(Palette(0.820312, -0.390625, -0.0703125), 2.07389, 3.45281), Mix(x, y, y), Mix(y, x, y)), Mix(Mix(Palette(0.671875, 0.0078125, 0.0703125), Palette(0.546875, 0.28125, 0.203125), x), AbsSin(x), Mix(Palette(0.546875, 0.789062, 0.695312), y, Palette(0.90625, 0.828125, 0.664062))), AbsSin(Mix(y, Palette(0.820312, -0.390625, -0.0703125), x))), 1.97428, 5.53189)

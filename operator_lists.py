@@ -33,6 +33,7 @@ fulllist = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSin,
 
 operatorsLists = [
     fulllist,
+    (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, Well, Level, Mix),
     (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, Well, Level, Mix, Palette),
     (VariableX, VariableY, Mix, Well), #minimalism
     (VariableX, VariableY, Random, Mix, Well),
