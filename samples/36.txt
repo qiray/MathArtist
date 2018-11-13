@@ -1,0 +1,5 @@
+Name: Your view about puzzled process into falling son
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Random', 'Mix', 'Well', 'Tent', 'SinCurve']
+Use depth: False
+Coordinates transfrom: center
+Formula: SinCurve(Mix(Mix(Well(Random(0.584006,0.906031,0.109326)), Well(Random(0.523024,0.597008,0.491977)), Tent(Random(0.19684,0.624945,0.920284))), Well(Mix(y, Palette(0.953125, 0.625, 0.0703125), x)), Well(SinCurve(x))))

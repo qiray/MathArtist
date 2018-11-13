@@ -1,0 +1,5 @@
+Name: Soup on relieved month
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent', 'SinCurve']
+Use depth: False
+Coordinates transfrom: rotate_coord
+Formula: Tent(Tent(Tent(Tent(Tent(Tent(Mix(x, x, y)))))))

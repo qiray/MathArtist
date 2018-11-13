@@ -1,0 +1,5 @@
+Name: Muse on aphrodite
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent', 'SinCurve']
+Use depth: True
+Coordinates transfrom: rotate_coord
+Formula: Tent(Well(Tent(Tent(Mix(Mix(Well(Palette(0.164062, -0.757812, -0.664062)), Mix(y, Palette(0.914062, 0.90625, 0.679688), Palette(0.75,0.742188, 0.382812)), Tent(Palette(0.289062, 0.273438, -0.15625))), SinCurve(Mix(x, y, Palette(-0.351562, -0.359375, -0.601562))), Well(Tent(Palette(0.164062, -0.757812, -0.664062))))))))

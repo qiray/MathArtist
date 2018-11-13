@@ -63,7 +63,7 @@ from palettes import palettes
 # print each object as a string. The mindepth attribute shows depth of
 # expression tree where it is allowed to use this object.
 
-# Some operators are copied from https://github.com/vshymanskyy/randomart
+# Some operators are adopted from https://github.com/vshymanskyy/randomart
 
 # Terminals:
 

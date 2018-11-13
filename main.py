@@ -62,7 +62,7 @@ import argparse
 from PIL import Image, ImageDraw, ImageTk
 import pyscreenshot as ImageGrab
 
-from common import rgb, CONSOLE, GUI
+from common import rgb, CONSOLE, GUI, SIZE
 from operators import Palette
 from operator_lists import operatorsLists, fulllist, generate_lists
 from coords import coord_transforms
@@ -77,8 +77,7 @@ VERSION_BUILD = 0
 #TODO: readme
 #TODO: console version read text file - draw image
 #TODO: some refactoring
-#TODO: checker for image quality?
-#TODO: generate operators' lists or find nice examples and make them predefined, find more operators
+#TODO: checker for image quality
 
 class Art():
     """A simple graphical user interface for random art."""
@@ -133,7 +132,7 @@ class Art():
         Art.use_random_lists = False
         print([x.__name__ for x in Art.operatorsList])
 
-    def __init__(self, master, size=512, app_style=GUI, hash_string=None):
+    def __init__(self, master, size=SIZE, app_style=GUI, hash_string=None):
         self.root = master
         if app_style == GUI:
             self.root.title('Random art')

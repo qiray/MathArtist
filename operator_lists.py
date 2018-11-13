@@ -18,7 +18,11 @@
 # along with MathArtist.  If not, see <https://www.gnu.org/licenses/>.
 
 import random
+import math
 
+from common import SIZE
+from coords import (coord_transforms, linear_coord, tent_coord, sin_coord, polar, 
+    curved_rotate_coord, rotate_coord, center)
 from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And,
     Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSin, 
     Or, Xor, Atan, Far, Wave, Chess)
@@ -45,13 +49,13 @@ operatorsLists = [
     (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve, AbsSin),
     (VariableX, VariableY, Palette, And, Or, Xor), #squares
     (VariableX, VariableY, Random, Palette, Mix, Well, Sin, SinCurve, Tent, AbsSin),
-    (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Sum, Mod),
+    (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Sum, Mod), #sometimes dark
     (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Product, 
         Sum, Mod, Well, Tent),
-    (VariableX, VariableY, White, Palette, Random, RGB),
+    (VariableX, VariableY, White, Palette, Random, RGB), #colors only
     (VariableX, VariableY, White, Palette, Random, RGB, Sin, SinCurve, Atan, Mix, Closest),
     (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well),
-    (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well, Wave), #Not bad but...
+    (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well, Wave), #Strange colored spots
     (VariableX, VariableY, Palette, Sin, SinCurve, Mix, Wave),
     (VariableX, VariableY, Palette, Sin, SinCurve, Atan, Wave), #not impressive
     (VariableX, VariableY, Mix, Well, Not, Palette),
@@ -92,4 +96,3 @@ def generate_lists(fulllist):
     nonterminals = nonterminals[length:] #Get a part of a list
 
     return terminals, nonterminals
-

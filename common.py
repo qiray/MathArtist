@@ -51,6 +51,7 @@ import itertools
 
 CONSOLE = 1
 GUI = 2
+SIZE = 512
 
 # File with utility functions
 

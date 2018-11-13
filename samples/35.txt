@@ -1,0 +1,5 @@
+Name: Teacher over student
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent', 'SinCurve', 'AbsSin']
+Use depth: False
+Coordinates transfrom: linear_coord
+Formula: Mix(AbsSin(SinCurve(Well(Well(AbsSin(Well(Tent(y))))))), Tent(Tent(Well(SinCurve(AbsSin(Mix(Tent(x), Well(y), Mix(x, x, x))))))), AbsSin(Well(Tent(Well(Well(Tent(AbsSin(Palette(-0.28125, -0.609375, -0.515625)))))))))
