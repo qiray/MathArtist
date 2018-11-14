@@ -20,6 +20,9 @@
 '''Module for checking generated art'''
 
 def check_art(functions, coord_system, depth):
+    print(functions)
+    print(coord_system)
+    print(depth)
     #TODO:
     # Image is probably bad if:
     # art's depth is small (1 to 3 or 1 to 2)

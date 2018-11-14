@@ -68,6 +68,7 @@ from operator_lists import operatorsLists, fulllist, generate_lists
 from coords import coord_transforms
 from read_data import parse_formula, read_file
 from names_generator import generate_name
+from checker import check_art
 
 APP_NAME = "MathArtist"
 VERSION_MAJOR = 0
@@ -107,32 +108,13 @@ class Art():
             Art.polar_shift = Art.polar_shifts[index]
 
     @staticmethod
-    def generate(k=8, depth=0):
-        '''Randomly generate an expession of a given size.'''
-        if k <= depth:
-            # We used up available size, generate a leaf of the expression tree
-            op = random.choice(Art.terminals)
-            return op()
-        # randomly pick an operator whose arity > 0 and mindepth <= depth
-        if Art.use_depth and False:
-            op = random.choice([x for x in Art.nonterminals if x.mindepth <= depth])
-        else:
-            op = random.choice(Art.nonterminals)
-        # generate subexpressions
-        args = [] # the list of generated subexpression
-        depth += 1
-        for _ in range(0, op.arity):
-            args.append(Art.generate(k, depth))
-        return op(*args)
-
-    @staticmethod
     def generate_lists():
         Art.terminals, Art.nonterminals = generate_lists(fulllist)
         Art.operatorsList = Art.terminals + Art.nonterminals
         Art.use_random_lists = False
         print([x.__name__ for x in Art.operatorsList])
 
-    def __init__(self, master, size=SIZE, app_style=GUI, hash_string=None):
+    def __init__(self, master, size=SIZE, app_style=GUI, hash_string=None, use_checker=False):
         self.root = master
         if app_style == GUI:
             self.root.title('Random art')
@@ -142,39 +124,74 @@ class Art():
                 sys.exit()
             self.root.bind('<Escape>', close)
 
+        self.name = self.init_name(hash_string)
+        self.use_checker = use_checker
+        self.app_style = app_style
+        self.size = size
+        self.size_log = int(math.log(self.size, 2))
+        self.img = Image.new('RGB', (size, size))
+        self.image_draw = ImageDraw.Draw(self.img)
+        self.photoImage = ImageTk.PhotoImage(image=self.img)
+        self.functions = {}
+
+        if app_style == GUI:
+            self.canvas, self.e1 = self.init_GUI()
+
+        self.draw_alarm = None
+        self.redraw()
+
+    def init_GUI(self):
+        canvas = Canvas(self.root, width=self.size, height=self.size)
+        canvas.grid(row=0,column=0, columnspan=3)
+        b = Button(self.root, text='New image', command=self.redraw)
+        b.grid(row=1, column=0)
+        b1 = Button(self.root, text='Save image', command=self.get_screenshot)
+        b1.grid(row=1, column=1)
+        b2 = Button(self.root, text='Generate lists', command=Art.generate_lists)
+        b2.grid(row=1, column=2)
+        b3 = Button(self.root, text='Read file', command=self.read_file)
+        b3.grid(row=2, column=0)
+        e1 = Entry(self.root)
+        e1.insert(0, "samples/1.txt")
+        e1.grid(row=2, column=1)
+        return canvas, e1
+
+    def init_name(self, hash_string):
         if hash_string:
             hex_string = hashlib.md5(hash_string.encode('utf-8'))
             hexdigest = hex_string.hexdigest()
             random.seed(int(hexdigest, 16))
-            self.name = hash_string
+            return hash_string
+        random.seed(datetime.now())
+        return generate_name()
+
+    def update_functions_dict(self, name):
+        if not name in self.functions:
+            self.functions[name] = 1
         else:
-            random.seed(datetime.now())
-            self.name = generate_name()
-        self.app_style = app_style
-        self.size = size
-        self.size_log = int(math.log(self.size, 2))
-        self.filepath = '1.png'
-        self.img = Image.new('RGB', (size, size))
-        self.image_draw = ImageDraw.Draw(self.img)
-        self.photoImage = ImageTk.PhotoImage(image=self.img)
+            self.functions[name] += 1
 
-        if app_style == GUI:
-            self.canvas = Canvas(self.root, width=size, height=size)
-            self.canvas.grid(row=0,column=0, columnspan=3)
-            b = Button(self.root, text='New image', command=self.redraw)
-            b.grid(row=1, column=0)
-            b1 = Button(self.root, text='Save image', command=self.get_screenshot)
-            b1.grid(row=1, column=1)
-            b2 = Button(self.root, text='Generate lists', command=Art.generate_lists)
-            b2.grid(row=1, column=2)
-            b3 = Button(self.root, text='Read file', command=self.read_file)
-            b3.grid(row=2, column=0)
-            self.e1 = Entry(self.root)
-            self.e1.insert(0, "samples/1.txt")
-            self.e1.grid(row=2, column=1)
-
-        self.draw_alarm = None
-        self.redraw()
+    def generate(self, k=8, depth=0):
+        '''Randomly generate an expession of a given size.'''
+        if k <= depth:
+            # We used up available size, generate a leaf of the expression tree
+            op = random.choice(Art.terminals)
+            if self.use_checker:
+                self.update_functions_dict(op.__name__)
+            return op()
+        # randomly pick an operator whose arity > 0 and mindepth <= depth
+        if Art.use_depth and False:
+            op = random.choice([x for x in Art.nonterminals if x.mindepth <= depth])
+        else:
+            op = random.choice(Art.nonterminals)
+        if self.use_checker:
+            self.update_functions_dict(op.__name__)
+        # generate subexpressions
+        args = [] # the list of generated subexpression
+        depth += 1
+        for _ in range(0, op.arity):
+            args.append(self.generate(k, depth))
+        return op(*args)
 
     def redraw(self):
         Art.init_static_data()
@@ -185,7 +202,11 @@ class Art():
             self.canvas.after_cancel(self.draw_alarm)
         if self.app_style == GUI:
             self.canvas.delete(ALL)
-        self.art = Art.generate(random.randrange(1, self.size_log + 1))
+        self.functions = {}
+        depth = random.randrange(1, self.size_log + 1)
+        self.art = self.generate(depth)
+        if self.use_checker:
+            check_art(self.functions, Art.coord_transform.__name__, depth)
         self.start_drawing()
 
     def start_drawing(self):
@@ -240,6 +261,7 @@ class Art():
         self.read_art_params(art, use_depth, coord_transform, polar_shift, name)
 
     def read_art_params(self, art, use_depth, coord_transform, polar_shift, name):
+        self.functions = {}
         self.art = parse_formula(art)
         Art.use_depth = parse_formula(use_depth)
         Art.coord_transform = parse_formula(coord_transform)
@@ -286,6 +308,7 @@ def parse_args():
         description='Tool for generating pictures using mathematical formulas.')
     parser.add_argument('--console', action='store_true', help='Run in console mode (no window)')
     parser.add_argument('--about', action='store_true', help='Show about info')
+    parser.add_argument('--checker', action='store_true', help='Enable checker')
     return parser.parse_args()
 
 if __name__ == '__main__':
@@ -299,7 +322,7 @@ if __name__ == '__main__':
             "This is free software; see the source for copying conditions\n")
         exit(0)
     if args.console:
-        art = Art(None, app_style=CONSOLE)
+        art = Art(None, app_style=CONSOLE, use_checker=args.checker)
     else:
-        art = Art(win)
+        art = Art(win, use_checker=args.checker)
         win.mainloop()
