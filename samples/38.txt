@@ -1,0 +1,5 @@
+Name: Our redhead above cautious water like darkened intensity at reclining dream
+Using operators: ['VariableX', 'VariableY', 'Palette', 'Random', 'Mix', 'SinCurve', 'Sin', 'AbsSin', 'Atan']
+Use depth: False
+Coordinates transfrom: rotate_coord
+Formula: Sin(Sin(SinCurve(AbsSin(Atan(SinCurve(SinCurve(Mix(AbsSin(x), Atan(Random(0.180378,0.718652,0.400515)), AbsSin(y))))))), 2.25006, 1.831), 0.954884, 2.66912)

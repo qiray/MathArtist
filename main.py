@@ -57,7 +57,7 @@ import hashlib
 import sys
 import signal
 from datetime import datetime
-from tkinter import Tk, ALL, Canvas, Button, Entry
+from tkinter import Tk, ALL, Canvas, Button, Entry, Label
 import argparse
 from PIL import Image, ImageDraw, ImageTk
 import pyscreenshot as ImageGrab
@@ -135,7 +135,7 @@ class Art():
         self.functions = {}
 
         if app_style == GUI:
-            self.canvas, self.e1 = self.init_GUI()
+            self.canvas, self.e1, self.checker_label = self.init_GUI()
 
         self.draw_alarm = None
         self.redraw()
@@ -154,7 +154,9 @@ class Art():
         e1 = Entry(self.root)
         e1.insert(0, "samples/1.txt")
         e1.grid(row=2, column=1)
-        return canvas, e1
+        label = Label(self.root, text="")
+        label.grid(row=2, column=2)
+        return canvas, e1, label
 
     def init_name(self, hash_string):
         if hash_string:
@@ -206,7 +208,17 @@ class Art():
         depth = random.randrange(1, self.size_log + 1)
         self.art = self.generate(depth)
         if self.use_checker:
-            check_art(self.functions, Art.coord_transform.__name__, depth)
+            result = check_art(self.functions, Art.coord_transform.__name__, depth)
+            if self.app_style == GUI:
+                self.checker_label.config(text=result)
+            else:
+                print ('Checker result =', result)
+                while result <= 0:
+                    print ('Generating new art')
+                    depth = random.randrange(1, self.size_log + 1)
+                    self.art = self.generate(depth)
+                    result = check_art(self.functions, Art.coord_transform.__name__, depth)
+                    print ('Checker result =', result)
         self.start_drawing()
 
     def start_drawing(self):
@@ -324,5 +336,5 @@ if __name__ == '__main__':
     if args.console:
         art = Art(None, app_style=CONSOLE, use_checker=args.checker)
     else:
-        art = Art(win, use_checker=args.checker)
+        art = Art(win, use_checker=args.checker, hash_string="1")
         win.mainloop()
