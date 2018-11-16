@@ -9,6 +9,10 @@ Tool for generating pictures using mathematical formulas.
 * Create image
 * (optional) Save image file and formula
 
+### Checker
+
+This app has image checker
+
 ### Samples
 
 There is samples folder with some nice images in text-format. You can use app's read file option to convert these texts into images.

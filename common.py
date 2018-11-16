@@ -84,8 +84,8 @@ def float_color_to_int(c):
 
 def average(c1, c2, w=0.5):
     '''Compute the weighted average of two colors. With w = 0.5 we get the average.'''
-    (r1,g1,b1) = c1
-    (r2,g2,b2) = c2
+    (r1, g1, b1) = c1
+    (r2, g2, b2) = c2
     r3 = w * r1 + (1 - w) * r2
     g3 = w * g1 + (1 - w) * g2
     b3 = w * b1 + (1 - w) * b2

@@ -78,7 +78,7 @@ VERSION_BUILD = 0
 #TODO: readme
 #TODO: console version read text file - draw image
 #TODO: some refactoring
-#TODO: checker for image quality
+#TODO: maybe migrate to PyQt
 
 class Art():
     """A simple graphical user interface for random art."""
@@ -208,22 +208,24 @@ class Art():
         depth = random.randrange(1, self.size_log + 1)
         self.art = self.generate(depth)
         if self.use_checker:
-            result = check_art(self.functions, Art.coord_transform.__name__, depth)
+            result = check_art(self.art, self.functions, Art.coord_transform, depth)
             if self.app_style == GUI:
                 self.checker_label.config(text=result)
             else:
                 print ('Checker result =', result)
                 while result <= 0:
                     print ('Generating new art')
-                    depth = random.randrange(1, self.size_log + 1)
+                    depth = random.randrange(self.size_log, self.size_log + 1)
                     self.art = self.generate(depth)
-                    result = check_art(self.functions, Art.coord_transform.__name__, depth)
+                    result = check_art(self.art, self.functions, Art.coord_transform, depth)
                     print ('Checker result =', result)
         self.start_drawing()
 
     def start_drawing(self):
         self.print_art()
         self.d = 64   # current square size
+        if self.app_style == CONSOLE:
+            self.d = 1 #we don't need previews
         self.y = 0    # current row
         self.draw()
         if self.app_style == CONSOLE:
@@ -336,5 +338,5 @@ if __name__ == '__main__':
     if args.console:
         art = Art(None, app_style=CONSOLE, use_checker=args.checker)
     else:
-        art = Art(win, use_checker=args.checker, hash_string="1")
+        art = Art(win, use_checker=args.checker)
         win.mainloop()
