@@ -76,12 +76,11 @@ VERSION_MINOR = 9
 VERSION_BUILD = 0
 
 #TODO: readme
-#TODO: console version read text file - draw image
-#TODO: some refactoring
+#TODO: some refactoring - make drawer separate from window
 #TODO: maybe migrate to PyQt
 
 class Art():
-    """A simple graphical user interface for random art."""
+    """Math art generator class"""
     operatorsList = random.choice(operatorsLists)
     terminals = [op for op in operatorsList if op.arity == 0]
     nonterminals = [op for op in operatorsList if op.arity > 0]
@@ -114,7 +113,7 @@ class Art():
         Art.use_random_lists = False
         print([x.__name__ for x in Art.operatorsList])
 
-    def __init__(self, master, size=SIZE, app_style=GUI, hash_string=None, use_checker=False):
+    def __init__(self, master, app_style=GUI, hash_string=None, use_checker=False, load_file=""):
         self.root = master
         if app_style == GUI:
             self.root.title('Random art')
@@ -127,15 +126,18 @@ class Art():
         self.name = self.init_name(hash_string)
         self.use_checker = use_checker
         self.app_style = app_style
-        self.size = size
+        self.size = SIZE #we always use constant size = 512
         self.size_log = int(math.log(self.size, 2))
-        self.img = Image.new('RGB', (size, size))
+        self.img = Image.new('RGB', (self.size, self.size))
         self.image_draw = ImageDraw.Draw(self.img)
         self.photoImage = ImageTk.PhotoImage(image=self.img)
         self.functions = {}
 
         if app_style == GUI:
             self.canvas, self.e1, self.checker_label = self.init_GUI()
+        if app_style == CONSOLE and load_file != "":
+            self.read_file_data(load_file)
+            exit(0)
 
         self.draw_alarm = None
         self.redraw()
@@ -228,7 +230,7 @@ class Art():
             self.d = 1 #we don't need previews
         self.y = 0    # current row
         self.draw()
-        if self.app_style == CONSOLE:
+        if self.app_style == CONSOLE: #save image
             path = "output/"
             date = str(datetime.now().strftime('%Y-%m-%d %H-%M '))
             self.photoImage = ImageTk.PhotoImage(image=self.img)
@@ -270,9 +272,15 @@ class Art():
         else:
             self.draw_alarm = self.canvas.after(1, self.draw)
 
+    def read_file_data(self, path):
+        try:
+            art, use_depth, coord_transform, polar_shift, name = read_file(path)
+            self.read_art_params(art, use_depth, coord_transform, polar_shift, name)
+        except:
+            print ("Failed to read file " + path)
+
     def read_file(self):
-        art, use_depth, coord_transform, polar_shift, name = read_file(self.e1.get())
-        self.read_art_params(art, use_depth, coord_transform, polar_shift, name)
+        self.read_file_data(self.e1.get())
 
     def read_art_params(self, art, use_depth, coord_transform, polar_shift, name):
         self.functions = {}
@@ -286,7 +294,8 @@ class Art():
         else:
             self.name = generate_name()
         self.start = time.time()
-        self.canvas.delete(ALL)
+        if self.app_style == GUI:
+            self.canvas.delete(ALL)
         self.start_drawing() #draw image with new params
 
     def print_art(self):
@@ -310,8 +319,6 @@ class Art():
             str(datetime.now().strftime('%Y-%m-%d %H-%M ')) + self.name + ".png"
         )
 
-# Main program
-
 def sigint_handler(sig, frame):
     print("Closing...")
     sys.exit(0)
@@ -323,7 +330,10 @@ def parse_args():
     parser.add_argument('--console', action='store_true', help='Run in console mode (no window)')
     parser.add_argument('--about', action='store_true', help='Show about info')
     parser.add_argument('--checker', action='store_true', help='Enable checker')
+    parser.add_argument('--file', type=str, help='Load file (console mode only)')
     return parser.parse_args()
+
+# Main program:
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, sigint_handler)
@@ -336,7 +346,7 @@ if __name__ == '__main__':
             "This is free software; see the source for copying conditions\n")
         exit(0)
     if args.console:
-        art = Art(None, app_style=CONSOLE, use_checker=args.checker)
+        art = Art(None, app_style=CONSOLE, use_checker=args.checker, load_file=args.file)
     else:
         art = Art(win, use_checker=args.checker)
         win.mainloop()
