@@ -59,7 +59,7 @@ import signal
 from datetime import datetime
 from tkinter import Tk, ALL, Canvas, Button, Entry, Label
 import argparse
-from PIL import Image, ImageDraw, ImageTk
+from PIL import Image, ImageDraw
 import pyscreenshot as ImageGrab
 
 from common import rgb, CONSOLE, GUI, SIZE
@@ -73,7 +73,7 @@ from checker import check_art
 APP_NAME = "MathArtist"
 VERSION_MAJOR = 0
 VERSION_MINOR = 9
-VERSION_BUILD = 0
+VERSION_BUILD = 1
 
 #TODO: readme
 #TODO: some refactoring - make drawer separate from window
@@ -130,12 +130,12 @@ class Art():
         self.size_log = int(math.log(self.size, 2))
         self.img = Image.new('RGB', (self.size, self.size))
         self.image_draw = ImageDraw.Draw(self.img)
-        self.photoImage = ImageTk.PhotoImage(image=self.img)
         self.functions = {}
+        self.output_path = "output/"
 
         if app_style == GUI:
             self.canvas, self.e1, self.checker_label = self.init_GUI()
-        if app_style == CONSOLE and load_file != "":
+        if app_style == CONSOLE and load_file:
             self.read_file_data(load_file)
             exit(0)
 
@@ -223,6 +223,20 @@ class Art():
                     print ('Checker result =', result)
         self.start_drawing()
 
+    def get_output_name(self):
+        date = str(datetime.now().strftime('%Y-%m-%d %H-%M '))
+        return self.output_path + date + self.name
+
+    def save_image_text(self):
+        if self.app_style == CONSOLE:
+            self.img.save(self.get_output_name() + ".png")
+        orig_stdout = sys.stdout #save original stdout
+        f = open(self.get_output_name() + ".txt", 'w')
+        sys.stdout = f #redirect stdout to file
+        self.print_art()
+        sys.stdout = orig_stdout #restore original stdout
+        f.close()
+
     def start_drawing(self):
         self.print_art()
         self.d = 64   # current square size
@@ -230,17 +244,8 @@ class Art():
             self.d = 1 #we don't need previews
         self.y = 0    # current row
         self.draw()
-        if self.app_style == CONSOLE: #save image
-            path = "output/"
-            date = str(datetime.now().strftime('%Y-%m-%d %H-%M '))
-            self.photoImage = ImageTk.PhotoImage(image=self.img)
-            self.img.save(path + date + self.name + ".png")
-            orig_stdout = sys.stdout #save original stdout
-            f = open(path + date + self.name + ".txt", 'w')
-            sys.stdout = f #redirect stdout to file
-            self.print_art()
-            sys.stdout = orig_stdout #restore original stdout
-            f.close()
+        if self.app_style == CONSOLE: #save image text
+            self.save_image_text()
             exit(0)
 
     def draw(self):
@@ -316,8 +321,9 @@ class Art():
         x1 = x + self.canvas.winfo_width() - 3*margin
         y1 = y + self.canvas.winfo_height() - 3*margin
         ImageGrab.grab(bbox=(x, y, x1, y1), childprocess=False).save(
-            str(datetime.now().strftime('%Y-%m-%d %H-%M ')) + self.name + ".png"
+           self.get_output_name() + ".png"
         )
+        self.save_image_text()
 
 def sigint_handler(sig, frame):
     print("Closing...")
@@ -338,7 +344,6 @@ def parse_args():
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, sigint_handler)
     args = parse_args() #parse command line arguments
-    win = Tk()
     if args.about:
         print("\n" + APP_NAME + " Copyright (C) 2018 Yaroslav Zotov.\n" +
             "Based on \"randomart\" Copyright (C) 2010, Andrej Bauer.\n"
@@ -348,5 +353,6 @@ if __name__ == '__main__':
     if args.console:
         art = Art(None, app_style=CONSOLE, use_checker=args.checker, load_file=args.file)
     else:
+        win = Tk()
         art = Art(win, use_checker=args.checker)
         win.mainloop()
