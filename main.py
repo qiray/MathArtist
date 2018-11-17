@@ -78,6 +78,7 @@ VERSION_BUILD = 1
 #TODO: readme
 #TODO: some refactoring - make drawer separate from window
 #TODO: maybe migrate to PyQt
+#TODO: add icon
 
 class Art():
     """Math art generator class"""
