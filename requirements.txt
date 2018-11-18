@@ -1,3 +1,5 @@
 Pillow
 pyscreenshot
 argparse
+pyinstaller
+PyQt5

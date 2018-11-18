@@ -77,7 +77,7 @@ VERSION_BUILD = 1
 
 #TODO: readme
 #TODO: some refactoring - make drawer separate from window
-#TODO: maybe migrate to PyQt
+#TODO: maybe migrate to Kivy or PyQt with pyinstaller and pyqtdeploy
 #TODO: add icon
 
 class Art():
@@ -117,7 +117,7 @@ class Art():
     def __init__(self, master, app_style=GUI, hash_string=None, use_checker=False, load_file=""):
         self.root = master
         if app_style == GUI:
-            self.root.title('Random art')
+            self.root.title('Math Artist')
 
             def close(event):
                 self.root.withdraw()
