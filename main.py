@@ -30,7 +30,7 @@ from PyQt5.QtGui import QPixmap
 
 from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 
-#pyinstaller --onefile --windowed main.py --hidden-import='PIL._tkinter_finder'
+#pyinstaller --onefile --windowed main.py
 
 #TODO: readme
 #TODO: add icon
