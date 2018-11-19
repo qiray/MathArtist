@@ -22,7 +22,8 @@ import re
 from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And,
     Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSin,
     Or, Xor, Atan, Far, Wave, Chess)
-from coords import (linear_coord, tent_coord, sin_coord, polar, rotate_coord)
+from coords import (linear_coord, tent_coord, sin_coord, polar, curved_rotate_coord,
+    rotate_coord, center)
 
 def parse_formula(formula):
     '''Parse formula and return it's code.'''
@@ -54,7 +55,7 @@ def read_file(filepath):
             elif line.startswith("Formula:"):
                 art = line.split(':')[1].replace(" ", "")
             elif line.startswith("Name:"):
-                name = line.split(':')[1].replace(" ", "")
+                name = line.split(':')[1]
         return art, use_depth, coord_transform, polar_shift, name
     except:
         return "", "", "", None
