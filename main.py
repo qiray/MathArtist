@@ -22,11 +22,12 @@
 import sys
 import signal
 import argparse
-from PIL import ImageQt
+from PIL import Image, ImageDraw, ImageQt
 
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPushButton, QApplication, QLabel)
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QThread, pyqtSignal
 
 from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 
@@ -37,26 +38,62 @@ from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 #TODO: test on different OS
 #TODO: enable checker in GUI
 
+class DrawThread(QThread):
+    def __init__(self, func):
+        self.func = func
+        QThread.__init__(self)
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        self.func()
+
 class GUI(QWidget):
+
+    trigger = pyqtSignal()
 
     def __init__(self, art):
         super().__init__()
         self.art = art
+        self.draw_thread = None
         self.initGUI()
+
+    def keyPressEvent(self, event): #Handle keys
+        if event.key() == QtCore.Qt.Key_Escape:
+            print("Closing...")
+            sys.exit(0)
+        event.accept()
     
     def save_image(self):
         self.art.save_image_text()
 
     def new_image(self):
-        #TODO: call this function from another thread
         self.image = self.generate_image()
+        self.trigger.emit()
+
+    def update_GUI(self):
         pixmap = QPixmap.fromImage(self.image)
         self.image_label.setPixmap(pixmap)
         self.name_label.setText(self.art.name)
 
+    def new_image_thread(self):
+        if self.draw_thread:
+            self.art.stop_drawing() #send signal to art object
+        self.draw_thread = DrawThread(self.new_image)
+        self.trigger.connect(self.update_GUI)
+        self.draw_thread.start()
+
     def generate_image(self):
         self.art.redraw()
         image = self.art.img
+        return ImageQt.ImageQt(image)
+
+    def empty_image(self): #TODO: draw preview image instead of empty. Or emit signal in draw function
+        size = 512
+        image = Image.new('RGB', (size, size))
+        image_draw = ImageDraw.Draw(image)
+        image_draw.rectangle(((0, 0,), (size, size)), fill="#FFFFFF")
         return ImageQt.ImageQt(image)
 
     def initGUI(self):
@@ -67,7 +104,7 @@ class GUI(QWidget):
         grid = QGridLayout()
         self.setLayout(grid)
         #IMPORTANT: this image must exist all application lifetime:
-        self.image = self.generate_image() 
+        self.image = self.empty_image()
         pixmap = QPixmap.fromImage(self.image)
         self.image_label = QLabel()
         self.image_label.setPixmap(pixmap)
@@ -77,7 +114,7 @@ class GUI(QWidget):
         grid.addWidget(self.name_label, 1, 0, 1, 2)
 
         new_button = QPushButton('New image')
-        new_button.clicked.connect(self.new_image)
+        new_button.clicked.connect(self.new_image_thread)
         grid.addWidget(new_button, 2, 0)
         save_button = QPushButton('Save image')
         save_button.clicked.connect(self.save_image)

@@ -112,11 +112,15 @@ class Art():
         self.functions = {}
         self.output_path = "output/"
         self.console = console
+        self.stop_work = False
         if self.console:
             if load_file:
                 self.read_file_data(load_file)
                 exit(0)
             self.redraw()
+
+    def stop_drawing(self):
+        self.stop_work = True
 
     def init_name(self, hash_string):
         if hash_string:
@@ -159,6 +163,7 @@ class Art():
         Art.init_static_data()
         Palette.randomPalette()
         self.start = time.time()
+        self.stop_work = False
         self.name = generate_name()
         self.functions = {}
         depth = random.randrange(1, self.size_log + 1)
@@ -198,12 +203,16 @@ class Art():
 
     def draw(self):
         self.d = self.d // 4
-        if self.d < 1:
+        if self.d < 1 or self.stop_work:
             self.end = time.time()
             print("Time for drawing:", self.end - self.start)
             return
         for y in range(0, self.size, self.d):
+            if self.stop_work:
+                break
             for x in range(0, self.size, self.d):
+                if self.stop_work:
+                    break
                 #Convert coordinates to range [-1, 1]
                 u, v = Art.coord_transform(x, y, self.d, self.size, Art.polar_shift)
                 (r, g, b) = self.art.eval(u, v)
