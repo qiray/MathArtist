@@ -115,6 +115,7 @@ class Art():
         self.stop_work = False
         self.status = "Drawing"
         self.trigger = None
+        self.image_array = self.init_image_array()
         if self.console:
             if load_file:
                 self.read_file_data(load_file)
@@ -166,12 +167,15 @@ class Art():
             args.append(self.generate(k, depth))
         return op(*args)
 
+    def init_image_array(self):
+        return [['' for _ in range(self.size)] for _ in range(self.size)]
+
     def redraw(self):
         Art.init_static_data()
         Palette.randomPalette()
         self.start = time.time()
+        self.image_array = self.init_image_array()
         self.stop_work = False
-        self.name = generate_name()
         self.functions = {}
         depth = random.randrange(1, self.size_log + 1)
         self.art = self.generate(depth)
@@ -184,6 +188,7 @@ class Art():
                 self.art = self.generate(depth)
                 result = check_art(self.art, self.functions, Art.coord_transform, depth)
                 print ('Checker result =', result)
+        self.name = generate_name()
         self.draw_image()
 
     def get_output_name(self):
@@ -209,12 +214,21 @@ class Art():
         if self.console:
             self.save_image_text()
 
+    # def pair_eval(self, pair): #Used in map function
+    #     (x, y) = pair
+    #     u, v = Art.coord_transform(x, y, self.d, self.size, Art.polar_shift)
+    #     return self.art.eval(u, v)
+
     def draw(self):
         if self.d < 1 or self.stop_work:
             self.end = time.time()
             print("Time for drawing:", self.end - self.start)
             self.status = "Completed in %g s" % (self.end - self.start)
             return
+        # size = self.size // self.d
+        # product = ((i, j) for i in range(size) for j in range(size))
+        # result = list(map(self.pair_eval, product))
+        # print (self.d)
         for y in range(0, self.size, self.d):
             if self.stop_work:
                 break
@@ -223,10 +237,12 @@ class Art():
                     break
                 #Convert coordinates to range [-1, 1]
                 u, v = Art.coord_transform(x, y, self.d, self.size, Art.polar_shift)
-                (r, g, b) = self.art.eval(u, v)
+                if self.image_array[x][y] == '':
+                    (r, g, b) = self.art.eval(u, v)
+                    self.image_array[x][y] = rgb(r, g, b)
                 self.image_draw.rectangle(
                     ((x, y), (x + self.d, y + self.d)),
-                    fill=rgb(r, g, b)
+                    fill=self.image_array[x][y]
                 )
         if self.trigger:
             self.trigger.emit() #emit trigger to redraw image

@@ -37,6 +37,7 @@ from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 #TODO: readme
 #TODO: add icon
 #TODO: test on different OS
+#TODO: optimize using numpy?
 
 class DrawThread(QThread):
     def __init__(self):
@@ -98,11 +99,11 @@ class GUI(QWidget):
         self.status_label.setText(self.draw_thread.get_status())
 
     def new_image_thread(self):
-        if self.draw_thread:
+        if self.draw_thread: #if thread exists
             self.draw_thread.stop() #send signal to art object
-        else:
+        else: #init thread
             self.trigger.connect(self.update_GUI)
-        self.draw_thread = DrawThread()
+            self.draw_thread = DrawThread()
         self.draw_thread.set_trigger(self.trigger)
         self.draw_thread.start()
 
