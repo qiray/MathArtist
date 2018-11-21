@@ -113,6 +113,8 @@ class Art():
         self.output_path = "output/"
         self.console = console
         self.stop_work = False
+        self.status = "Drawing"
+        self.trigger = None
         if self.console:
             if load_file:
                 self.read_file_data(load_file)
@@ -121,6 +123,10 @@ class Art():
 
     def stop_drawing(self):
         self.stop_work = True
+        self.status = "Stopped"
+
+    def set_trigger(self, trigger):
+        self.trigger = trigger
 
     def init_name(self, hash_string):
         if hash_string:
@@ -193,6 +199,7 @@ class Art():
         f.close()
 
     def draw_image(self):
+        self.status = "Drawing"
         self.print_art()
         self.d = 64   # current square size
         if self.console:
@@ -206,6 +213,7 @@ class Art():
         if self.d < 1 or self.stop_work:
             self.end = time.time()
             print("Time for drawing:", self.end - self.start)
+            self.status = "Completed"
             return
         for y in range(0, self.size, self.d):
             if self.stop_work:
@@ -220,6 +228,8 @@ class Art():
                     ((x, y), (x + self.d, y + self.d)),
                     fill=rgb(r, g, b)
                 )
+        if self.trigger:
+            self.trigger.emit() #emit trigger to redraw image
         self.draw()
 
     def read_file_data(self, path):

@@ -62,7 +62,7 @@ class GUI(QWidget):
     def keyPressEvent(self, event): #Handle keys
         if event.key() == QtCore.Qt.Key_Escape:
             print("Closing...")
-            sys.exit(0)
+            self.close()
         event.accept()
     
     def save_image(self):
@@ -73,15 +73,19 @@ class GUI(QWidget):
         self.trigger.emit()
 
     def update_GUI(self):
+        self.image = ImageQt.ImageQt(self.art.img)
         pixmap = QPixmap.fromImage(self.image)
         self.image_label.setPixmap(pixmap)
         self.name_label.setText(self.art.name)
+        self.status_label.setText(self.get_status())
 
     def new_image_thread(self):
         if self.draw_thread:
             self.art.stop_drawing() #send signal to art object
+        else:
+            self.trigger.connect(self.update_GUI)
+            self.art.trigger = self.trigger
         self.draw_thread = DrawThread(self.new_image)
-        self.trigger.connect(self.update_GUI)
         self.draw_thread.start()
 
     def generate_image(self):
@@ -89,12 +93,15 @@ class GUI(QWidget):
         image = self.art.img
         return ImageQt.ImageQt(image)
 
-    def empty_image(self): #TODO: draw preview image instead of empty. Or emit signal in draw function
+    def empty_image(self):
         size = 512
         image = Image.new('RGB', (size, size))
         image_draw = ImageDraw.Draw(image)
         image_draw.rectangle(((0, 0,), (size, size)), fill="#FFFFFF")
         return ImageQt.ImageQt(image)
+
+    def get_status(self):
+        return self.art.status
 
     def initGUI(self):
         #TODO: make some design
@@ -111,6 +118,7 @@ class GUI(QWidget):
         grid.addWidget(self.image_label, 0, 0, 1, 2)
         self.name_label = QLabel(self.art.name)
         self.name_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.name_label.setWordWrap(True)
         grid.addWidget(self.name_label, 1, 0, 1, 2)
 
         new_button = QPushButton('New image')
@@ -119,9 +127,13 @@ class GUI(QWidget):
         save_button = QPushButton('Save image')
         save_button.clicked.connect(self.save_image)
         grid.addWidget(save_button, 2, 1)
+        self.status_label = QLabel(self.get_status())
+        self.status_label.setAlignment(QtCore.Qt.AlignCenter)
+        grid.addWidget(self.status_label, 3, 0, 1, 2)
 
         self.setWindowTitle('Math Artist')
         self.show()
+        self.new_image_thread()
 
 def sigint_handler(sig, frame):
     print("Closing...")
