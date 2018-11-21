@@ -202,7 +202,7 @@ class Art():
     def draw_image(self):
         self.status = "Drawing"
         self.print_art()
-        self.d = 64   # current square size
+        self.d = 16   # current square size
         if self.console:
             self.d = 1 #we don't need previews
         self.draw()
@@ -210,7 +210,6 @@ class Art():
             self.save_image_text()
 
     def draw(self):
-        self.d = self.d // 4
         if self.d < 1 or self.stop_work:
             self.end = time.time()
             print("Time for drawing:", self.end - self.start)
@@ -231,6 +230,7 @@ class Art():
                 )
         if self.trigger:
             self.trigger.emit() #emit trigger to redraw image
+        self.d = self.d // 4
         self.draw()
 
     def read_file_data(self, path):
