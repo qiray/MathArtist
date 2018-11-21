@@ -138,6 +138,7 @@ class Art():
         return generate_name()
 
     def update_functions_dict(self, name):
+        '''Calc used functions count'''
         if not name in self.functions:
             self.functions[name] = 1
         else:
@@ -174,12 +175,12 @@ class Art():
         self.functions = {}
         depth = random.randrange(1, self.size_log + 1)
         self.art = self.generate(depth)
-        if self.use_checker and self.console:
+        if self.use_checker:
             result = check_art(self.art, self.functions, Art.coord_transform, depth)
             print ('Checker result =', result)
             while result <= 0:
                 print ('Generating new art')
-                depth = random.randrange(self.size_log, self.size_log + 1)
+                depth = random.randrange(1, self.size_log + 1)
                 self.art = self.generate(depth)
                 result = check_art(self.art, self.functions, Art.coord_transform, depth)
                 print ('Checker result =', result)
@@ -213,7 +214,7 @@ class Art():
         if self.d < 1 or self.stop_work:
             self.end = time.time()
             print("Time for drawing:", self.end - self.start)
-            self.status = "Completed"
+            self.status = "Completed in %g s" % (self.end - self.start)
             return
         for y in range(0, self.size, self.d):
             if self.stop_work:
