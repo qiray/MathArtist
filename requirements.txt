@@ -2,3 +2,4 @@ Pillow
 argparse
 pyinstaller
 PyQt5
+Cython

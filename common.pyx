@@ -57,45 +57,45 @@ SIZE = 512
 
 # Math functions
 
-def well(x):
+cpdef float well(float x):
     '''A function which looks a bit like a well.'''
-    result = 1 - 2 / (1 + x*x) ** 8
+    cdef float result = 1 - 2 / (1 + x*x) ** 8
     result = 1 if result < -1 else result
     return result
 
-def tent(x):
+cpdef float tent(float x):
     '''A function that looks a bit like a tent.'''
     return 1 - 2 * abs(x)
 
-def sin_curve(x):
-    val = x if x != 0 else 1
+cpdef float sin_curve(float x):
+    cdef float val = x if x != 0 else 1
     return math.sin(1/val)
 
-def abs_sin(x):
+cpdef float abs_sin(float x):
     return math.sin(math.fabs(x))
 
-def wave(x, y):
+cpdef float wave(float x, float y):
     return math.sin(math.sqrt(x**2 + y**2))
 
 # Color functions
 
-def float_color_to_int(c):
+cpdef int float_color_to_int(float c):
     return max(0, min(255, int(128 * (c + 1))))
 
 def average(c1, c2, w=0.5):
     '''Compute the weighted average of two colors. With w = 0.5 we get the average.'''
     (r1, g1, b1) = c1
     (r2, g2, b2) = c2
-    r3 = w * r1 + (1 - w) * r2
-    g3 = w * g1 + (1 - w) * g2
-    b3 = w * b1 + (1 - w) * b2
+    cdef float r3 = w * r1 + (1 - w) * r2
+    cdef float g3 = w * g1 + (1 - w) * g2
+    cdef float b3 = w * b1 + (1 - w) * b2
     return (r3, g3, b3)
 
 def rgb(r,g,b):
     '''Convert a color represented by (r,g,b) to a string understood by tkinter.'''
-    u = float_color_to_int(r)
-    v = float_color_to_int(g)
-    w = float_color_to_int(b)
+    cdef int u = float_color_to_int(r)
+    cdef int v = float_color_to_int(g)
+    cdef int w = float_color_to_int(b)
     return '#%02x%02x%02x' % (u, v, w)
 
 def parse_color(str):

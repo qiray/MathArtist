@@ -7,3 +7,5 @@ build
 *.spec
 output/*.txt
 output/*.png
+*.so
+*.c

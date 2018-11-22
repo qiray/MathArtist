@@ -36,11 +36,11 @@ from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 
 #TODO: readme
 #TODO: test on different OS
-#TODO: optimize using C++?
+#TODO: optimize! Now using Cython. Optimize art.py and checker.py
 
 class DrawThread(QThread):
     def __init__(self):
-        self.art = Art(use_checker=True)
+        self.art = Art(use_checker=True) #TODO: use hash_string="5" for performance testing
         QThread.__init__(self)
 
     def __del__(self):
