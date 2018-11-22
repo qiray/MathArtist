@@ -240,6 +240,7 @@ class Art():
                 if self.image_array[x][y] == '':
                     (r, g, b) = self.art.eval(u, v)
                     self.image_array[x][y] = rgb(r, g, b)
+                #TODO: optimize drawing!
                 self.image_draw.rectangle(
                     ((x, y), (x + self.d, y + self.d)),
                     fill=self.image_array[x][y]

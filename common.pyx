@@ -46,49 +46,51 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import math
+cimport libc.math as cmath
 import itertools
 
 CONSOLE = 1
 GUI = 2
 SIZE = 512
 
+ctypedef (double, double, double) color
+
 # File with utility functions
 
 # Math functions
 
-cpdef float well(float x):
+cpdef double well(double x):
     '''A function which looks a bit like a well.'''
-    cdef float result = 1 - 2 / (1 + x*x) ** 8
+    cdef double result = 1 - 2 / cmath.pow(1 + x*x, 8)
     result = 1 if result < -1 else result
     return result
 
-cpdef float tent(float x):
+cpdef double tent(double x):
     '''A function that looks a bit like a tent.'''
-    return 1 - 2 * abs(x)
+    return 1 - 2 * cmath.fabs(x)
 
-cpdef float sin_curve(float x):
-    cdef float val = x if x != 0 else 1
-    return math.sin(1/val)
+cpdef double sin_curve(double x):
+    cdef double val = x if x != 0 else 1
+    return cmath.sin(1/val)
 
-cpdef float abs_sin(float x):
-    return math.sin(math.fabs(x))
+cpdef double abs_sin(double x):
+    return cmath.sin(cmath.fabs(x))
 
-cpdef float wave(float x, float y):
-    return math.sin(math.sqrt(x**2 + y**2))
+cpdef double wave(double x, double y):
+    return cmath.sin(cmath.sqrt(x**2 + y**2))
 
 # Color functions
 
-cpdef int float_color_to_int(float c):
+cpdef int float_color_to_int(double c):
     return max(0, min(255, int(128 * (c + 1))))
 
-def average(c1, c2, w=0.5):
+cpdef color average(color c1, color c2, double w=0.5):
     '''Compute the weighted average of two colors. With w = 0.5 we get the average.'''
     (r1, g1, b1) = c1
     (r2, g2, b2) = c2
-    cdef float r3 = w * r1 + (1 - w) * r2
-    cdef float g3 = w * g1 + (1 - w) * g2
-    cdef float b3 = w * b1 + (1 - w) * b2
+    cdef double r3 = w * r1 + (1 - w) * r2
+    cdef double g3 = w * g1 + (1 - w) * g2
+    cdef double b3 = w * b1 + (1 - w) * b2
     return (r3, g3, b3)
 
 def rgb(r,g,b):
@@ -102,7 +104,7 @@ def parse_color(str):
     h = str.lstrip('#')
     return tuple(int(h[i:i+2], 16) for i in (0, 2 ,4))
 
-def color_binary(c1, c2, operator):
-    colors1 = tuple([float_color_to_int(x) for x in c1])
-    colors2 = tuple([float_color_to_int(x) for x in c2])
+cpdef color color_binary(c1, c2, operator):
+    cdef (int, int, int) colors1 = tuple([float_color_to_int(x) for x in c1])
+    cdef (int, int, int) colors2 = tuple([float_color_to_int(x) for x in c2])
     return tuple([2*operator(x1, x2)/255.0 - 1 for x1, x2 in zip(colors1, colors2)])

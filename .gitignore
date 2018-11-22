@@ -9,3 +9,5 @@ output/*.txt
 output/*.png
 *.so
 *.c
+*.pyd
+*.html
