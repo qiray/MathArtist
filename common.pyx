@@ -93,6 +93,9 @@ cpdef color average(color c1, color c2, double w=0.5):
     cdef double b3 = w * b1 + (1 - w) * b2
     return (r3, g3, b3)
 
+cpdef (int, int, int) int_rgb(double r, double g, double b):
+    return (float_color_to_int(r), float_color_to_int(g), float_color_to_int(b))
+
 def rgb(r,g,b):
     '''Convert a color represented by (r,g,b) to a string understood by tkinter.'''
     cdef int u = float_color_to_int(r)

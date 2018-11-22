@@ -55,7 +55,7 @@ import hashlib
 from datetime import datetime
 from PIL import Image, ImageDraw
 
-from common import rgb, SIZE
+from common import rgb, int_rgb, SIZE
 from operators import Palette
 from operator_lists import operatorsLists, fulllist, generate_lists
 from coords import coord_transforms
@@ -168,7 +168,7 @@ class Art():
         return op(*args)
 
     def init_image_array(self):
-        return [['' for _ in range(self.size)] for _ in range(self.size)]
+        return [[None for _ in range(self.size)] for _ in range(self.size)]
 
     def redraw(self):
         Art.init_static_data()
@@ -237,14 +237,20 @@ class Art():
                     break
                 #Convert coordinates to range [-1, 1]
                 u, v = Art.coord_transform(x, y, self.d, self.size, Art.polar_shift)
-                if self.image_array[x][y] == '':
+                if not self.image_array[x][y]:
                     (r, g, b) = self.art.eval(u, v)
-                    self.image_array[x][y] = rgb(r, g, b)
+                    self.image_array[x][y] = int_rgb(r, g, b)
                 #TODO: optimize drawing!
                 self.image_draw.rectangle(
                     ((x, y), (x + self.d, y + self.d)),
                     fill=self.image_array[x][y]
                 )
+                
+# # Create a NumPy array, which has four elements. The top-left should be pure red, the top-right should be pure blue, the bottom-left should be pure green, and the bottom-right should be yellow
+# pixels = np.array([[[255, 0, 0], [0, 255, 0]], [[0, 0, 255], [255, 255, 0]]])
+
+# # Create a PIL image from the NumPy array
+# image = Image.fromarray(pixels.astype('uint8'), 'RGB')
         if self.trigger:
             self.trigger.emit() #emit trigger to redraw image
         self.d = self.d // 4

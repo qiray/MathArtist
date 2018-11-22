@@ -36,7 +36,8 @@ from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 
 #TODO: readme
 #TODO: test on different OS
-#TODO: optimize! Now using Cython. Optimize art.py and checker.py
+#TODO: optimize! Now using Cython.
+#TODO: use some hints from https://github.com/vshymanskyy/randomart/blob/master/randomart-glsl.js
 
 class DrawThread(QThread):
     def __init__(self):
