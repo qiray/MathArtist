@@ -40,7 +40,6 @@ def color_distance(c1, c2):
     return math.sqrt(2*delta_r + 4*delta_g + 3*delta_b + (average_r*(delta_r - delta_b))/256)
 
 def preview_score(art, coord_system):
-    #TODO: use numpy if it's possible and effective
     shift = [0, 0]
     d = 16
     y = 0

@@ -25,7 +25,7 @@ import argparse
 from copy import copy
 from PIL import Image, ImageDraw, ImageQt
 
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPushButton, QApplication, QLabel)
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -35,9 +35,8 @@ from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 #pyinstaller --onefile --windowed main.py
 
 #TODO: readme
-#TODO: add icon
 #TODO: test on different OS
-#TODO: optimize using numpy?
+#TODO: optimize using C++?
 
 class DrawThread(QThread):
     def __init__(self):
@@ -143,6 +142,7 @@ class GUI(QWidget):
         grid.addWidget(self.status_label, 3, 0, 1, 2)
 
         self.setWindowTitle('Math Artist')
+        self.setWindowIcon(QtGui.QIcon('icon.png'))
         self.show()
         self.new_image_thread()
 
