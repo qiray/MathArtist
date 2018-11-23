@@ -54,6 +54,7 @@ import time
 import hashlib
 from datetime import datetime
 from PIL import Image, ImageDraw
+import numpy as np
 
 from common import rgb, int_rgb, SIZE
 from operators import Palette
@@ -203,6 +204,7 @@ class Art():
         self.print_art()
         sys.stdout = orig_stdout #restore original stdout
         f.close()
+        print('Saved')
 
     def draw_image(self):
         self.status = "Drawing"
@@ -214,21 +216,13 @@ class Art():
         if self.console:
             self.save_image_text()
 
-    # def pair_eval(self, pair): #Used in map function
-    #     (x, y) = pair
-    #     u, v = Art.coord_transform(x, y, self.d, self.size, Art.polar_shift)
-    #     return self.art.eval(u, v)
-
     def draw(self):
         if self.d < 1 or self.stop_work:
             self.end = time.time()
             print("Time for drawing:", self.end - self.start)
             self.status = "Completed in %g s" % (self.end - self.start)
             return
-        # size = self.size // self.d
-        # product = ((i, j) for i in range(size) for j in range(size))
-        # result = list(map(self.pair_eval, product))
-        # print (self.d)
+        flag = self.d > 1
         for y in range(0, self.size, self.d):
             if self.stop_work:
                 break
@@ -240,17 +234,17 @@ class Art():
                 if not self.image_array[x][y]:
                     (r, g, b) = self.art.eval(u, v)
                     self.image_array[x][y] = int_rgb(r, g, b)
-                #TODO: optimize drawing!
-                self.image_draw.rectangle(
-                    ((x, y), (x + self.d, y + self.d)),
-                    fill=self.image_array[x][y]
-                )
-                
-# # Create a NumPy array, which has four elements. The top-left should be pure red, the top-right should be pure blue, the bottom-left should be pure green, and the bottom-right should be yellow
-# pixels = np.array([[[255, 0, 0], [0, 255, 0]], [[0, 0, 255], [255, 255, 0]]])
-
-# # Create a PIL image from the NumPy array
-# image = Image.fromarray(pixels.astype('uint8'), 'RGB')
+                    if flag:
+                        self.image_draw.rectangle(
+                            ((x, y), (x + self.d, y + self.d)),
+                            fill=self.image_array[x][y]
+                        )
+        if not (self.stop_work or flag):
+            pixels = np.array(self.image_array)
+            pixels = np.swapaxes(pixels, 0, 1)
+            self.img = Image.fromarray(pixels.astype('uint8'), 'RGB')
+            self.image_draw = ImageDraw.Draw(self.img)
+        self.status = "Drawing (%g%%)" % (100/self.d ** 2)
         if self.trigger:
             self.trigger.emit() #emit trigger to redraw image
         self.d = self.d // 4

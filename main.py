@@ -22,6 +22,7 @@
 import sys
 import signal
 import argparse
+import time
 from copy import copy
 from PIL import Image, ImageDraw, ImageQt
 
@@ -76,6 +77,7 @@ class GUI(QWidget):
     def __init__(self):
         super().__init__()
         self.draw_thread = None
+        self.timer = 0
         self.initGUI()
 
     def keyPressEvent(self, event): #Handle keys
@@ -99,6 +101,9 @@ class GUI(QWidget):
         self.status_label.setText(self.draw_thread.get_status())
 
     def new_image_thread(self):
+        if time.time() - self.timer < 1: #prevent from very often image updates
+            return
+        self.timer = time.time()
         if self.draw_thread: #if thread exists
             self.draw_thread.stop() #send signal to art object
         else: #init thread
