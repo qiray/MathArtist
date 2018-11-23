@@ -108,7 +108,7 @@ class Art():
         self.use_checker = use_checker
         self.size = SIZE #we always use constant size = 512
         self.size_log = int(math.log(self.size, 2))
-        self.img = Image.new('RGB', (self.size, self.size))
+        self.img = Image.new('RGBA', (self.size, self.size))
         self.image_draw = ImageDraw.Draw(self.img)
         self.functions = {}
         self.output_path = "output/"
