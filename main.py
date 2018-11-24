@@ -113,7 +113,7 @@ class GUI(QWidget):
 
     def empty_image(self):
         size = 512
-        image = Image.new('RGB', (size, size))
+        image = Image.new('RGBA', (size, size))
         image_draw = ImageDraw.Draw(image)
         image_draw.rectangle(((0, 0,), (size, size)), fill="#FFFFFF")
         return ImageQt.ImageQt(image)

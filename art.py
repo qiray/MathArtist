@@ -242,7 +242,7 @@ class Art():
         if not (self.stop_work or flag):
             pixels = np.array(self.image_array)
             pixels = np.swapaxes(pixels, 0, 1)
-            self.img = Image.fromarray(pixels.astype('uint8'), 'RGB')
+            self.img = Image.fromarray(pixels.astype('uint8'), 'RGBA')
             self.image_draw = ImageDraw.Draw(self.img)
         self.status = "Drawing (%g%%)" % (100/self.d ** 2)
         if self.trigger:
