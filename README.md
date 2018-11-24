@@ -17,6 +17,10 @@ This app has image checker
 
 There is samples folder with some nice images in text-format. You can use app's read file option to convert these texts into images.
 
+### Building
+
+Use Cython to prebuild binary libraries.
+
 ### Usage
 
 There are 2 work modes: console and GUI.

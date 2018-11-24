@@ -33,12 +33,11 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 
-#pyinstaller --onefile --windowed main.py
+#pyinstaller --onefile --windowed main.py --hidden-import=palettes
 
 #TODO: readme
 #TODO: test on different OS
-#TODO: optimize! Now using Cython.
-#TODO: use some hints from https://github.com/vshymanskyy/randomart/blob/master/randomart-glsl.js
+#TODO: optimize using Cython.
 
 class DrawThread(QThread):
     def __init__(self):
