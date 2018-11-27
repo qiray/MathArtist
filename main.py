@@ -27,7 +27,8 @@ from copy import copy
 from PIL import Image, ImageDraw, ImageQt
 
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QPushButton, QApplication, QLabel)
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QPushButton, QApplication,
+    QLabel, QFileDialog)
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QThread, pyqtSignal
 
@@ -39,8 +40,26 @@ from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 #TODO: test on different OS
 #TODO: optimize using Cython.
 
+#TODO: check Sin in samples:
+# samples/23.txt
+# samples/27.txt
+# samples/18.txt
+# samples/15.txt
+# samples/7.txt
+# samples/16.txt
+# samples/29.txt
+# samples/20.txt
+# samples/14.txt
+# samples/32.txt
+# samples/38.txt
+# samples/30.txt
+# samples/40.txt
+# samples/2.txt
+# samples/5.txt
+# samples/19.txt
+
 class DrawThread(QThread):
-    def __init__(self):
+    def __init__(self, load_file=""):
         self.art = Art(use_checker=True) #TODO: use hash_string="5" for performance testing
         QThread.__init__(self)
 
@@ -68,6 +87,9 @@ class DrawThread(QThread):
 
     def set_trigger(self, trigger):
         self.art.set_trigger(trigger)
+
+    def set_file(self, filepath):
+        self.art.set_file(filepath)
 
 class GUI(QWidget):
 
@@ -119,9 +141,6 @@ class GUI(QWidget):
         return ImageQt.ImageQt(image)
 
     def initGUI(self):
-        #TODO: make some design
-        #TODO: load image button
-        #TODO: share button for mobile OS?
         #TODO: generate lists button (developer only)
         grid = QGridLayout()
         self.setLayout(grid)
@@ -130,11 +149,11 @@ class GUI(QWidget):
         pixmap = QPixmap.fromImage(self.image)
         self.image_label = QLabel()
         self.image_label.setPixmap(pixmap)
-        grid.addWidget(self.image_label, 0, 0, 1, 2)
+        grid.addWidget(self.image_label, 0, 0, 1, 3)
         self.name_label = QLabel('')
         self.name_label.setAlignment(QtCore.Qt.AlignCenter)
         self.name_label.setWordWrap(True)
-        grid.addWidget(self.name_label, 1, 0, 1, 2)
+        grid.addWidget(self.name_label, 1, 0, 1, 3)
 
         new_button = QPushButton('New image')
         new_button.clicked.connect(self.new_image_thread)
@@ -142,14 +161,30 @@ class GUI(QWidget):
         save_button = QPushButton('Save image')
         save_button.clicked.connect(self.save_image)
         grid.addWidget(save_button, 2, 1)
+        load_button = QPushButton('Load image')
+        load_button.clicked.connect(self.load_file)
+        grid.addWidget(load_button, 2, 2)
         self.status_label = QLabel('')
         self.status_label.setAlignment(QtCore.Qt.AlignCenter)
-        grid.addWidget(self.status_label, 3, 0, 1, 2)
+        grid.addWidget(self.status_label, 3, 0, 1, 3)
 
         self.setWindowTitle('Math Artist')
         self.setWindowIcon(QtGui.QIcon('icon.png'))
         self.show()
         self.new_image_thread()
+
+    def load_file(self):
+        filepath, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","Text Files (*.txt)")
+        if time.time() - self.timer < 1: #prevent from very often image updates
+            time.sleep(0.5)
+        self.timer = time.time()
+        if not filepath:
+            return
+        if self.draw_thread:
+            self.draw_thread.stop()
+        self.draw_thread.set_trigger(self.trigger)
+        self.draw_thread.set_file(filepath)
+        self.draw_thread.start()
 
 def sigint_handler(sig, frame):
     print("Closing...")

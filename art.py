@@ -67,7 +67,7 @@ from checker import check_art
 APP_NAME = "MathArtist"
 VERSION_MAJOR = 0
 VERSION_MINOR = 9
-VERSION_BUILD = 2
+VERSION_BUILD = 3
 
 class Art():
     """Math art generator class"""
@@ -117,6 +117,7 @@ class Art():
         self.status = "Drawing"
         self.trigger = None
         self.image_array = self.init_image_array()
+        self.filepath = load_file
         if self.console:
             if load_file:
                 self.read_file_data(load_file)
@@ -126,6 +127,9 @@ class Art():
     def stop_drawing(self):
         self.stop_work = True
         self.status = "Stopped"
+
+    def set_file(self, filepath):
+        self.filepath = filepath
 
     def set_trigger(self, trigger):
         self.trigger = trigger
@@ -179,6 +183,11 @@ class Art():
         self.stop_work = False
         self.functions = {}
         depth = random.randrange(1, self.size_log + 1)
+        if self.filepath:
+            self.stop_work = False
+            self.read_file_data(self.filepath)
+            return
+        self.filepath = None
         self.art = self.generate(depth)
         if self.use_checker:
             result = check_art(self.art, self.functions, Art.coord_transform, depth)
@@ -210,6 +219,8 @@ class Art():
         self.status = "Drawing"
         self.print_art()
         self.d = 16   # current square size
+        self.stage = 1
+        self.stages = int(math.log(self.d, 4)) + 1
         if self.console:
             self.d = 1 #we don't need previews
         self.draw()
@@ -244,7 +255,8 @@ class Art():
             pixels = np.swapaxes(pixels, 0, 1)
             self.img = Image.fromarray(pixels.astype('uint8'), 'RGBA')
             self.image_draw = ImageDraw.Draw(self.img)
-        self.status = "Drawing (%g%%)" % (100/self.d ** 2)
+        self.status = "Drawing (stage %d of %d)" % (self.stage, self.stages)
+        self.stage += 1
         if self.trigger:
             self.trigger.emit() #emit trigger to redraw image
         self.d = self.d // 4
