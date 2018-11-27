@@ -26,6 +26,52 @@ cpdef polar(double x, double y, int size):
     cdef double v = 0 if x == 0 else cmath.atan(y/x)*2/cmath.pi
     return u, v
 
+# class VariableX():
+#     arity = 0
+#     mindepth = 4
+#     def __init__(self):
+#         pass
+#     def __repr__(self):
+#         return "x"
+#     def eval(self, x, y):
+#         return (x, x, x)
+
+# class VariableY():
+#     arity = 0
+#     mindepth = 4
+#     def __init__(self):
+#         pass
+#     def __repr__(self):
+#         return "y"
+#     def eval(self, x, y):
+#         return (y, y, y)
+
+# class Well():
+#     arity = 1
+#     mindepth = 3
+#     def __init__(self, e):
+#         self.e = e
+#     def __repr__(self):
+#         return 'Well(%s)' % self.e
+#     def eval(self, x, y):
+#         (r, g, b) = self.e.eval(x, y)
+#         return (well(r), well(g), well(b))
+
+# class Mix():
+#     arity = 3
+#     mindepth = 0
+#     def __init__(self, w, e1, e2):
+#         self.w = w
+#         self.e1 = e1
+#         self.e2 = e2
+#     def __repr__(self):
+#         return 'Mix(%s, %s, %s)' % (self.w, self.e1, self.e2)
+#     def eval(self, x, y):
+#         w = 0.5 * (self.w.eval(x, y)[0] + 1.0)
+#         c1 = self.e1.eval(x, y)
+#         c2 = self.e2.eval(x, y)
+#         return average(c1, c2, w)
+
 cdef class VariableX():
     cdef int iarity
     cdef int mindepth

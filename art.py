@@ -213,7 +213,10 @@ class Art():
         self.print_art()
         sys.stdout = orig_stdout #restore original stdout
         f.close()
-        print('Saved')
+        print("Saved")
+        if self.trigger:
+            self.status = "Saved"
+            self.trigger.emit() #emit trigger to redraw image
 
     def draw_image(self):
         self.status = "Drawing"

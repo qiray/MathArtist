@@ -33,30 +33,13 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QThread, pyqtSignal
 
 from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
+from common import SIZE
 
 #pyinstaller --onefile --windowed main.py --hidden-import=palettes
 
 #TODO: readme
 #TODO: test on different OS
-#TODO: optimize using Cython.
-
-#TODO: check Sin in samples:
-# samples/23.txt
-# samples/27.txt
-# samples/18.txt
-# samples/15.txt
-# samples/7.txt
-# samples/16.txt
-# samples/29.txt
-# samples/20.txt
-# samples/14.txt
-# samples/32.txt
-# samples/38.txt
-# samples/30.txt
-# samples/40.txt
-# samples/2.txt
-# samples/5.txt
-# samples/19.txt
+#TODO: operators to cclass using Cython (look test1.pyx)
 
 class DrawThread(QThread):
     def __init__(self, load_file=""):
@@ -103,11 +86,14 @@ class GUI(QWidget):
 
     def keyPressEvent(self, event): #Handle keys
         key = event.key()
+        modifiers = QApplication.keyboardModifiers()
         if key == QtCore.Qt.Key_Escape:
             print("Closing...")
             self.close()
         elif key == QtCore.Qt.Key_N:
             self.new_image_thread()
+        elif modifiers == QtCore.Qt.ControlModifier and key == QtCore.Qt.Key_O:
+            self.load_file()
         event.accept()
     
     def save_image(self):
@@ -134,7 +120,7 @@ class GUI(QWidget):
         self.draw_thread.start()
 
     def empty_image(self):
-        size = 512
+        size = SIZE
         image = Image.new('RGBA', (size, size))
         image_draw = ImageDraw.Draw(image)
         image_draw.rectangle(((0, 0,), (size, size)), fill="#FFFFFF")

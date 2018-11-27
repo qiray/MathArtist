@@ -1,4 +1,4 @@
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix', 'Wave']
 Use depth: True
 Coordinates transfrom: sin_coord
-Formula: Sin(0.824872, 5.89621, Mix(Mix(Wave(SinCurve(x), SinCurve(y)), SinCurve(Wave(y, x)), SinCurve(SinCurve(x))), SinCurve(Sin(Mix(y, x, y), 2.63811, 3.65718)), SinCurve(SinCurve(Mix(y, x, y)))))
+Formula: Sin(Mix(Mix(Wave(SinCurve(x), SinCurve(y)), SinCurve(Wave(y, x)), SinCurve(SinCurve(x))), SinCurve(Sin(Mix(y, x, y), 2.63811, 3.65718)), SinCurve(SinCurve(Mix(y, x, y)))), 0.824872, 5.89621)
