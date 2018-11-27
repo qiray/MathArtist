@@ -39,11 +39,11 @@ from common import SIZE
 
 #TODO: readme
 #TODO: test on different OS
-#TODO: operators to cclass using Cython (look test1.pyx)
+#TODO: operators to cdef class using Cython (look test1.pyx)
 
 class DrawThread(QThread):
     def __init__(self, load_file=""):
-        self.art = Art(use_checker=True) #TODO: use hash_string="5" for performance testing
+        self.art = Art(use_checker=True)
         QThread.__init__(self)
 
     def __del__(self):
@@ -127,7 +127,6 @@ class GUI(QWidget):
         return ImageQt.ImageQt(image)
 
     def initGUI(self):
-        #TODO: generate lists button (developer only)
         grid = QGridLayout()
         self.setLayout(grid)
         #IMPORTANT: this image must exist all application lifetime:
@@ -184,7 +183,18 @@ def parse_args():
     parser.add_argument('--about', action='store_true', help='Show about info')
     parser.add_argument('--checker', action='store_true', help='Enable checker')
     parser.add_argument('--file', type=str, help='Load file (console mode only)')
+    parser.add_argument('--generate_list', action='store_true', help='Generate operators\' list (console mode only)')
     return parser.parse_args()
+
+def get_new_list():
+    from operator_lists import generate_lists
+    terminals, nonterminals = generate_lists()
+    fulllist = terminals + nonterminals
+    result = str([x.__name__ for x in fulllist])
+    result = result.replace("'", "")
+    result = result.replace("[", "(")
+    result = result.replace("]", ")")
+    return result
 
 if __name__ == '__main__':
 
@@ -197,6 +207,9 @@ if __name__ == '__main__':
             "This is free software; see the source for copying conditions\n")
         exit(0)
     if args.console:
+        if args.generate_list:
+            print(get_new_list())
+            exit(0)
         art = Art(use_checker=args.checker, console=True, load_file=args.file)
     else:
         app = QApplication(sys.argv)

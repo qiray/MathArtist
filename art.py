@@ -58,7 +58,7 @@ import numpy as np
 
 from common import rgb, int_rgb, SIZE
 from operators import Palette
-from operator_lists import operatorsLists, fulllist, generate_lists
+from operator_lists import operatorsLists
 from coords import coord_transforms
 from read_data import parse_formula, read_file
 from names_generator import generate_name
@@ -78,15 +78,13 @@ class Art():
     coord_transform = coord_transforms[0]
     polar_shifts = [[0.5, 0.5], [0, 0], [0, 1], [1, 0], [1, 1]]
     polar_shift = [0, 0]
-    use_random_lists = True
 
     @staticmethod
     def init_static_data():
-        if Art.use_random_lists:
-            # We precompute those operators that have arity 0 and arity > 0
-            Art.operatorsList = random.choice(operatorsLists)
-            Art.terminals = [op for op in Art.operatorsList if op.arity == 0]
-            Art.nonterminals = [op for op in Art.operatorsList if op.arity > 0]
+        # We precompute those operators that have arity 0 and arity > 0
+        Art.operatorsList = random.choice(operatorsLists)
+        Art.terminals = [op for op in Art.operatorsList if op.arity == 0]
+        Art.nonterminals = [op for op in Art.operatorsList if op.arity > 0]
 
         Art.use_depth = True if random.random() >= 0.5 else False
         Art.coord_transform = random.choice(coord_transforms)
@@ -95,13 +93,6 @@ class Art():
             Art.polar_shift = [random.random(), random.random()]
         else:
             Art.polar_shift = Art.polar_shifts[index]
-
-    @staticmethod
-    def generate_lists():
-        Art.terminals, Art.nonterminals = generate_lists(fulllist)
-        Art.operatorsList = Art.terminals + Art.nonterminals
-        Art.use_random_lists = False
-        print([x.__name__ for x in Art.operatorsList])
 
     def __init__(self, hash_string=None, use_checker=False, console=False, load_file=None):
         self.name = self.init_name(hash_string)

@@ -82,7 +82,7 @@ operatorsLists = [
         AbsSin, Well, Tent),
 ]
 
-def generate_lists(fulllist):
+def generate_lists():
     '''Function for generating operators lists'''
     terminals = [op for op in fulllist if op.arity == 0]
     nonterminals = [op for op in fulllist if op.arity > 0]
