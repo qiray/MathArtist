@@ -24,11 +24,12 @@ import signal
 import argparse
 import time
 from copy import copy
+import webbrowser
 from PIL import Image, ImageDraw, ImageQt
 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPushButton, QApplication,
-    QLabel, QFileDialog)
+    QLabel, QFileDialog, QMessageBox)
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QThread, pyqtSignal
 
@@ -39,7 +40,6 @@ from common import SIZE
 
 #TODO: readme
 #TODO: test on different OS
-#TODO: operators to cdef class using Cython (look test1.pyx)
 
 class DrawThread(QThread):
     def __init__(self, load_file=""):
@@ -86,16 +86,26 @@ class GUI(QWidget):
 
     def keyPressEvent(self, event): #Handle keys
         key = event.key()
-        modifiers = QApplication.keyboardModifiers()
+        # modifiers = QApplication.keyboardModifiers() #modifiers == QtCore.Qt.ControlModifier
         if key == QtCore.Qt.Key_Escape:
             print("Closing...")
             self.close()
         elif key == QtCore.Qt.Key_N:
             self.new_image_thread()
-        elif modifiers == QtCore.Qt.ControlModifier and key == QtCore.Qt.Key_O:
+        elif key == QtCore.Qt.Key_O:
             self.load_file()
+        elif key == QtCore.Qt.Key_A:
+            self.show_about_message()
+        elif key == QtCore.Qt.Key_F1:
+            self.show_online_help()
         event.accept()
-    
+
+    def show_about_message(self):
+        QMessageBox.about(self, 'About', get_about_info())
+
+    def show_online_help(self):
+        webbrowser.open('http://google.com') #TODO: open github readme
+
     def save_image(self):
         if self.draw_thread:
             self.draw_thread.save_image()
@@ -182,8 +192,8 @@ def parse_args():
     parser.add_argument('--console', action='store_true', help='Run in console mode (no window)')
     parser.add_argument('--about', action='store_true', help='Show about info')
     parser.add_argument('--checker', action='store_true', help='Enable checker')
-    parser.add_argument('--file', type=str, help='Load file (console mode only)')
-    parser.add_argument('--generate_list', action='store_true', help='Generate operators\' list (console mode only)')
+    parser.add_argument('--file', type=str, help='Load file')
+    parser.add_argument('--generate_list', action='store_true', help='Generate operators\' list (developer option)')
     return parser.parse_args()
 
 def get_new_list():
@@ -196,15 +206,21 @@ def get_new_list():
     result = result.replace("]", ")")
     return result
 
+def get_version():
+    return "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD)
+
+def get_about_info():
+    return ("\n" + APP_NAME + " " + get_version() + " Copyright (C) 2018 Yaroslav Zotov.\n" +
+        "Based on \"randomart\" Copyright (C) 2010, Andrej Bauer.\n"
+        "This program comes with ABSOLUTELY NO WARRANTY.\n" +
+        "This is free software under GNU GPL3; see the source for copying conditions\n")
+
 if __name__ == '__main__':
 
     signal.signal(signal.SIGINT, sigint_handler)
     args = parse_args() #parse command line arguments
     if args.about:
-        print("\n" + APP_NAME + " Copyright (C) 2018 Yaroslav Zotov.\n" +
-            "Based on \"randomart\" Copyright (C) 2010, Andrej Bauer.\n"
-            "This program comes with ABSOLUTELY NO WARRANTY.\n" +
-            "This is free software; see the source for copying conditions\n")
+        print(get_about_info())
         exit(0)
     if args.console:
         if args.generate_list:

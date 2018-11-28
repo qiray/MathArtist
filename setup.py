@@ -16,11 +16,6 @@ setup(
             'common',
             sources =["common.pyx"],
             extra_compile_args=['-O3'],
-        ),
-        Extension(
-            'test1',
-            sources =["test1.pyx"],
-            extra_compile_args=['-O3'],
         )
     ],
     cmdclass = {'build_ext': build_ext}
