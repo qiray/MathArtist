@@ -38,8 +38,8 @@ from common import SIZE
 
 #pyinstaller --onefile --windowed main.py --hidden-import=palettes
 
-#TODO: readme
 #TODO: test on different OS
+#TODO: add autoposting (twitter for example)
 
 class DrawThread(QThread):
     def __init__(self, load_file=""):
@@ -94,6 +94,8 @@ class GUI(QWidget):
             self.new_image_thread()
         elif key == QtCore.Qt.Key_O:
             self.load_file()
+        elif key == QtCore.Qt.Key_S:
+            self.save_image()
         elif key == QtCore.Qt.Key_A:
             self.show_about_message()
         elif key == QtCore.Qt.Key_F1:
