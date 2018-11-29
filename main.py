@@ -37,6 +37,8 @@ from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 from common import SIZE
 
 #pyinstaller --onefile --windowed main.py --hidden-import=palettes
+#pyi-makespec --onefile --windowed --hidden-import=palettes main.py
+#pyinstaller main.spec
 
 #TODO: test on different OS
 #TODO: add autoposting (twitter for example)

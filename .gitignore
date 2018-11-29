@@ -4,7 +4,6 @@ __pycache__
 *.csv
 dist
 build
-*.spec
 output/*.txt
 output/*.png
 *.so
