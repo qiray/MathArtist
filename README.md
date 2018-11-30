@@ -26,7 +26,7 @@ TODO: add release builds link
 
 ![](images/example1.png)
 
-This program uses Python 3 so you need to have Python 3 and pip for it. To install them use instructions for your OS.
+This program uses Python 3 so you need to have Python 3 and pip for build and run it. To install them use instructions for your OS.
 
 It also needs some extra libraries and applications such as argparse, PIL, numpy, PyQt5, pyinstaller and Cython. To install them run this:
 
@@ -90,6 +90,7 @@ Tool for generating pictures using mathematical formulas.
 optional arguments:
   -h, --help       show this help message and exit
   --console        Run in console mode (no window)
+  --name           Set image name
   --about          Show about info
   --checker        Enable checker
   --file FILE      Load file
@@ -98,13 +99,19 @@ optional arguments:
 
 ### GUI
 
-GUI in this app is pretty simple. There are 3 buttons: 
+#TODO: new desc, new screenshot
+
+GUI in this app is pretty simple. There are 4 buttons: 
 
 - "New image" which generates new image.
 
 - "Save image" which saves image in output folder.
 
 - "Load image" which shows open file dialog to load text file with formula.
+
+And 1 text field:
+
+TODO:
 
 ![](images/gui.png)
 

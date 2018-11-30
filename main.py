@@ -29,7 +29,7 @@ from PIL import Image, ImageDraw, ImageQt
 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPushButton, QApplication,
-    QLabel, QFileDialog, QMessageBox)
+    QLabel, QFileDialog, QMessageBox, QTextEdit)
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QThread, pyqtSignal
 
@@ -41,7 +41,8 @@ from common import SIZE
 #pyinstaller main.spec
 
 #TODO: test on different OS
-#TODO: add autoposting (twitter for example)
+#TODO: optimize with shaders?
+#TODO: make autoposting (twitter for example)
 
 class DrawThread(QThread):
     def __init__(self, load_file=""):
@@ -61,8 +62,14 @@ class DrawThread(QThread):
     def get_image(self):
         return self.art.img
 
+    def set_name(self, name):
+        self.art.set_name(name)
+
     def get_name(self):
         return self.art.name
+
+    def reset_name(self):
+        self.art.reset_name
 
     def save_image(self):
         self.art.save_image_text()
@@ -92,8 +99,10 @@ class GUI(QWidget):
         if key == QtCore.Qt.Key_Escape:
             print("Closing...")
             self.close()
-        elif key == QtCore.Qt.Key_N:
+        elif key == QtCore.Qt.Key_N or key == QtCore.Qt.Key_R:
             self.new_image_thread()
+        elif key == QtCore.Qt.Key_G:
+            self.new_image_name_thread()
         elif key == QtCore.Qt.Key_O:
             self.load_file()
         elif key == QtCore.Qt.Key_S:
@@ -121,7 +130,7 @@ class GUI(QWidget):
         self.name_label.setText(self.draw_thread.get_name())
         self.status_label.setText(self.draw_thread.get_status())
 
-    def new_image_thread(self):
+    def prepare_new_thread(self):
         if time.time() - self.timer < 1: #prevent from very often image updates
             return
         self.timer = time.time()
@@ -131,6 +140,15 @@ class GUI(QWidget):
             self.trigger.connect(self.update_GUI)
             self.draw_thread = DrawThread()
         self.draw_thread.set_trigger(self.trigger)
+
+    def new_image_thread(self):
+        self.prepare_new_thread()
+        self.draw_thread.reset_name()
+        self.draw_thread.start()
+
+    def new_image_name_thread(self):
+        self.prepare_new_thread()
+        self.draw_thread.set_name(self.name_label.toPlainText())
         self.draw_thread.start()
 
     def empty_image(self):
@@ -148,24 +166,27 @@ class GUI(QWidget):
         pixmap = QPixmap.fromImage(self.image)
         self.image_label = QLabel()
         self.image_label.setPixmap(pixmap)
-        grid.addWidget(self.image_label, 0, 0, 1, 3)
-        self.name_label = QLabel('')
-        self.name_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.name_label.setWordWrap(True)
-        grid.addWidget(self.name_label, 1, 0, 1, 3)
+        grid.addWidget(self.image_label, 0, 0, 1, 2)
 
-        new_button = QPushButton('New image')
+        new_button = QPushButton('Random image')
         new_button.clicked.connect(self.new_image_thread)
         grid.addWidget(new_button, 2, 0)
+        new_button2 = QPushButton('Generate image')
+        new_button2.clicked.connect(self.new_image_name_thread)
+        grid.addWidget(new_button2, 2, 1)
         save_button = QPushButton('Save image')
         save_button.clicked.connect(self.save_image)
-        grid.addWidget(save_button, 2, 1)
+        grid.addWidget(save_button, 3, 0)
         load_button = QPushButton('Load image')
         load_button.clicked.connect(self.load_file)
-        grid.addWidget(load_button, 2, 2)
+        grid.addWidget(load_button, 3, 1)
         self.status_label = QLabel('')
         self.status_label.setAlignment(QtCore.Qt.AlignCenter)
-        grid.addWidget(self.status_label, 3, 0, 1, 3)
+        grid.addWidget(self.status_label, 4, 0, 1, 2)
+
+        self.name_label = QTextEdit('')
+        self.name_label.setMaximumHeight(self.status_label.sizeHint().height()*3)
+        grid.addWidget(self.name_label, 1, 0, 1, 2)
 
         self.setWindowTitle('Math Artist')
         self.setWindowIcon(QtGui.QIcon('icon.png'))
@@ -194,6 +215,7 @@ def parse_args():
     parser = argparse.ArgumentParser(prog=APP_NAME, 
         description='Tool for generating pictures using mathematical formulas.')
     parser.add_argument('--console', action='store_true', help='Run in console mode (no window)')
+    parser.add_argument('--name', type=str, help='Set image name')
     parser.add_argument('--about', action='store_true', help='Show about info')
     parser.add_argument('--checker', action='store_true', help='Enable checker')
     parser.add_argument('--file', type=str, help='Load file')
@@ -230,7 +252,7 @@ if __name__ == '__main__':
         if args.generate_list:
             print(get_new_list())
             exit(0)
-        art = Art(use_checker=args.checker, console=True, load_file=args.file)
+        art = Art(use_checker=args.checker, name=args.name, console=True, load_file=args.file)
     else:
         app = QApplication(sys.argv)
         window = GUI()

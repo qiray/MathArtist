@@ -94,8 +94,9 @@ class Art():
         else:
             Art.polar_shift = Art.polar_shifts[index]
 
-    def __init__(self, hash_string=None, use_checker=False, console=False, load_file=None):
-        self.name = self.init_name(hash_string)
+    def __init__(self, name=None, use_checker=False, console=False, load_file=None):
+        self.name = self.init_name(name)
+        self.new_name = False
         self.use_checker = use_checker
         self.size = SIZE #we always use constant size = 512
         self.size_log = int(math.log(self.size, 2))
@@ -113,7 +114,16 @@ class Art():
             if load_file:
                 self.read_file_data(load_file)
                 exit(0)
+            self.name = self.init_name(name)
             self.redraw()
+
+    def set_name(self, name):
+        self.name = self.init_name(name)
+        self.new_name = True
+
+    def reset_name(self):
+        self.name = ''
+        self.new_name = False
 
     def stop_drawing(self):
         self.stop_work = True
@@ -189,7 +199,7 @@ class Art():
                 self.art = self.generate(depth)
                 result = check_art(self.art, self.functions, Art.coord_transform, depth)
                 print ('Checker result =', result)
-        self.name = generate_name()
+        self.name = generate_name() if not self.new_name else self.name
         self.draw_image()
 
     def get_output_name(self):
