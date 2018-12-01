@@ -10,3 +10,4 @@ output/*.png
 *.c
 *.pyd
 *.html
+shaders/*.png

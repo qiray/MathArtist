@@ -4,3 +4,4 @@ pyinstaller
 PyQt5
 Cython
 numpy
+PyOpenGL
