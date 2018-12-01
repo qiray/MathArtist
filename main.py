@@ -39,6 +39,7 @@ from common import SIZE
 #pyinstaller --onefile --windowed main.py --hidden-import=palettes
 #pyi-makespec --onefile --windowed --hidden-import=palettes main.py
 #pyinstaller main.spec
+#pyinstaller --add-binary (https://pyinstaller.readthedocs.io/en/v3.3.1/usage.html)
 
 #TODO: test on different OS
 #TODO: optimize with shaders?
