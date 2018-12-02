@@ -1,9 +1,6 @@
-attribute highp vec4 posAttr;
-attribute lowp vec4 colAttr;
-varying lowp vec4 col;
-uniform highp mat4 matrix;
+varying vec4 vertex_color;
 
-void main() {
-    col = colAttr;
-    gl_Position = matrix * posAttr;
+void main(){
+    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+    vertex_color = gl_Color;
 }

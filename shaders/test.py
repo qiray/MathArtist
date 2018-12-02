@@ -117,7 +117,7 @@ class GLWidget(QOpenGLWidget):
 
     def paintGL(self):
         print("Redrawing")
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT)                    # Очищаем экран и заливаем серым цветом
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT)                    # Очищаем экран
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)            # Включаем использование массива вершин
         gl.glEnableClientState(gl.GL_COLOR_ARRAY)             # Включаем использование массива цветов
         # Указываем, где взять массив верши:
@@ -137,31 +137,10 @@ class GLWidget(QOpenGLWidget):
         gl.glDrawArrays(gl.GL_TRIANGLES, 0, 3)
         gl.glDisableClientState(gl.GL_VERTEX_ARRAY) 
         gl.glDisableClientState(gl.GL_COLOR_ARRAY) 
-        # gl.glutSwapBuffers()
-
-        # gl.glClear(
-        #     gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
-        # gl.glLoadIdentity()
-        # gl.glTranslated(0.0, 0.0, -10.0)
-        # gl.glRotated(self.xRot / 16.0, 1.0, 0.0, 0.0)
-        # gl.glRotated(self.yRot / 16.0, 0.0, 1.0, 0.0)
-        # gl.glRotated(self.zRot / 16.0, 0.0, 0.0, 1.0)
-        # gl.glCallList(self.object)
 
     def makeObject(self):
-        vertex = create_shader(gl.GL_VERTEX_SHADER, """
-        varying vec4 vertex_color;
-        void main(){
-            gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-            vertex_color = gl_Color;
-        }""")
-        # Создаем фрагментный шейдер:
-        # Определяет цвет каждого фрагмента как "смешанный" цвет его вершин
-        fragment = create_shader(gl.GL_FRAGMENT_SHADER, """
-        varying vec4 vertex_color;
-                    void main() {
-                        gl_FragColor = vertex_color;
-        }""")
+        vertex = create_shader_file(gl.GL_VERTEX_SHADER, 'shader.vert')
+        fragment = create_shader_file(gl.GL_FRAGMENT_SHADER, 'shader.frag')
         # Создаем пустой объект шейдерной программы
         program = gl.glCreateProgram()
         # Приcоединяем вершинный шейдер к программе
@@ -184,7 +163,7 @@ class GLWidget(QOpenGLWidget):
     def setColor(self, c):
         gl.glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF())
 
-def create_shader(shader_type, source):
+def create_shader_source(shader_type, source):
     # Создаем пустой объект шейдера
     shader = gl.glCreateShader(shader_type)
     # Привязываем текст шейдера к пустому объекту шейдера
@@ -193,6 +172,11 @@ def create_shader(shader_type, source):
     gl.glCompileShader(shader)
     # Возвращаем созданный шейдер
     return shader
+
+def create_shader_file(shader_type, path):
+    with open(path, 'r') as shader_file:
+        source = shader_file.read()
+    return create_shader_source(shader_type, source)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
