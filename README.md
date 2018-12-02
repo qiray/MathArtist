@@ -63,7 +63,13 @@ python3 setup.py build_ext --inplace
 
 I prefer to use pyinstaller for building release versions. To build one-file release run:
 
+On Linux systems run:
 ```bash
+pyinstaller --onefile --windowed main.py --hidden-import=palettes --add-binary="/usr/lib64/libGL.so.1:lib"
+```
+
+For Windows:
+```cmd
 pyinstaller --onefile --windowed main.py --hidden-import=palettes
 ```
 

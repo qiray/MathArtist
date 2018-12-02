@@ -55,6 +55,8 @@ import OpenGL.GL as gl
 
 #Some material from https://habr.com/post/247123/
 
+#TODO: read https://thebookofshaders.com/02/
+
 class Window(QWidget):
 
     def __init__(self):
@@ -88,9 +90,7 @@ class GLWidget(QOpenGLWidget):
 
     def __init__(self, parent=None):
         super(GLWidget, self).__init__(parent)
-
-        self.object = 0
-        self.trolltechPurple = QColor.fromCmykF(0.39, 0.39, 0.0, 0.0)
+        self.bgcolor = QColor.fromRgb(100, 100, 100)
         self.setMinimumSize(QSize(512, 512))
         self.setMaximumSize(QSize(512, 512))
 
@@ -111,16 +111,15 @@ class GLWidget(QOpenGLWidget):
 
     def initializeGL(self):
         print(self.getOpenglInfo())
-
-        self.setClearColor(self.trolltechPurple.darker())
-        self.makeObject()
+        self.setClearColor(self.bgcolor)
+        self.initGL()
 
     def paintGL(self):
         print("Redrawing")
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)                    # Очищаем экран
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)            # Включаем использование массива вершин
         gl.glEnableClientState(gl.GL_COLOR_ARRAY)             # Включаем использование массива цветов
-        # Указываем, где взять массив верши:
+        # Указываем, где взять массив вершин:
         # Первый параметр - сколько используется координат на одну вершину
         # Второй параметр - определяем тип данных для каждой координаты вершины
         # Третий парметр - определяет смещение между вершинами в массиве
@@ -138,9 +137,9 @@ class GLWidget(QOpenGLWidget):
         gl.glDisableClientState(gl.GL_VERTEX_ARRAY) 
         gl.glDisableClientState(gl.GL_COLOR_ARRAY) 
 
-    def makeObject(self):
-        vertex = create_shader_file(gl.GL_VERTEX_SHADER, 'shader.vert')
-        fragment = create_shader_file(gl.GL_FRAGMENT_SHADER, 'shader.frag')
+    def initGL(self):
+        vertex = create_shader_from_file(gl.GL_VERTEX_SHADER, 'shader.vert') #create vertex shader
+        fragment = create_shader_from_file(gl.GL_FRAGMENT_SHADER, 'shader.frag') #create fragment shader
         # Создаем пустой объект шейдерной программы
         program = gl.glCreateProgram()
         # Приcоединяем вершинный шейдер к программе
@@ -163,7 +162,8 @@ class GLWidget(QOpenGLWidget):
     def setColor(self, c):
         gl.glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF())
 
-def create_shader_source(shader_type, source):
+def create_shader_from_source(shader_type, source):
+    '''Create shader from source code'''
     # Создаем пустой объект шейдера
     shader = gl.glCreateShader(shader_type)
     # Привязываем текст шейдера к пустому объекту шейдера
@@ -173,10 +173,11 @@ def create_shader_source(shader_type, source):
     # Возвращаем созданный шейдер
     return shader
 
-def create_shader_file(shader_type, path):
+def create_shader_from_file(shader_type, path):
+    '''Create shader from source file'''
     with open(path, 'r') as shader_file:
         source = shader_file.read()
-    return create_shader_source(shader_type, source)
+    return create_shader_from_source(shader_type, source)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
