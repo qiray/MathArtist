@@ -116,7 +116,7 @@ class GLWidget(QOpenGLWidget):
 
     def paintGL(self):
         print("Redrawing")
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT)                    # Очищаем экран
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT)                    # Clear screen
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)            # Включаем использование массива вершин
         gl.glEnableClientState(gl.GL_COLOR_ARRAY)             # Включаем использование массива цветов
         # Указываем, где взять массив вершин:
@@ -129,11 +129,8 @@ class GLWidget(QOpenGLWidget):
         # Указываем, где взять массив цветов:
         # Параметры аналогичны, но указывается массив цветов
         gl.glColorPointer(3, gl.GL_FLOAT, 0, self.pointcolor)
-        # Рисуем данные массивов за один проход:
-        # Первый параметр - какой тип примитивов использовать (треугольники, точки, линии и др.)
-        # Второй параметр - начальный индекс в указанных массивах
-        # Третий параметр - количество рисуемых объектов (в нашем случае это 3 вершины - 9 координат)
-        gl.glDrawArrays(gl.GL_TRIANGLES, 0, 3)
+        # First param - data type, 2nd - start index, 3rd - verticles count
+        gl.glDrawArrays(gl.GL_QUADS, 0, 4)
         gl.glDisableClientState(gl.GL_VERTEX_ARRAY) 
         gl.glDisableClientState(gl.GL_COLOR_ARRAY) 
 
@@ -149,12 +146,15 @@ class GLWidget(QOpenGLWidget):
         # "Собираем" шейдерную программу
         gl.glLinkProgram(program)
         # Сообщаем OpenGL о необходимости использовать данную шейдерную программу при отрисовке объектов
-        gl.glUseProgram(program)
+        try: #It can fail on some OpenGL versionss
+            gl.glUseProgram(program)
+        except:
+            pass
         
-        # Определяем массив вершин (три вершины по три координаты)
-        self.pointdata = [[0, 0.5, 0], [-0.5, -0.5, 0], [0.5, -0.5, 0]]
-        # Определяем массив цветов (по одному цвету для каждой вершины)
-        self.pointcolor = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+        # Verticles array
+        self.pointdata = [[-1.0, -1.0, 0], [-1.0, 1.0, 0], [1.0, 1.0, 0], [1.0, -1.0, 0]]
+        # Colors array
+        self.pointcolor = [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0]]
 
     def setClearColor(self, c):
         gl.glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF())
