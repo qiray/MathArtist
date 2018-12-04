@@ -3,8 +3,9 @@
     precision highp float;
 #endif
 
-varying vec4 vertex_color; //this variable is shared between vert and frag
+uniform vec2 u_resolution;
 
 void main() {
-    gl_FragColor = vertex_color; //this is result - color for vertex
+    vec2 coord = gl_FragCoord.xy/u_resolution.xy;
+    gl_FragColor = vec4(coord.xy, 0.0, 1.0); //this is result - color for vertex
 }

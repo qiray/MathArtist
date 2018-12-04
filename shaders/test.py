@@ -150,11 +150,14 @@ class GLWidget(QOpenGLWidget):
             gl.glUseProgram(program)
         except:
             pass
+
+        # varr = gl.glGetUniformLocation(program, '') #TODO: pass uniform u_resolution, https://github.com/tartley/opengl-tutorials/blob/master/pyopengl/03-uniform-values.py
+        # gl.glUniform4f(varr, 1, 1, 1, 1)
         
         # Verticles array
         self.pointdata = [[-1.0, -1.0, 0], [-1.0, 1.0, 0], [1.0, 1.0, 0], [1.0, -1.0, 0]]
         # Colors array
-        self.pointcolor = [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 0]]
+        self.pointcolor = [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]]
 
     def setClearColor(self, c):
         gl.glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF())
