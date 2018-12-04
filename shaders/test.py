@@ -51,6 +51,8 @@ from PyQt5.QtWidgets import (QApplication, QHBoxLayout, QOpenGLWidget, QSlider,
 
 import OpenGL.GL as gl
 
+SIZE = 512
+
 #pip install PyOpenGL
 
 #Some material from https://habr.com/post/247123/
@@ -91,8 +93,8 @@ class GLWidget(QOpenGLWidget):
     def __init__(self, parent=None):
         super(GLWidget, self).__init__(parent)
         self.bgcolor = QColor.fromRgb(100, 100, 100)
-        self.setMinimumSize(QSize(512, 512))
-        self.setMaximumSize(QSize(512, 512))
+        self.setMinimumSize(QSize(SIZE, SIZE))
+        self.setMaximumSize(QSize(SIZE, SIZE))
 
     def getOpenglInfo(self):
         info = """
@@ -151,8 +153,8 @@ class GLWidget(QOpenGLWidget):
         except:
             pass
 
-        # varr = gl.glGetUniformLocation(program, '') #TODO: pass uniform u_resolution, https://github.com/tartley/opengl-tutorials/blob/master/pyopengl/03-uniform-values.py
-        # gl.glUniform4f(varr, 1, 1, 1, 1)
+        resolution = gl.glGetUniformLocation(program, 'u_resolution') #register uniform
+        gl.glUniform2f(resolution, SIZE, SIZE) #pass resolution value to shaders
         
         # Verticles array
         self.pointdata = [[-1.0, -1.0, 0], [-1.0, 1.0, 0], [1.0, 1.0, 0], [1.0, -1.0, 0]]
