@@ -154,7 +154,7 @@ class GLWidget(QOpenGLWidget):
             pass
 
         resolution = gl.glGetUniformLocation(program, 'u_resolution') #register uniform
-        gl.glUniform2f(resolution, SIZE, SIZE) #pass resolution value to shaders
+        gl.glUniform2i(resolution, SIZE, SIZE) #pass resolution value to shaders
         
         # Verticles array
         self.pointdata = [[-1.0, -1.0, 0], [-1.0, 1.0, 0], [1.0, 1.0, 0], [1.0, -1.0, 0]]
