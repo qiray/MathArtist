@@ -23,9 +23,13 @@ vec3 Tent(vec3 color) {
 }
 
 void main() {
-    vec2 coord = gl_FragCoord.xy / u_resolution; //calc coords [0; 1]
-    vec2 pos = 2.0*coord.xy - 1.0; //linear coord conversion: [-1; 1]
+    vec2 coord = gl_FragCoord / u_resolution; //calc coords [0; 1]
+    vec2 pos = 2.0*coord - 1.0; //linear coord conversion: [-1; 1]
     // vec3 result = $FORMULA$;
     vec3 result = Well(Tent(vec3(pos.x)));
-    gl_FragColor = vec4(result.rgb, 1.0); //result - color for vertex
+    // if (abs(pos.x) < 0.002)
+    //     gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+    // else
+    //     gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    gl_FragColor = vec4(result, 1); //result - color for vertex
 }

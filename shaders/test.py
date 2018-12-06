@@ -120,21 +120,15 @@ class GLWidget(QOpenGLWidget):
         print("Redrawing")
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)                    # Clear screen
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)            # Включаем использование массива вершин
-        gl.glEnableClientState(gl.GL_COLOR_ARRAY)             # Включаем использование массива цветов
         # Указываем, где взять массив вершин:
         # Первый параметр - сколько используется координат на одну вершину
         # Второй параметр - определяем тип данных для каждой координаты вершины
         # Третий парметр - определяет смещение между вершинами в массиве
         # Если вершины идут одна за другой, то смещение 0
         # Четвертый параметр - указатель на первую координату первой вершины в массиве
-        gl.glVertexPointer(3, gl.GL_FLOAT, 0, self.pointdata)
-        # Указываем, где взять массив цветов:
-        # Параметры аналогичны, но указывается массив цветов
-        gl.glColorPointer(3, gl.GL_FLOAT, 0, self.pointcolor)
-        # First param - data type, 2nd - start index, 3rd - verticles count
+        gl.glVertexPointer(2, gl.GL_FLOAT, 0, self.pointdata)
         gl.glDrawArrays(gl.GL_QUADS, 0, 4)
         gl.glDisableClientState(gl.GL_VERTEX_ARRAY) 
-        gl.glDisableClientState(gl.GL_COLOR_ARRAY) 
 
     def initGL(self):
         vertex = create_shader_from_file(gl.GL_VERTEX_SHADER, 'shader.vert') #create vertex shader
@@ -155,11 +149,13 @@ class GLWidget(QOpenGLWidget):
 
         resolution = gl.glGetUniformLocation(program, 'u_resolution') #register uniform
         gl.glUniform2i(resolution, SIZE, SIZE) #pass resolution value to shaders
+
+        # position = gl.glGetAttribLocation(program, 'position')
+        # gl.glEnableVertexAttribArray(position)
+        # gl.glVertexAttribPointer(position, 1, gl.GL_FLOAT, False, 0, 0)
         
         # Verticles array
-        self.pointdata = [[-1.0, -1.0, 0], [-1.0, 1.0, 0], [1.0, 1.0, 0], [1.0, -1.0, 0]]
-        # Colors array
-        self.pointcolor = [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]]
+        self.pointdata = [[-1.0, -1.0], [-1.0, 1.0], [1.0, 1.0], [1.0, -1.0]]
 
     def setClearColor(self, c):
         gl.glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF())
