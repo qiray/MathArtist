@@ -7,7 +7,7 @@ uniform ivec2 u_resolution; //pass widget resolution from main program
 
 float wellf(float x) {
     float result = 1.0 - (2.0 / pow(1.0 + x*x, 8.0));
-    return result < -1 ? 1 : result;
+    return result < -1.0 ? 1.0 : result;
 }
 
 float tentf(float x) {
@@ -27,9 +27,6 @@ void main() {
     vec2 pos = 2.0*coord - 1.0; //linear coord conversion: [-1; 1]
     // vec3 result = $FORMULA$;
     vec3 result = Well(Tent(vec3(pos.x)));
-    // if (abs(pos.x) < 0.002)
-    //     gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-    // else
-    //     gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-    gl_FragColor = vec4(result, 1); //result - color for vertex
+    vec3 color = 0.5*result + 0.5; //[-1; 1] -> [1,1]
+    gl_FragColor = vec4(color, 1); //color for vertex
 }
