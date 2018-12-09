@@ -44,9 +44,9 @@
 import sys
 import time
 
-from PyQt5.QtCore import pyqtSignal, QPoint, QSize, Qt
+from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import (QApplication, QHBoxLayout, QOpenGLWidget, QSlider,
+from PyQt5.QtWidgets import (QApplication, QHBoxLayout, QOpenGLWidget,
                              QWidget, QPushButton)
 
 import OpenGL.GL as gl

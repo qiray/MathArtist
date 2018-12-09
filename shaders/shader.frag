@@ -18,48 +18,58 @@ vec3 y = vec3(0.0);
 
 //////////////////////////////// Coords: ////////////////////////////////
 
-// def linear_coord(x, y, d, size, polar_shift=None):
-//     u = 2 * x/size - 1.0
-//     v = 2 * y/size - 1.0
-//     return u, v
+vec2 polar_shift = vec2(1.0, 0.0);
 
-// def tent_coord(x, y, d, size, polar_shift=None):
-//     u = 1 - 2 * abs(x/size)
-//     v = 1 - 2 * abs(y/size)
-//     return u, v
+// gl_FragCoord - current coordinates
+// u_resolution - widget size
+//hack for flipping y axis:
+vec2 current_coord = vec2(gl_FragCoord.x, u_resolution.y - gl_FragCoord.y);
 
-// def sin_coord(x, y, d, size, polar_shift=None):
-//     u = math.sin(2*math.pi*x/size)
-//     v = math.sin(2*math.pi*y/size)
-//     return u, v
+vec2 linear_coord() {
+    return 2.0*current_coord.xy / u_resolution - 1.0; //linear coord conversion: [-1; 1]
+}
 
-// def rotate_coord(x, y, d, size, polar_shift=None):
-//     d = abs(x - y)/math.sqrt(2)
-//     u = math.sqrt(8)*d/size - 1
-//     v = math.sqrt(2*(x*x + y*y - d*d))/size - 1
-//     return u, v
+vec2 tent_coord() {
+    return 1 - 2 * abs(current_coord.xy / u_resolution);
+}
 
-// def curved_rotate_coord(x, y, d, size, polar_shift=None):
-//     u = (x - y)/size
-//     v = math.sqrt(2*(x*x + y*y - u*u))/size - 1
-//     return u, v
+vec2 sin_coord() {
+    return sin(2*M_PI*current_coord.xy / u_resolution);
+}
 
-// def polar(x, y, d, size, polar_shift):
-//     x -= polar_shift[0]*size
-//     y -= polar_shift[1]*size
-//     u = math.sqrt(x*x + y*y)/size
-//     v = 0 if x == 0 else math.atan(y/x)*2/math.pi
-//     return u, v
+vec2 rotate_coord() {
+    float d = abs(current_coord.x - current_coord.y)/sqrt(2);
+    float u = sqrt(8)*d/u_resolution.x - 1.0;
+    float v = sqrt(2*(pow(current_coord.x, 2) + pow(current_coord.y, 2) - d*d))/u_resolution.x - 1.0;
+    return vec2(u, 1.0 - v);
+}
 
-// def center(x, y, d, size, polar_shift):
-//     half = size/2
-//     if x >= half:
-//         x = size - x
-//     if y >= half:
-//         y = size - y
-//     u = 2 * x/half - 1.0
-//     v = 2 * y/half - 1.0
-//     return u, v
+vec2 curved_rotate_coord() {
+    float u = (current_coord.x - current_coord.y)/u_resolution.x;
+    float v = sqrt(2*(pow(current_coord.x, 2) + pow(current_coord.y, 2) - u*u))/u_resolution.x - 1.0;
+    return vec2(u, v);
+}
+
+vec2 polar() {
+    float x = current_coord.x - polar_shift.x*u_resolution.x;
+    float y = current_coord.y - polar_shift.y*u_resolution.y;
+    float u = sqrt(x*x + y*y)/u_resolution.x;
+    float v = x == 0 ? 0 : atan(y/x)*2/M_PI;
+    return vec2(u, v);
+}
+
+vec2 center() {
+    int halfsize = (u_resolution.x)/2;
+    float x = current_coord.x;
+    float y = current_coord.y;
+    if (x >= halfsize)
+        x = u_resolution.x - x;
+    if (y >= halfsize)
+        y = u_resolution.y - y;
+    float u = 2 * x/halfsize - 1.0;
+    float v = 2 * y/halfsize - 1.0;
+    return vec2(u, v);
+}
 
 //////////////////////////////// Common: ////////////////////////////////
 
@@ -118,15 +128,15 @@ vec3 color_binary(vec3 c1, vec3 c2, int operator) {
 
 // Terminals:
 
-vec3 Random(vec3 color) {
-    return color;
+vec3 Random(float r, float g, float b) {
+    return vec3(r, g, b);
 }
 
-vec3 Palette(vec3 color) {
-    return color;
+vec3 Palette(float r, float g, float b) {
+    return vec3(r, g, b);
 }
 
-vec3 White(vec3 color) {
+vec3 White(float r, float g, float b) {
     return vec3(1.0, 1.0, 1.0);
 }
 
@@ -148,8 +158,7 @@ vec3 Tent(vec3 color) {
 }
 
 vec3 Sin(vec3 color, float phase, float freq) {
-    vec3 result = phase + freq*color;
-    return result;
+    return sin(phase + freq*color);
 }
 
 vec3 Not(vec3 color) {
@@ -194,114 +203,47 @@ vec3 Xor(vec3 color1, vec3 color2) {
     return color_binary(color1, color2, XOR);
 }
 
-// class Wave():
-//     arity = 2
-//     mindepth = 0
-//     def __init__(self, e1, e2):
-//         self.e1 = e1
-//         self.e2 = e2
-//     def __repr__(self):
-//         return 'Wave(%s, %s)' % (self.e1, self.e2)
-//     def eval(self, x, y):
-//         (r1, g1, b1) = self.e1.eval(x, y)
-//         (r2, g2, b2) = self.e2.eval(x, y)
-//         return (wave(r1, r2), wave(g1, g2), wave(b1, b2))
+vec3 Wave(vec3 c1, vec3 c2) {
+    return vec3(wave(c1.r, c2.r), wave(c1.g, c2.g), wave(c1.b, c2.b));
+}
 
-// class Level():
-//     arity = 3
-//     mindepth = 0
-//     def __init__(self, level, e1, e2, treshold = None):
-//         self.treshold = treshold if treshold else random.uniform(-1.0, 1.0) #for parsing
-//         self.level = level
-//         self.e1 = e1
-//         self.e2 = e2
-//     def __repr__(self):
-//         return 'Level(%s, %s, %s, %g)' % (self.level, self.e1, self.e2, self.treshold)
-//     def eval(self, x, y):
-//         (r1, g1, b1) = self.level.eval(x, y)
-//         (r2, g2, b2) = self.e1.eval(x, y)
-//         (r3, g3, b3) = self.e2.eval(x, y)
-//         r4 = r2 if r1 < self.treshold else r3
-//         g4 = g2 if g1 < self.treshold else g3
-//         b4 = b2 if b1 < self.treshold else b3
-//         return (r4, g4, b4)
+vec3 Level(vec3 level, vec3 c1, vec3 c2, float treshold) {
+    float r = level.r < treshold ? c1.r : c2.r;
+    float g = level.g < treshold ? c1.g : c2.g;
+    float b = level.b < treshold ? c1.b : c2.b;
+    return vec3(r, g, b);
+}
 
-// class Mix():
-//     arity = 3
-//     mindepth = 0
-//     def __init__(self, w, e1, e2):
-//         self.w = w
-//         self.e1 = e1
-//         self.e2 = e2
-//     def __repr__(self):
-//         return 'Mix(%s, %s, %s)' % (self.w, self.e1, self.e2)
-//     def eval(self, x, y):
-//         w = 0.5 * (self.w.eval(x, y)[0] + 1.0)
-//         c1 = self.e1.eval(x, y)
-//         c2 = self.e2.eval(x, y)
-//         return average(c1, c2, w)
+vec3 Mix(vec3 w, vec3 color1, vec3 color2) {
+    float weight = 0.5 * (w[0] + 1.0);
+    return average_weighted(color1, color2, weight);
+}
 
-// class RGB():
-//     arity = 3
-//     mindepth = 4
-//     def __init__(self, e1, e2, e3):
-//         self.e1 = e1
-//         self.e2 = e2
-//         self.e3 = e3
-//     def __repr__(self):
-//         return 'RGB(%s, %s, %s)' % (self.e1, self.e2, self.e3)
-//     def eval(self, x, y):
-//         (r, _, _) = self.e1.eval(x, y)
-//         (_, g, _) = self.e2.eval(x, y)
-//         (_, _, b) = self.e3.eval(x, y)
-//         return (r, g, b)
+vec3 RGB(vec3 c1, vec3 c2, vec3 c3) {
+    return vec3(c1.r, c2.g, c3.b);
+}
 
-// class Closest():
-//     arity = 3
-//     mindepth = 3
-//     def __init__(self, target, e1, e2):
-//         self.target = target
-//         self.e1 = e1
-//         self.e2 = e2
-//     def __repr__(self):
-//         return 'Closest(%s, %s, %s)' % (self.target, self.e1, self.e2)
-//     def eval(self, x, y):
-//         (r1, g1, b1) = self.target.eval(x, y)
-//         (r2, g2, b2) = self.e1.eval(x, y)
-//         (r3, g3, b3) = self.e2.eval(x, y)
-//         #distances between colors:
-//         d1 = math.sqrt((r2-r1)**2+(g2-g1)**2+(b2-b1)**2)
-//         d2 = math.sqrt((r3-r1)**2+(g3-g1)**2+(b3-b1)**2)
+vec3 Closest(vec3 target, vec3 c1, vec3 c2) {
+    float d1 = sqrt(pow(c1.r - target.r, 2) + pow(c1.g - target.g, 2) + pow(c1.b - target.b, 2));
+    float d2 = sqrt(pow(c2.r - target.r, 2) + pow(c2.g - target.g, 2) + pow(c2.b - target.b, 2));
+    return d1 < d2 ? c1 : c2;
+}
 
-//         return (r2, g2, b2) if d1 < d2 else (r3, g3, b3)
+vec3 Far(vec3 target, vec3 c1, vec3 c2) {
+    float d1 = sqrt(pow(c1.r - target.r, 2) + pow(c1.g - target.g, 2) + pow(c1.b - target.b, 2));
+    float d2 = sqrt(pow(c2.r - target.r, 2) + pow(c2.g - target.g, 2) + pow(c2.b - target.b, 2));
+    return d1 > d2 ? c1 : c2;
+}
 
-// class Far():
-//     arity = 3
-//     mindepth = 3
-//     def __init__(self, target, e1, e2):
-//         self.target = target
-//         self.e1 = e1
-//         self.e2 = e2
-//     def __repr__(self):
-//         return 'Far(%s, %s, %s)' % (self.target, self.e1, self.e2)
-//     def eval(self, x, y):
-//         (r1, g1, b1) = self.target.eval(x, y)
-//         (r2, g2, b2) = self.e1.eval(x, y)
-//         (r3, g3, b3) = self.e2.eval(x, y)
-//         #distances between colors:
-//         d1 = math.sqrt((r2-r1)**2+(g2-g1)**2+(b2-b1)**2)
-//         d2 = math.sqrt((r3-r1)**2+(g3-g1)**2+(b3-b1)**2)
-
-//         return (r2, g2, b2) if d1 > d2 else (r3, g3, b3)
+//////////////////////////////// Main: ////////////////////////////////
 
 void main() {
-    vec2 coord = gl_FragCoord.xy / u_resolution; //calc coords [0; 1]
-    vec2 pos = 2.0*coord.xy - 1.0; //linear coord conversion: [-1; 1]
-    x = vec3(pos.x); //use global x, y
-    y = vec3(pos.y);
-    //TODO: replace formula, coord_system 
+    vec2 coord = linear_coord();
+    x = vec3(coord.x); //use global x, y
+    y = vec3(coord.y);
+    //TODO: replace formula, coord_system, polar_shift
     // vec3 result = $FORMULA$;
-    vec3 result = Well(Tent(x));
+    vec3 result = Chess(0.5, 0.1); //TODO: fix Chess function
     vec3 color = 0.5*result + 0.5; //[-1; 1] -> [1,1]
-    gl_FragColor = vec4(color, 1); //color for vertex
+    gl_FragColor = vec4(color, 1); //Result - color for vertex
 }
