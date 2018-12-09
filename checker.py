@@ -47,7 +47,7 @@ def preview_score(art, coord_system):
     colors = []
     for y in range(0, size, d):
         for x in range(0, size, d):
-            u, v = coord_system(x, y, d, size, shift)
+            u, v = coord_system(x, y, size, shift)
             (r, g, b) = art.eval(u, v)
             colors.append((float_color_to_int(r), float_color_to_int(g), float_color_to_int(b)))
     set_colors = set(colors)

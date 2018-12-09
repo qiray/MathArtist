@@ -58,6 +58,7 @@ SIZE = 512
 #Some material from https://habr.com/post/247123/
 
 #TODO: read https://thebookofshaders.com/02/
+#TODO: draw OpenGL without GUI
 
 class Window(QWidget):
 

@@ -245,7 +245,7 @@ class Art():
                 if self.stop_work:
                     break
                 #Convert coordinates to range [-1, 1]
-                u, v = Art.coord_transform(x, y, self.d, self.size, Art.polar_shift)
+                u, v = Art.coord_transform(x, y, self.size, Art.polar_shift)
                 if not self.image_array[x][y]:
                     (r, g, b) = self.art.eval(u, v)
                     self.image_array[x][y] = int_rgb(r, g, b)
