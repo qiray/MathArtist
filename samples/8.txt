@@ -1,4 +1,5 @@
 Using operators: ['VariableX', 'VariableY', 'Palette', 'And', 'Or', 'Xor']
 Use depth: False
 Coordinates transfrom: polar
+Polar shift: [0, 0]
 Formula: Or(Xor(x, x), And(y, x))

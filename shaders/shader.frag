@@ -1,4 +1,4 @@
-#version 130
+#version 120
 
 #ifdef GL_FRAGMENT_PRECISION_HIGH
     precision highp float;
@@ -18,7 +18,7 @@ vec3 y = vec3(0.0);
 
 //////////////////////////////// Coords: ////////////////////////////////
 
-vec2 polar_shift = vec2(1.0, 0.0);
+vec2 polar_shift = vec2(1.0, 1.0);
 
 // gl_FragCoord - current coordinates
 // u_resolution - widget size
@@ -73,6 +73,61 @@ vec2 center() {
 
 //////////////////////////////// Common: ////////////////////////////////
 
+// Awesome: shaders version 120 don't have bitwise operations!
+
+int int_and(int n1, int n2) {
+    int byteVal = 1;
+    int result = 0;
+    while (n1 > 0 || n2 > 0) {
+        if (mod(n1, 2) == 1 && mod(n2, 2) == 1)
+            result += byteVal;
+        n1 = int(floor(n1 / 2));
+        n2 = int(floor(n2 / 2));
+        byteVal *= 2;
+    }
+    return result;
+}
+
+int int_or(int n1, int n2) {
+    int byteVal = 1;
+    int result = 0;
+    while (n1 > 0 || n2 > 0) {
+        if (mod(n1, 2) == 1 || mod(n2, 2) == 1)
+            result += byteVal;
+        n1 = int(floor(n1 / 2));
+        n2 = int(floor(n2 / 2));
+        byteVal *= 2;
+    }
+    return result;
+}
+
+int int_xor(int n1, int n2) {
+    int byteVal = 1;
+    int result = 0;
+    while (n1 > 0 || n2 > 0) {
+        if (mod(n1, 2) != mod(n2, 2))
+            result += byteVal;
+        n1 = int(floor(n1 / 2));
+        n2 = int(floor(n2 / 2));
+        byteVal *= 2;
+    }
+    return result;
+}
+
+vec3 ivec3_and(ivec3 v1, ivec3 v2) {
+    return vec3(int_and(v1.r, v2.r), int_and(v1.g, v2.g), int_and(v1.b, v2.b));
+}
+
+vec3 ivec3_or(ivec3 v1, ivec3 v2) {
+    return vec3(int_or(v1.r, v2.r), int_or(v1.g, v2.g), int_or(v1.b, v2.b));
+}
+
+vec3 ivec3_xor(ivec3 v1, ivec3 v2) {
+    return vec3(int_xor(v1.r, v2.r), int_xor(v1.g, v2.g), int_xor(v1.b, v2.b));
+}
+
+//
+
 float wellf(float x) {
     float result = 1.0 - (2.0 / pow(1.0 + x*x, 8.0));
     return result < -1.0 ? 1.0 : result;
@@ -113,13 +168,12 @@ vec3 average(vec3 c1, vec3 c2) {
 vec3 color_binary(vec3 c1, vec3 c2, int operator) {
     ivec3 color1 = ivec3(float_color_to_int(c1.r), float_color_to_int(c1.g), float_color_to_int(c1.b));
     ivec3 color2 = ivec3(float_color_to_int(c2.r), float_color_to_int(c2.g), float_color_to_int(c2.b));
-    switch(operator) {
-        case AND:
-            return 2.0*(color1 & color2)/255.0 - 1.0;
-        case OR:
-            return 2.0*(color1 | color2)/255.0 - 1.0;
-        case XOR:
-            return 2.0*(color1 ^ color2)/255.0 - 1.0;
+    if (operator == AND) {
+        return 2.0*ivec3_and(color1, color2)/255.0 - 1.0;
+    } else if (operator == OR) {
+        return 2.0*ivec3_or(color1, color2)/255.0 - 1.0;
+    } else if (operator == XOR) {
+        return 2.0*ivec3_xor(color1, color2)/255.0 - 1.0;
     }
     return vec3(0.0);
 }
@@ -141,10 +195,9 @@ vec3 White(float r, float g, float b) {
 }
 
 vec3 Chess(float wX, float wY) {
-    int isOdd = 0;
-    isOdd ^= int(floor(x/wX)) & 1;
-    isOdd ^= int(floor(y/wY)) & 1;
-    return isOdd != 0 ? vec3(-1.0) : vec3(1.0);
+    int xOdd = int(mod(floor(x/wX), 2.0));
+    int yOdd = int(mod(floor(y/wY), 2.0));
+    return xOdd != yOdd ? vec3(-1.0) : vec3(1.0);
 }
 
 // Nonterminals:
@@ -238,12 +291,12 @@ vec3 Far(vec3 target, vec3 c1, vec3 c2) {
 //////////////////////////////// Main: ////////////////////////////////
 
 void main() {
-    vec2 coord = rotate_coord();
+    vec2 coord = polar();
     x = vec3(coord.x); //use global x, y
     y = vec3(coord.y);
     //TODO: replace formula, coord_system, polar_shift
     // vec3 result = $FORMULA$;
-    vec3 result = Mix(Well(Tent(Tent(Well(y)))), Mix(Well(Tent(Mix(y, Palette(0.3125, 0.796875, 0.609375), Random(0.22999,0.225828,0.58828)))), Well(Tent(Mix(Random(0.713522,0.50531,0.469267), Palette(0.71875, 0.851562, 0.515625), Chess(0.200054, 0.229368)))), Well(Tent(Well(y)))), Tent(Tent(Well(Mix(x, Palette(0.992188, 0.648438, 0.414062), Chess(0.880232, 0.762425))))));
+    vec3 result = Or(Xor(x, x), And(y, x));
     vec3 color = 0.5*result + 0.5; //[-1; 1] -> [1,1]
     gl_FragColor = vec4(color, 1); //Result - color for vertex
 }

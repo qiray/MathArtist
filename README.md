@@ -26,6 +26,8 @@ TODO: add release builds link
 
 ![](images/example1.png)
 
+TODO: add shaders version 120
+
 This program uses Python 3 so you need to have Python 3 and pip for build and run it. To install them use instructions for your OS.
 
 It also needs some extra libraries and applications such as argparse, PIL, numpy, PyQt5, pyinstaller and Cython. To install them run this:
@@ -65,12 +67,12 @@ I prefer to use pyinstaller for building release versions. To build one-file rel
 
 On Linux systems run:
 ```bash
-pyinstaller --onefile --windowed main.py --hidden-import=palettes --add-binary="/usr/lib64/libGL.so.1:lib"
+pyinstaller --onefile --windowed main.py --hidden-import=palettes --add-binary="/usr/lib64/libGL.so.1:lib" --icon=app.ico
 ```
 
 For Windows:
 ```cmd
-pyinstaller --onefile --windowed main.py --hidden-import=palettes
+pyinstaller --onefile --windowed main.py --hidden-import=palettes --icon=app.ico
 ```
 
 ## Usage

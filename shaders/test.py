@@ -53,13 +53,12 @@ import OpenGL.GL as gl
 
 SIZE = 512
 
-#pip install PyOpenGL
-
-#Some material from https://habr.com/post/247123/
-
-#TODO: read https://thebookofshaders.com/02/
 #TODO: draw OpenGL without GUI
-#TODO: shader version 120
+
+# Pass data
+# Coordinates transform: polar
+# Polar shift: [0, 0]
+# Formula: Or(Xor(x, x), And(y, x))
 
 class Window(QWidget):
 
@@ -89,12 +88,10 @@ class Window(QWidget):
             self.close()
         event.accept()
 
-
 class GLWidget(QOpenGLWidget):
 
     def __init__(self, parent=None):
         super(GLWidget, self).__init__(parent)
-        self.bgcolor = QColor.fromRgb(100, 100, 100)
         self.setMinimumSize(QSize(SIZE, SIZE))
         self.setMaximumSize(QSize(SIZE, SIZE))
 
@@ -115,27 +112,8 @@ class GLWidget(QOpenGLWidget):
 
     def initializeGL(self):
         print(self.getOpenglInfo())
-        self.setClearColor(self.bgcolor)
-        self.initGL()
+        self.setClearColor(QColor.fromRgb(255, 255, 255)) #set background
 
-    def paintGL(self):
-        start = time.time()
-        print("Redrawing")
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT)                    # Clear screen
-        gl.glEnableClientState(gl.GL_VERTEX_ARRAY)            # Включаем использование массива вершин
-        # Указываем, где взять массив вершин:
-        # Первый параметр - сколько используется координат на одну вершину
-        # Второй параметр - определяем тип данных для каждой координаты вершины
-        # Третий парметр - определяет смещение между вершинами в массиве
-        # Если вершины идут одна за другой, то смещение 0
-        # Четвертый параметр - указатель на первую координату первой вершины в массиве
-        gl.glVertexPointer(2, gl.GL_FLOAT, 0, self.pointdata)
-        gl.glDrawArrays(gl.GL_QUADS, 0, 4)
-        gl.glDisableClientState(gl.GL_VERTEX_ARRAY)
-        end = time.time()
-        print("Time for drawing:", end - start)
-
-    def initGL(self):
         vertex = create_shader_from_file(gl.GL_VERTEX_SHADER, 'shader.vert') #create vertex shader
         fragment = create_shader_from_file(gl.GL_FRAGMENT_SHADER, 'shader.frag') #create fragment shader
         # Создаем пустой объект шейдерной программы
@@ -151,18 +129,30 @@ class GLWidget(QOpenGLWidget):
             gl.glUseProgram(program)
         except:
             pass
-
         resolution = gl.glGetUniformLocation(program, 'u_resolution') #register uniform
         gl.glUniform2i(resolution, SIZE, SIZE) #pass resolution value to shaders
-
         # Verticles array
         self.pointdata = [[-1.0, -1.0], [-1.0, 1.0], [1.0, 1.0], [1.0, -1.0]]
 
+    def paintGL(self):
+        start = time.time()
+        print("Redrawing")
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT)                    # Clear screen
+        gl.glEnableClientState(gl.GL_VERTEX_ARRAY)            # Enable using vertex array
+        # Указываем, где взять массив вершин:
+        # Первый параметр - сколько используется координат на одну вершину
+        # Второй параметр - определяем тип данных для каждой координаты вершины
+        # Третий парметр - определяет смещение между вершинами в массиве
+        # Если вершины идут одна за другой, то смещение 0
+        # Четвертый параметр - указатель на первую координату первой вершины в массиве
+        gl.glVertexPointer(2, gl.GL_FLOAT, 0, self.pointdata)
+        gl.glDrawArrays(gl.GL_QUADS, 0, 4)
+        gl.glDisableClientState(gl.GL_VERTEX_ARRAY)
+        end = time.time()
+        print("Time for drawing:", end - start)
+
     def setClearColor(self, c):
         gl.glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF())
-
-    def setColor(self, c):
-        gl.glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF())
 
 def create_shader_from_source(shader_type, source):
     '''Create shader from source code'''
@@ -184,5 +174,5 @@ def create_shader_from_file(shader_type, path):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = Window()
-    window.show()
+    # window.show()
     sys.exit(app.exec_())

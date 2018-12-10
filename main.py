@@ -40,10 +40,8 @@ from common import SIZE
 #pyinstaller --add-binary (https://pyinstaller.readthedocs.io/en/v3.3.1/usage.html)
 
 #TODO: test on different OS
-#TODO: add icon into pyinstaller
 #TODO: maybe add Makefile
-#TODO: optimize with shaders?
-#TODO: make autoposting (twitter for example)
+#TODO: make autoposting (twitter for example) - extra tool
 
 class DrawThread(QThread):
     def __init__(self, load_file=""):
@@ -190,7 +188,7 @@ class GUI(QWidget):
         grid.addWidget(self.name_label, 1, 0, 1, 2)
 
         self.setWindowTitle('Math Artist')
-        self.setWindowIcon(QtGui.QIcon('icon.png'))
+        self.setWindowIcon(QtGui.QIcon('icon.ico'))
         self.show()
         self.new_image_thread()
 
