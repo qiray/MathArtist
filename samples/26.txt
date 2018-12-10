@@ -1,5 +1,5 @@
 Name: Happy man
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Random', 'Mix', 'Well', 'Tent', 'Chess']
 Use depth: False
-Coordinates transfrom: rotate_coord
+Coordinates transform: rotate_coord
 Formula: Mix(Well(Tent(Tent(Well(y)))), Mix(Well(Tent(Mix(y, Palette(0.3125, 0.796875, 0.609375), Random(0.22999,0.225828,0.58828)))), Well(Tent(Mix(Random(0.713522,0.50531,0.469267), Palette(0.71875, 0.851562, 0.515625), Chess(0.200054, 0.229368)))), Well(Tent(Well(y)))), Tent(Tent(Well(Mix(x, Palette(0.992188, 0.648438, 0.414062), Chess(0.880232, 0.762425))))))

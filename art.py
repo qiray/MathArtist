@@ -291,7 +291,7 @@ class Art():
         print("Name:", self.name)
         print("Using operators:", [x.__name__ for x in Art.operatorsList])
         print("Use depth:", Art.use_depth)
-        print("Coordinates transfrom:", Art.coord_transform.__name__)
+        print("Coordinates transform:", Art.coord_transform.__name__)
         if Art.coord_transform.__name__ == 'polar':
             print("Polar shift:", Art.polar_shift)
         print("Formula:", self.art, '\n') #draw art tree

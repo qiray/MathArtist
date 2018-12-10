@@ -48,7 +48,7 @@ def read_file(filepath):
         for line in f.readlines():
             if line.startswith("Use depth:"):
                 use_depth = line.split(':')[1].replace(" ", "")
-            elif line.startswith("Coordinates transfrom:"):
+            elif line.startswith("Coordinates transform:"):
                 coord_transform = line.split(':')[1].replace(" ", "")
             elif line.startswith("Polar shift:"):
                 polar_shift = line.split(':')[1].replace(" ", "")

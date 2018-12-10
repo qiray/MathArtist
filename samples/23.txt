@@ -1,5 +1,5 @@
 Name: Autobiography for maelstrom
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
 Use depth: True
-Coordinates transfrom: tent_coord
+Coordinates transform: tent_coord
 Formula: SinCurve(SinCurve(Sin(Sin(Mix(Mix(x, y, x), Mix(Palette(-0.335938, -0.234375, -0.125), x, x), Sin(y, 2.11201, 4.17401)), 1.26394, 1.70206), 0.151744, 5.62284)))

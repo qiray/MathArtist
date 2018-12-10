@@ -1,5 +1,5 @@
 Name: Your angel near your insight
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
 Use depth: False
-Coordinates transfrom: rotate_coord
+Coordinates transform: rotate_coord
 Formula: Tent(Tent(Well(Tent(Mix(Well(x), Well(y), Mix(y, x, Palette(0.796875, 0.398438, 0.203125)))))))

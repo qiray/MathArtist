@@ -1,5 +1,5 @@
 Name: Joyous conflict
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent', 'SinCurve', 'AbsSin']
 Use depth: True
-Coordinates transfrom: sin_coord
+Coordinates transform: sin_coord
 Formula: AbsSin(SinCurve(Well(Mix(AbsSin(y), Well(Palette(-0.304688, -0.382812, -0.382812)), AbsSin(x)))))

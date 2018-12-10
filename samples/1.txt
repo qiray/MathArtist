@@ -1,5 +1,5 @@
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
 Use depth: False
-Coordinates transfrom: polar
+Coordinates transform: polar
 Polar shift: [1, 0]
 Formula: SinCurve(Mix(Mix(x, y, y), SinCurve(x), Mix(Palette(-0.21875, -0.757812, -0.265625), Palette(-0.195312, -0.25, -0.0703125), y)))

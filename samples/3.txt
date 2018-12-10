@@ -1,4 +1,4 @@
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
 Use depth: False
-Coordinates transfrom: tent_coord
+Coordinates transform: tent_coord
 Formula: Tent(Mix(x, y, Palette(0.820312, 0.75, 0.632812)))

@@ -1,4 +1,4 @@
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
 Use depth: False
-Coordinates transfrom: sin_coord
+Coordinates transform: sin_coord
 Formula: SinCurve(Sin(Mix(y, x, Palette(0.960938, 0.539062, 0.195312)), 1.00736, 3.24802))

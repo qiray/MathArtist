@@ -1,4 +1,4 @@
 Using operators: ['VariableX', 'VariableY', 'Random', 'Palette', 'Mix', 'Well', 'Sin', 'SinCurve', 'Tent', 'AbsSin']
 Use depth: False
-Coordinates transfrom: sin_coord
+Coordinates transform: sin_coord
 Formula: Tent(Well(Well(AbsSin(AbsSin(Mix(x, y, Palette(0.296875, 0.234375, 0)))))))

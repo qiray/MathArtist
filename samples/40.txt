@@ -1,5 +1,5 @@
 Name: Your problem family
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Sin', 'SinCurve', 'Mix']
 Use depth: False
-Coordinates transfrom: tent_coord
+Coordinates transform: tent_coord
 Formula: Sin(Sin(SinCurve(Mix(Mix(SinCurve(Palette(-0.335938, -0.484375, -0.578125)), Sin(x, 0.284353, 4.37239), Sin(y, 0.206711, 5.87174)), Mix(SinCurve(Palette(0.929688, -0.0625, -0.710938)), Mix(Palette(0.648438, 0.609375, -0.523438), y, Palette(0.882812, 0.867188, 0.289062)), Mix(x, x, x)), SinCurve(Sin(Palette(-0.25, 0.445312, 0.203125), 2.83971, 1.66042)))), 1.33448, 2.0417), 0.03254, 4.09633)

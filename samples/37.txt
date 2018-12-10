@@ -1,7 +1,7 @@
 Name: Jittery spirit for overwhelming brushstroke over proud gentleman towards happy ego
 Using operators: ['VariableX', 'VariableY', 'White', 'Palette', 'Random', 'RGB', 'Far', 'Closest', 'Mix', 'Well']
 Use depth: False
-Coordinates transfrom: center
+Coordinates transform: center
 Formula: Mix(Well(Closest(Closest(y, White(1, 1, 1), Palette(-0.265625, -0.492188, -0.632812)), RGB(Palette(0.96875, 0.835938, 0.421875), White(1, 1, 1), Random(0.635464,0.405347,0.153554)), RGB(x, y, Random(0.651827,0.78222,0.799243)))), RGB(Closest(Mix(White(1, 1, 1), y, Palette(-0.0625, 0.5, 0.3125)), RGB(White(1, 1, 1), y, Palette(0.875,
 -0.0625, -0.8125)), Far(y, White(1, 1, 1), x)), RGB(Well(Random(0.0719684,0.855684,0.943754)), Closest(y, Random(0.396099,0.38396,0.318024), x), RGB(Palette(0.875, 0.3125,
 -0.625), y, White(1, 1, 1))), RGB(Far(Palette(-0.265625, -0.492188, -0.632812), x, x), RGB(Palette(0.96875, 0.835938, 0.421875), y, Palette(-0.0625, 0.5, 0.3125)), Mix(y, White(1, 1, 1), White(1, 1, 1)))), Closest(Far(RGB(White(1, 1, 1), Palette(0.875, -0.0625, -0.8125), y), RGB(White(1, 1, 1), y, x), Far(White(1, 1, 1), y, Random(0.47275,0.906728,0.112657))), Mix(Mix(White(1, 1, 1), x, Palette(0.875, 0.3125, -0.625)), Mix(White(1, 1, 1), White(1, 1, 1), Random(0.430498,0.710957,0.774806)), Closest(y, y, y)), Mix(RGB(White(1, 1, 1), y, Random(0.728051,0.673818,0.577295)), Far(y, Palette(-0.265625, -0.492188, -0.632812), y), Far(White(1, 1, 1), x, White(1, 1, 1)))))

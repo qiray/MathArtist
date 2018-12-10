@@ -1,5 +1,5 @@
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
 Use depth: True
-Coordinates transfrom: polar
+Coordinates transform: polar
 Polar shift: [1, 0]
 Formula: Tent(Well(Tent(Tent(Tent(Mix(Mix(Well(Tent(x)), Tent(Well(Palette(-0.773438, -0.851562, -0.851562))), Mix(Tent(x), Well(x), Tent(y))), Well(Tent(Mix(y, Palette(-0.71875, 0.421875, 0.15625), Palette(0.640625, -0.75, -0.484375)))), Tent(Mix(Tent(x), Tent(x), Mix(x, Palette(0.273438, 0.4375, -0.9375), x)))))))))

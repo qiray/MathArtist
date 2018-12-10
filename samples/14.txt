@@ -1,5 +1,5 @@
 Using operators: ['White', 'Palette', 'Random', 'VariableX', 'VariableY', 'Far', 'Well', 'Sin', 'AbsSin', 'Product']
 Use depth: False
-Coordinates transfrom: polar
+Coordinates transform: polar
 Polar shift: [0.5, 0.5]
 Formula: Far(Well(x), Product(Random(0.574928,0.255763,0.100623), y), Sin(Random(0.03488,0.156455,0.524925), 2.85516, 5.24514))

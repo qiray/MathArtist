@@ -1,4 +1,4 @@
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent']
 Use depth: True
-Coordinates transfrom: sin_coord
+Coordinates transform: sin_coord
 Formula: Tent(Well(Well(Mix(Mix(Tent(Palette(-0.335938, -0.484375, -0.578125)), Well(x), Tent(Palette(0.929688, -0.0625, -0.710938))), Well(Mix(y, y, Palette(0.648438, 0.609375, -0.523438))), Mix(Mix(y, y, y), Tent(x), Mix(Palette(0.882812, 0.867188, 0.289062), x, y))))))

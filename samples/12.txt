@@ -1,4 +1,4 @@
 Using operators: ['VariableX', 'VariableY', 'Palette', 'Mix', 'Well', 'Tent', 'SinCurve']
 Use depth: True
-Coordinates transfrom: linear_coord
+Coordinates transform: linear_coord
 Formula: Tent(Tent(SinCurve(SinCurve(Well(Mix(SinCurve(Tent(Tent(Palette(-0.0859375, -0.242188, -0.164062)))), Tent(Well(Mix(Palette(0.492188, 0.617188, 0.929688), Palette(0.71875, 0.78125, 0.929688), Palette(0.9375, 0.898438, 0.492188)))), Tent(Mix(Mix(x, x, y), Mix(y, Palette(0.648438, -0.5, -0.820312), Palette(-0.0859375, -0.242188, -0.164062)), Mix(x, y, Palette(0.492188, 0.617188, 0.929688))))))))))
