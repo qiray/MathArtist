@@ -18,7 +18,7 @@ vec3 y = vec3(0.0);
 
 //////////////////////////////// Coords: ////////////////////////////////
 
-vec2 polar_shift = vec2(1.0, 1.0);
+vec2 polar_shift = vec2 $POLAR_SHIFT$;
 
 // gl_FragCoord - current coordinates
 // u_resolution - widget size
@@ -291,11 +291,10 @@ vec3 Far(vec3 target, vec3 c1, vec3 c2) {
 //////////////////////////////// Main: ////////////////////////////////
 
 void main() {
-    vec2 coord = polar();
+    vec2 coord = $COORD$();
     x = vec3(coord.x); //use global x, y
     y = vec3(coord.y);
-    //TODO: replace formula, coord_system, polar_shift
-    // vec3 result = $FORMULA$;
+    vec3 result = $FORMULA$;
     vec3 result = Or(Xor(x, x), And(y, x));
     vec3 color = 0.5*result + 0.5; //[-1; 1] -> [1,1]
     gl_FragColor = vec4(color, 1); //Result - color for vertex

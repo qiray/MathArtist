@@ -68,7 +68,7 @@ class DrawThread(QThread):
         return self.art.name
 
     def reset_name(self):
-        self.art.reset_name
+        self.art.reset_name()
 
     def save_image(self):
         self.art.save_image_text()

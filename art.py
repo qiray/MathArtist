@@ -295,3 +295,10 @@ class Art():
         if Art.coord_transform.__name__ == 'polar':
             print("Polar shift:", Art.polar_shift)
         print("Formula:", self.art, '\n') #draw art tree
+
+    def get_art_as_object(self):
+        result = {}
+        result['coord'] = Art.coord_transform.__name__
+        result['shift'] = str(Art.polar_shift).replace("[", "(").replace("]", ")")
+        result['formula'] = str(self.art)
+        return result
