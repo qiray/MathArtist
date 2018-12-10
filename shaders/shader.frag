@@ -81,8 +81,8 @@ int int_and(int n1, int n2) {
     while (n1 > 0 || n2 > 0) {
         if (mod(n1, 2) == 1 && mod(n2, 2) == 1)
             result += byteVal;
-        n1 = int(floor(n1 / 2));
-        n2 = int(floor(n2 / 2));
+        n1 = int(floor(n1 / 2.0));
+        n2 = int(floor(n2 / 2.0));
         byteVal *= 2;
     }
     return result;
@@ -94,8 +94,8 @@ int int_or(int n1, int n2) {
     while (n1 > 0 || n2 > 0) {
         if (mod(n1, 2) == 1 || mod(n2, 2) == 1)
             result += byteVal;
-        n1 = int(floor(n1 / 2));
-        n2 = int(floor(n2 / 2));
+        n1 = int(floor(n1 / 2.0));
+        n2 = int(floor(n2 / 2.0));
         byteVal *= 2;
     }
     return result;
@@ -107,8 +107,8 @@ int int_xor(int n1, int n2) {
     while (n1 > 0 || n2 > 0) {
         if (mod(n1, 2) != mod(n2, 2))
             result += byteVal;
-        n1 = int(floor(n1 / 2));
-        n2 = int(floor(n2 / 2));
+        n1 = int(floor(n1 / 2.0));
+        n2 = int(floor(n2 / 2.0));
         byteVal *= 2;
     }
     return result;
@@ -152,8 +152,16 @@ float wave(float x, float y) {
 
 //Colors:
 
+int max_i(int a, int b) {
+    return a > b ? a : b;
+}
+
+int min_i(int a, int b) {
+    return a < b ? a : b;
+}
+
 int float_color_to_int(float c) {
-    return max(0, min(255, int(128 * (c + 1))));
+    return max_i(0, min_i(255, int(128 * (c + 1))));
 }
 
 vec3 average_weighted(vec3 c1, vec3 c2, float w) {
@@ -295,7 +303,6 @@ void main() {
     x = vec3(coord.x); //use global x, y
     y = vec3(coord.y);
     vec3 result = $FORMULA$;
-    vec3 result = Or(Xor(x, x), And(y, x));
     vec3 color = 0.5*result + 0.5; //[-1; 1] -> [1,1]
     gl_FragColor = vec4(color, 1); //Result - color for vertex
 }

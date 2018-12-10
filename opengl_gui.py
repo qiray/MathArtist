@@ -21,6 +21,7 @@
 
 import sys
 import time
+import webbrowser
 
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QColor, QIcon
@@ -33,6 +34,8 @@ from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 from common import SIZE
 
 #TODO: draw OpenGL without GUI
+#TODO: draw in another thread
+#TODO: fix crash on large formula
 
 # Pass data
 # Coordinates transform: polar
@@ -52,7 +55,7 @@ class GUI(QWidget):
         grid.addWidget(self.glWidget, 0, 0, 1, 2)
 
         new_button = QPushButton('Random image')
-        new_button.clicked.connect(self.save_image)
+        new_button.clicked.connect(self.new_image)
         grid.addWidget(new_button, 2, 0)
         new_button2 = QPushButton('Generate image')
         new_button2.clicked.connect(self.save_image)
@@ -74,6 +77,16 @@ class GUI(QWidget):
         self.setWindowTitle('Math Artist')
         self.setWindowIcon(QIcon('icon.ico'))
 
+    def new_image(self):
+        start = time.time()
+        self.art.prepare()
+        self.art.print_art()
+        self.status_label.setText("Generation finished in %g s" %(time.time() - start))
+        self.name_label.setText(self.art.name)
+        self.glWidget.initGL(self.art.get_art_as_object())
+        self.glWidget.paintGL()
+        self.status_label.setText("Drawing finished in %g s" %(time.time() - start))
+
     def save_image(self):
         image = self.glWidget.grabFramebuffer()
         image.save("output/1.png")
@@ -85,7 +98,7 @@ class GUI(QWidget):
             print("Closing...")
             self.close()
         elif key == Qt.Key_N or key == Qt.Key_R:
-            self.new_image_thread()
+            self.new_image()
         elif key == Qt.Key_G:
             self.new_image_name_thread()
         elif key == Qt.Key_O:
@@ -97,6 +110,12 @@ class GUI(QWidget):
         elif key == Qt.Key_F1:
             self.show_online_help()
         event.accept()
+
+    def show_about_message(self):
+        QMessageBox.about(self, 'About', get_about_info())
+
+    def show_online_help(self):
+        webbrowser.open('http://google.com') #TODO: open github readme
 
 class GLWidget(QOpenGLWidget):
 
@@ -123,29 +142,44 @@ class GLWidget(QOpenGLWidget):
     def initializeGL(self):
         print(self.getOpenglInfo())
         self.setClearColor(QColor.fromRgb(255, 255, 255)) #set background
-
-        vertex = create_shader_from_file(gl.GL_VERTEX_SHADER, 'shaders/shader.vert') #create vertex shader
-
-        with open('shaders/shader.frag', 'r') as shader_file:
-            frag_source = shader_file.read()
-        frag_source = frag_source.replace("$POLAR_SHIFT$", "").replace("$COORD$", "").replace("$FORMULA$", "") #TODO: replace
-        fragment = create_shader_from_source(gl.GL_FRAGMENT_SHADER, frag_source) #create fragment shader
-        program = gl.glCreateProgram() #Create empty GL program
-        gl.glAttachShader(program, vertex) #attach vertex shader to program
-        gl.glAttachShader(program, fragment) #attach fragment shader to program
-        gl.glLinkProgram(program) #Link shader program
-        try: #It can fail on some OpenGL versionss
-            gl.glUseProgram(program) #Use this program
-        except:
-            pass
-        resolution = gl.glGetUniformLocation(program, 'u_resolution') #register uniform
-        gl.glUniform2i(resolution, SIZE, SIZE) #pass resolution value to shaders
         # Verticles array:
         self.pointdata = [[-1.0, -1.0], [-1.0, 1.0], [1.0, 1.0], [1.0, -1.0]]
+        self.program = 0
+        self.vertex = 0
+        self.fragment = 0
+        self.initGL()
+
+    def initGL(self, art_object=None):
+        start = time.time()
+        with open('shaders/shader.frag', 'r') as shader_file:
+            frag_source = shader_file.read()
+        if art_object:
+            self.makeCurrent() #IMPORTANT: set focus to change widget
+            gl.glDeleteProgram(self.program)
+            gl.glDeleteShader(self.vertex)
+            gl.glDeleteShader(self.fragment)
+            frag_source = frag_source.replace("$POLAR_SHIFT$", art_object['shift']).replace("$COORD$", art_object['coord']).replace("$FORMULA$", art_object['formula'])
+        else:
+            frag_source = frag_source.replace("$POLAR_SHIFT$", "(0, 0)").replace("$COORD$", "linear_coord").replace("$FORMULA$", "Mix(x, y, x)")
+        self.vertex = create_shader_from_file(gl.GL_VERTEX_SHADER, 'shaders/shader.vert') #create vertex shader
+        self.fragment = create_shader_from_source(gl.GL_FRAGMENT_SHADER, frag_source) #create fragment shader
+        self.program = gl.glCreateProgram() #Create empty GL program
+        gl.glAttachShader(self.program, self.vertex) #attach vertex shader to program
+        gl.glAttachShader(self.program, self.fragment) #attach fragment shader to program
+        gl.glLinkProgram(self.program) #Link shader program
+        #check errors:
+        if gl.glGetProgramiv(self.program, gl.GL_LINK_STATUS) == gl.GL_FALSE:
+            print(gl.glGetProgramInfoLog(self.program))
+            exit(1)
+        try: #It can fail on some OpenGL versions
+            gl.glUseProgram(self.program) #Use this program
+        except:
+            pass
+        resolution = gl.glGetUniformLocation(self.program, 'u_resolution') #register uniform
+        gl.glUniform2i(resolution, SIZE, SIZE) #pass resolution value to shaders
+        print("Time for compiling:", time.time() - start)
 
     def paintGL(self):
-        start = time.time()
-        print("Redrawing")
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)                    # Clear screen
         gl.glEnableClientState(gl.GL_VERTEX_ARRAY)            # Enable using vertex array
         #2 coords per vertex, use float type, 0 stride, use self.pointdata as data array:
@@ -153,7 +187,6 @@ class GLWidget(QOpenGLWidget):
         gl.glDrawArrays(gl.GL_QUADS, 0, 4)
         gl.glDisableClientState(gl.GL_VERTEX_ARRAY)
         end = time.time()
-        print("Time for drawing:", end - start)
 
     def setClearColor(self, c):
         gl.glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF())
@@ -172,6 +205,15 @@ def create_shader_from_file(shader_type, path):
     with open(path, 'r') as shader_file:
         source = shader_file.read()
     return create_shader_from_source(shader_type, source)
+
+def get_version():
+    return "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD)
+
+def get_about_info():
+    return ("\n" + APP_NAME + " " + get_version() + " Copyright (C) 2018 Yaroslav Zotov.\n" +
+        "Based on \"randomart\" Copyright (C) 2010, Andrej Bauer.\n"
+        "This program comes with ABSOLUTELY NO WARRANTY.\n" +
+        "This is free software under GNU GPL3; see the source for copying conditions\n")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

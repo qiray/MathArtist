@@ -67,7 +67,7 @@ from checker import check_art
 APP_NAME = "MathArtist"
 VERSION_MAJOR = 0
 VERSION_MINOR = 9
-VERSION_BUILD = 3
+VERSION_BUILD = 4
 
 class Art():
     """Math art generator class"""
@@ -176,7 +176,7 @@ class Art():
     def init_image_array(self):
         return [[None for _ in range(self.size)] for _ in range(self.size)]
 
-    def redraw(self):
+    def prepare(self):
         Art.init_static_data()
         Palette.randomPalette()
         self.start = time.time()
@@ -200,6 +200,9 @@ class Art():
                 result = check_art(self.art, self.functions, Art.coord_transform, depth)
                 print ('Checker result =', result)
         self.name = generate_name() if not self.new_name else self.name
+
+    def redraw(self):
+        self.prepare()
         self.draw_image()
 
     def get_output_name(self):
