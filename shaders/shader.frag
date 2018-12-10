@@ -41,7 +41,7 @@ vec2 rotate_coord() {
     float d = abs(current_coord.x - current_coord.y)/sqrt(2);
     float u = sqrt(8)*d/u_resolution.x - 1.0;
     float v = sqrt(2*(pow(current_coord.x, 2) + pow(current_coord.y, 2) - d*d))/u_resolution.x - 1.0;
-    return vec2(u, 1.0 - v);
+    return vec2(u, v);
 }
 
 vec2 curved_rotate_coord() {
@@ -238,12 +238,12 @@ vec3 Far(vec3 target, vec3 c1, vec3 c2) {
 //////////////////////////////// Main: ////////////////////////////////
 
 void main() {
-    vec2 coord = linear_coord();
+    vec2 coord = rotate_coord();
     x = vec3(coord.x); //use global x, y
     y = vec3(coord.y);
     //TODO: replace formula, coord_system, polar_shift
     // vec3 result = $FORMULA$;
-    vec3 result = Chess(0.5, 0.1); //TODO: fix Chess function
+    vec3 result = Mix(Well(Tent(Tent(Well(y)))), Mix(Well(Tent(Mix(y, Palette(0.3125, 0.796875, 0.609375), Random(0.22999,0.225828,0.58828)))), Well(Tent(Mix(Random(0.713522,0.50531,0.469267), Palette(0.71875, 0.851562, 0.515625), Chess(0.200054, 0.229368)))), Well(Tent(Well(y)))), Tent(Tent(Well(Mix(x, Palette(0.992188, 0.648438, 0.414062), Chess(0.880232, 0.762425))))));
     vec3 color = 0.5*result + 0.5; //[-1; 1] -> [1,1]
     gl_FragColor = vec4(color, 1); //Result - color for vertex
 }

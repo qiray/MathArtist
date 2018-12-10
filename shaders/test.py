@@ -59,6 +59,7 @@ SIZE = 512
 
 #TODO: read https://thebookofshaders.com/02/
 #TODO: draw OpenGL without GUI
+#TODO: shader version 120
 
 class Window(QWidget):
 

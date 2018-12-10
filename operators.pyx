@@ -143,6 +143,7 @@ class Chess():
         if wX and wY: #for parsing
             self.wX = wX
             self.wY = wY
+            return
         self.wX = random.uniform(0.1, 1.0)
         self.wY = random.uniform(0.1, 1.0)
     def __repr__(self):
