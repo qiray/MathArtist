@@ -24,9 +24,10 @@ import time
 import webbrowser
 
 from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QColor, QIcon
+from PyQt5.QtGui import QColor, QIcon, QOpenGLContext
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QPushButton, QApplication,
     QLabel, QFileDialog, QMessageBox, QTextEdit, QOpenGLWidget)
+from PyQt5.QtCore import QThread, pyqtSignal
 
 import OpenGL.GL as gl
 
@@ -36,12 +37,30 @@ from common import SIZE
 #TODO: draw OpenGL without GUI
 #TODO: draw in another thread
 
+class DrawThread(QThread):
+    def __init__(self):
+        QThread.__init__(self)
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        pass
+
+    def stop(self):
+        self.wait()
+
 class GUI(QWidget):
+    init_trigger = pyqtSignal()
 
     def __init__(self):
         super().__init__()
 
-        self.glWidget = GLWidget()
+        self.draw_thread = DrawThread()
+        self.glWidget = GLWidget(self.init_trigger)
+        # self.context = self.glWidget.context()
+        # print(self.context)
+        # self.context.moveToThread(self.draw_thread)
         self.art = Art(use_checker=True)
 
         grid = QGridLayout()
@@ -70,6 +89,7 @@ class GUI(QWidget):
 
         self.setWindowTitle('Math Artist')
         self.setWindowIcon(QIcon('icon.ico'))
+        self.init_trigger.connect(self.new_image) #connect signal and slot
 
     def new_image(self):
         start = time.time()
@@ -113,8 +133,10 @@ class GUI(QWidget):
 
 class GLWidget(QOpenGLWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, init_trigger=None, parent=None):
+        super().__init__()
         super(GLWidget, self).__init__(parent)
+        self.init_trigger = init_trigger
         self.setMinimumSize(QSize(SIZE, SIZE))
         self.setMaximumSize(QSize(SIZE, SIZE))
 
@@ -142,6 +164,8 @@ class GLWidget(QOpenGLWidget):
         self.vertex = 0
         self.fragment = 0
         self.initGL()
+        if self.init_trigger:
+            self.init_trigger.emit() #emit signal
 
     def initGL(self, art_object=None):
         start = time.time()
@@ -154,7 +178,7 @@ class GLWidget(QOpenGLWidget):
             gl.glDeleteShader(self.fragment)
             frag_source = frag_source.replace("$POLAR_SHIFT$", art_object['shift']).replace("$COORD$", art_object['coord']).replace("$FORMULA$", art_object['formula'])
         else:
-            frag_source = frag_source.replace("$POLAR_SHIFT$", "(0, 0)").replace("$COORD$", "linear_coord").replace("$FORMULA$", "Mix(x, y, x)")
+            frag_source = frag_source.replace("$POLAR_SHIFT$", "(0, 0)").replace("$COORD$", "linear_coord").replace("$FORMULA$", "White(1, 1, 1)")
         self.vertex = create_shader_from_file(gl.GL_VERTEX_SHADER, 'shaders/shader.vert') #create vertex shader
         self.fragment = create_shader_from_source(gl.GL_FRAGMENT_SHADER, frag_source) #create fragment shader
         self.program = gl.glCreateProgram() #Create empty GL program
@@ -181,7 +205,6 @@ class GLWidget(QOpenGLWidget):
         gl.glVertexPointer(2, gl.GL_FLOAT, 0, self.pointdata)
         gl.glDrawArrays(gl.GL_QUADS, 0, 4)
         gl.glDisableClientState(gl.GL_VERTEX_ARRAY)
-        end = time.time()
 
     def setClearColor(self, c):
         gl.glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF())
