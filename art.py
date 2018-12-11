@@ -195,6 +195,7 @@ class Art():
             print ('Checker result =', result)
             while result <= 0:
                 print ('Generating new art')
+                self.functions = {}
                 depth = random.randrange(1, self.size_log + 1)
                 self.art = self.generate(depth)
                 result = check_art(self.art, self.functions, Art.coord_transform, depth)

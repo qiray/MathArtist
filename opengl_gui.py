@@ -35,12 +35,6 @@ from common import SIZE
 
 #TODO: draw OpenGL without GUI
 #TODO: draw in another thread
-#TODO: fix crash on large formula
-
-# Pass data
-# Coordinates transform: polar
-# Polar shift: [0, 0]
-# Formula: Or(Xor(x, x), And(y, x))
 
 class GUI(QWidget):
 
@@ -170,6 +164,7 @@ class GLWidget(QOpenGLWidget):
         #check errors:
         if gl.glGetProgramiv(self.program, gl.GL_LINK_STATUS) == gl.GL_FALSE:
             print(gl.glGetProgramInfoLog(self.program))
+            #TODO: save log with art object
             exit(1)
         try: #It can fail on some OpenGL versions
             gl.glUseProgram(self.program) #Use this program

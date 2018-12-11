@@ -72,6 +72,8 @@ def check_art(art, functions, coord_system, depth):
     coord_system_name = coord_system.__name__
     depth = depth if depth > 0 else 1
     count = sum(functions.values())
+    if count >= 10000: #Too difficult formula
+        return -1000
     result = 5*len(functions)
     count -= functions_count(functions, ['VariableX', 'VariableY'])
     well_tent = functions_count(functions, ['Well', 'Tent'])
