@@ -37,6 +37,7 @@ fulllist = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSin,
 
 operatorsLists = [
     fulllist,
+
     (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, Well, Level, Mix),
     (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, Well, Level, Mix, Palette),
     (VariableX, VariableY, Mix, Well), #minimalism
@@ -45,14 +46,15 @@ operatorsLists = [
     (VariableX, VariableY, Palette, Mix, Well, Tent),
     (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve), #nice curves
     (VariableX, VariableY, Palette, Sin, SinCurve, Mix), #multiple colors
-    (VariableX, VariableY, Palette, AbsSin, Sin, Mix),
+    (VariableX, VariableY, White, Palette, Random, RGB), #colors only
+
+    (VariableX, VariableY, Palette, AbsSin, Sin, Mix), #Sometimes boring?
     (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve, AbsSin),
     (VariableX, VariableY, Palette, And, Or, Xor), #squares
     (VariableX, VariableY, Random, Palette, Mix, Well, Sin, SinCurve, Tent, AbsSin),
     (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Sum, Mod), #sometimes dark
     (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Product, 
         Sum, Mod, Well, Tent),
-    (VariableX, VariableY, White, Palette, Random, RGB), #colors only
     (VariableX, VariableY, White, Palette, Random, RGB, Sin, SinCurve, Atan, Mix, Closest),
     (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well),
     (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well, Wave), #Strange colored spots

@@ -95,8 +95,8 @@ class Art():
             Art.polar_shift = Art.polar_shifts[index]
 
     def __init__(self, name=None, use_checker=False, console=False, load_file=None):
+        self.need_new_name = True
         self.name = self.init_name(name)
-        self.new_name = False
         self.use_checker = use_checker
         self.size = SIZE #we always use constant size = 512
         self.size_log = int(math.log(self.size, 2))
@@ -119,11 +119,12 @@ class Art():
 
     def set_name(self, name):
         self.name = self.init_name(name)
-        self.new_name = True
+        self.need_new_name = False
 
     def reset_name(self):
         self.name = ''
-        self.new_name = False
+        self.need_new_name = True
+        random.seed(datetime.now())
 
     def stop_drawing(self):
         self.stop_work = True
@@ -140,7 +141,9 @@ class Art():
             hex_string = hashlib.md5(hash_string.encode('utf-8'))
             hexdigest = hex_string.hexdigest()
             random.seed(int(hexdigest, 16))
+            self.need_new_name = False
             return hash_string
+        self.need_new_name = True
         random.seed(datetime.now())
         return generate_name()
 
@@ -177,6 +180,7 @@ class Art():
         return [[None for _ in range(self.size)] for _ in range(self.size)]
 
     def prepare(self):
+        self.name = self.init_name(generate_name()) if self.need_new_name else self.name
         Art.init_static_data()
         Palette.randomPalette()
         self.start = time.time()
@@ -200,7 +204,6 @@ class Art():
                 self.art = self.generate(depth)
                 result = check_art(self.art, self.functions, Art.coord_transform, depth)
                 print ('Checker result =', result)
-        self.name = generate_name() if not self.new_name else self.name
 
     def redraw(self):
         self.prepare()
@@ -263,7 +266,10 @@ class Art():
             pixels = np.swapaxes(pixels, 0, 1)
             self.img = Image.fromarray(pixels.astype('uint8'), 'RGBA')
             self.image_draw = ImageDraw.Draw(self.img)
-        self.status = "Drawing (stage %d of %d)" % (self.stage, self.stages)
+        if self.stage == self.stages:
+            self.status = "Completed in %g s" % (time.time() - self.start)
+        else:
+            self.status = "Drawing (stage %d of %d)" % (self.stage, self.stages)
         self.stage += 1
         if self.trigger:
             self.trigger.emit() #emit trigger to redraw image

@@ -41,7 +41,7 @@ from common import SIZE
 
 #TODO: test on different OS
 #TODO: maybe add Makefile
-#TODO: make autoposting (twitter for example) - extra tool
+#TODO: add sin(x)/x
 
 class DrawThread(QThread):
     def __init__(self, load_file=""):
@@ -90,6 +90,7 @@ class GUI(QWidget):
         super().__init__()
         self.draw_thread = None
         self.timer = 0
+        self.need_name_update = True
         self.initGUI()
 
     def keyPressEvent(self, event): #Handle keys
@@ -126,12 +127,16 @@ class GUI(QWidget):
         self.image = ImageQt.ImageQt(copy(self.draw_thread.get_image()))
         pixmap = QPixmap.fromImage(self.image)
         self.image_label.setPixmap(pixmap)
-        self.name_label.setText(self.draw_thread.get_name())
+        name = self.draw_thread.get_name()
+        if name and self.need_name_update:
+            self.name_label.setText(name)
+            self.need_name_update = False
         self.status_label.setText(self.draw_thread.get_status())
 
     def prepare_new_thread(self):
         if time.time() - self.timer < 1: #prevent from very often image updates
             return
+        self.need_name_update = True
         self.timer = time.time()
         if self.draw_thread: #if thread exists
             self.draw_thread.stop() #send signal to art object
