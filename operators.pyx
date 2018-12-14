@@ -50,6 +50,9 @@
 
 import random
 import math
+
+cimport libc.math as cmath
+
 from common import (average, well, tent, parse_color, sin_curve, abs_sin,
     color_binary, wave)
 from palettes import palettes
@@ -150,8 +153,8 @@ class Chess():
         return "Chess(%g, %g)" % (self.wX, self.wY)
     def eval(self, x, y):
         isOdd = False
-        isOdd ^= math.floor(x/self.wX) & 1
-        isOdd ^= math.floor(y/self.wY) & 1
+        isOdd ^= int(cmath.floor(x/self.wX)) & 1
+        isOdd ^= int(cmath.floor(y/self.wY)) & 1
         return (-1, -1, -1) if isOdd else (1, 1, 1)
 
 # Nonterminals:
@@ -161,10 +164,11 @@ class Well():
     mindepth = 3
     def __init__(self, e):
         self.e = e
+        self.e_func = self.e.eval
     def __repr__(self):
         return 'Well(%s)' % self.e
     def eval(self, x, y):
-        (r, g, b) = self.e.eval(x, y)
+        (r, g, b) = self.e_func(x, y)
         return (well(r), well(g), well(b))
 
 class Tent():
@@ -172,10 +176,11 @@ class Tent():
     mindepth = 3
     def __init__(self, e):
         self.e = e
+        self.e_func = self.e.eval
     def __repr__(self):
         return 'Tent(%s)' % self.e
     def eval(self, x, y):
-        (r, g, b) = self.e.eval(x, y)
+        (r, g, b) = self.e_func(x, y)
         return (tent(r), tent(g), tent(b))
 
 class Sin():
@@ -183,6 +188,7 @@ class Sin():
     mindepth = 0
     def __init__(self, e, phase = None, freq = None):
         self.e = e
+        self.e_func = self.e.eval
         if phase and freq: #for parsing
             self.phase = phase
             self.freq = freq
@@ -192,10 +198,10 @@ class Sin():
     def __repr__(self):
         return 'Sin(%s, %g, %g)' % (self.e, self.phase, self.freq)
     def eval(self, x, y):
-        (r1, g1, b1) = self.e.eval(x, y)
-        r2 = math.sin(self.phase + self.freq * r1)
-        g2 = math.sin(self.phase + self.freq * g1)
-        b2 = math.sin(self.phase + self.freq * b1)
+        (r1, g1, b1) = self.e_func(x, y)
+        r2 = cmath.sin(self.phase + self.freq * r1)
+        g2 = cmath.sin(self.phase + self.freq * g1)
+        b2 = cmath.sin(self.phase + self.freq * b1)
         return (r2, g2, b2)
 
 class Not():
@@ -203,10 +209,11 @@ class Not():
     mindepth = 3
     def __init__(self, e):
         self.e = e
+        self.e_func = self.e.eval
     def __repr__(self):
         return "Not(%s)" % self.e
     def eval(self, x, y):
-        (r, g, b) = self.e.eval(x, y)
+        (r, g, b) = self.e_func(x, y)
         return (-r, -g, -b)
 
 class SinCurve():
@@ -214,10 +221,11 @@ class SinCurve():
     mindepth = 0
     def __init__(self, e):
         self.e = e
+        self.e_func = self.e.eval
     def __repr__(self):
         return 'SinCurve(%s)' % self.e
     def eval(self, x, y):
-        (r, g, b) = self.e.eval(x, y)
+        (r, g, b) = self.e_func(x, y)
         return (sin_curve(r), sin_curve(g), sin_curve(b))
 
 class AbsSin():
@@ -225,10 +233,11 @@ class AbsSin():
     mindepth = 3
     def __init__(self, e):
         self.e = e
+        self.e_func = self.e.eval
     def __repr__(self):
         return 'AbsSin(%s)' % self.e
     def eval(self, x, y):
-        (r, g, b) = self.e.eval(x, y)
+        (r, g, b) = self.e_func(x, y)
         return (abs_sin(r), abs_sin(g), abs_sin(b))
 
 class Atan():
@@ -236,11 +245,12 @@ class Atan():
     mindepth = 0
     def __init__(self, e):
         self.e = e
+        self.e_func = self.e.eval
     def __repr__(self):
         return 'Atan(%s)' % (self.e)
     def eval(self, x, y):
-        (r, g, b) = self.e.eval(x, y)
-        return (math.atan(r)*2/math.pi, math.atan(g)*2/math.pi, math.atan(b)*2/math.pi)
+        (r, g, b) = self.e_func(x, y)
+        return (cmath.atan(r)*2/cmath.pi, cmath.atan(g)*2/cmath.pi, cmath.atan(b)*2/cmath.pi)
 
 class Sum():
     arity = 2
@@ -360,12 +370,15 @@ class Mix():
         self.w = w
         self.e1 = e1
         self.e2 = e2
+        self.w_func = self.w.eval
+        self.e1_func = self.e1.eval
+        self.e2_func = self.e2.eval
     def __repr__(self):
         return 'Mix(%s, %s, %s)' % (self.w, self.e1, self.e2)
     def eval(self, x, y):
-        w = 0.5 * (self.w.eval(x, y)[0] + 1.0)
-        c1 = self.e1.eval(x, y)
-        c2 = self.e2.eval(x, y)
+        w = 0.5 * (self.w_func(x, y)[0] + 1.0)
+        c1 = self.e1_func(x, y)
+        c2 = self.e2_func(x, y)
         return average(c1, c2, w)
 
 class RGB():
