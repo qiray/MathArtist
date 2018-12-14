@@ -42,7 +42,7 @@ from common import SIZE
 #TODO: test on different OS
 #TODO: maybe add Makefile
 #TODO: add sin(x)/x
-#TODO: operators module: add e_func to all classes and test it
+#TODO: operators module: test e_func
 #TODO: move shaders to other project
 
 class DrawThread(QThread):

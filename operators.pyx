@@ -388,12 +388,15 @@ class RGB():
         self.e1 = e1
         self.e2 = e2
         self.e3 = e3
+        self.e1_func = self.e1.eval
+        self.e2_func = self.e2.eval
+        self.e3_func = self.e3.eval
     def __repr__(self):
         return 'RGB(%s, %s, %s)' % (self.e1, self.e2, self.e3)
     def eval(self, x, y):
-        (r, _, _) = self.e1.eval(x, y)
-        (_, g, _) = self.e2.eval(x, y)
-        (_, _, b) = self.e3.eval(x, y)
+        (r, _, _) = self.e1_func(x, y)
+        (_, g, _) = self.e2_func(x, y)
+        (_, _, b) = self.e3_func(x, y)
         return (r, g, b)
 
 class Closest():
@@ -403,12 +406,15 @@ class Closest():
         self.target = target
         self.e1 = e1
         self.e2 = e2
+        self.target_func = self.target.eval
+        self.e1_func = self.e1.eval
+        self.e2_func = self.e2.eval
     def __repr__(self):
         return 'Closest(%s, %s, %s)' % (self.target, self.e1, self.e2)
     def eval(self, x, y):
-        (r1, g1, b1) = self.target.eval(x, y)
-        (r2, g2, b2) = self.e1.eval(x, y)
-        (r3, g3, b3) = self.e2.eval(x, y)
+        (r1, g1, b1) = self.target_func(x, y)
+        (r2, g2, b2) = self.e1_func(x, y)
+        (r3, g3, b3) = self.e2_func(x, y)
         #distances between colors:
         d1 = math.sqrt((r2-r1)**2+(g2-g1)**2+(b2-b1)**2)
         d2 = math.sqrt((r3-r1)**2+(g3-g1)**2+(b3-b1)**2)
@@ -422,12 +428,15 @@ class Far():
         self.target = target
         self.e1 = e1
         self.e2 = e2
+        self.target_func = self.target.eval
+        self.e1_func = self.e1.eval
+        self.e2_func = self.e2.eval
     def __repr__(self):
         return 'Far(%s, %s, %s)' % (self.target, self.e1, self.e2)
     def eval(self, x, y):
-        (r1, g1, b1) = self.target.eval(x, y)
-        (r2, g2, b2) = self.e1.eval(x, y)
-        (r3, g3, b3) = self.e2.eval(x, y)
+        (r1, g1, b1) = self.target_func(x, y)
+        (r2, g2, b2) = self.e1_func(x, y)
+        (r3, g3, b3) = self.e2_func(x, y)
         #distances between colors:
         d1 = math.sqrt((r2-r1)**2+(g2-g1)**2+(b2-b1)**2)
         d2 = math.sqrt((r3-r1)**2+(g3-g1)**2+(b3-b1)**2)
