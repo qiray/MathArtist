@@ -48,7 +48,7 @@ operatorsLists = [
     (VariableX, VariableY, Palette, Sin, SinCurve, Mix), #multiple colors
     (VariableX, VariableY, White, Palette, Random, RGB), #colors only
 
-    (VariableX, VariableY, Palette, AbsSin, Sin, Mix), #Sometimes boring?
+    (VariableX, VariableY, Palette, AbsSin, Sin, Mix),
     (VariableX, VariableY, Palette, Mix, Well, Tent, SinCurve, AbsSin),
     (VariableX, VariableY, Palette, And, Or, Xor), #squares
     (VariableX, VariableY, Random, Palette, Mix, Well, Sin, SinCurve, Tent, AbsSin),

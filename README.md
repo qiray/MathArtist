@@ -26,8 +26,6 @@ TODO: add release builds link
 
 ![](images/example1.png)
 
-TODO: add shaders version 120
-
 This program uses Python 3 so you need to have Python 3 and pip for build and run it. To install them use instructions for your OS.
 
 It also needs some extra libraries and applications such as argparse, PIL, numpy, PyQt5, pyinstaller and Cython. To install them run this:
@@ -48,6 +46,8 @@ apt install python3-pyqt5 pyqt5-dev-tools
 This tool also need C/C++ compiler because of using Cython. You can install it following instructions for your OS.
 
 ## Building
+
+TODO: tell about build.sh
 
 ![](images/example2.png)
 
@@ -90,8 +90,8 @@ In console mode app generates one image, saves it and exits.
 There are some extra modes:
 
 ```
-usage: python main.py [-h] [--console] [--about] [--checker] [--file FILE]
-                  [--generate_list]
+usage: MathArtist [-h] [--console] [--name NAME] [--about] [--checker]
+                  [--file FILE] [--generate_list]
 
 Tool for generating pictures using mathematical formulas.
 

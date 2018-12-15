@@ -36,14 +36,8 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 from common import SIZE
 
-#pyinstaller --onefile --windowed main.py --hidden-import=palettes
-#pyinstaller --add-binary (https://pyinstaller.readthedocs.io/en/v3.3.1/usage.html)
-
-#TODO: test on different OS
-#TODO: maybe add Makefile
 #TODO: add sin(x)/x
-#TODO: operators module: test e_func
-#TODO: move shaders to other project
+#TODO: fix README
 
 class DrawThread(QThread):
     def __init__(self, load_file=""):
@@ -136,9 +130,9 @@ class GUI(QWidget):
         self.status_label.setText(self.draw_thread.get_status())
 
     def prepare_new_thread(self):
+        self.need_name_update = True
         if time.time() - self.timer < 1: #prevent from very often image updates
             return
-        self.need_name_update = True
         self.timer = time.time()
         if self.draw_thread: #if thread exists
             self.draw_thread.stop() #send signal to art object
