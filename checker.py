@@ -33,11 +33,31 @@ def functions_count(total, functions):
 def color_distance(c1, c2):
     (r1, g1, b1) = c1
     (r2, g2, b2) = c2
-    average_r = (r1 + r2)/2
-    delta_r = (r1 -r2)**2
-    delta_g = (g1 - g2)**2
-    delta_b = (b1 - b2)**2
-    return math.sqrt(2*delta_r + 4*delta_g + 3*delta_b + (average_r*(delta_r - delta_b))/256)
+    r = abs(r1 - r2)/255
+    g = abs(g1 - g2)/255
+    b = abs(b1 - b2)/255
+    return (r + g + b) / 3 #1 means opposit colors, 0 means same colors
+
+def get_hue(color):
+    (r, g, b) = color
+    R = r / 255
+    G = g / 255
+    B = b / 255
+    c_max = max(r, g, b)
+    c_min = min(r, g, b)
+    result = 0
+    delta = c_max - c_min
+    if delta == 0:
+        return 0
+    if c_max== r:
+        result = (G - B)/delta
+    elif c_max == g:
+        result = 2.0 + (B - R)/delta
+    else:
+        result = 4.0 + (R - G)/delta
+    result *= 60
+    result = result if result > 0 else 360 + result
+    return result
 
 def preview_score(art, coord_system):
     """Check colors count"""
@@ -45,20 +65,31 @@ def preview_score(art, coord_system):
     d = 16
     size = SIZE #Is it normal?
     colors = []
+    hues = []
     for y in range(0, size, d):
         for x in range(0, size, d):
             u, v = coord_system(x, y, size, shift)
             (r, g, b) = art.eval(u, v)
-            colors.append((float_color_to_int(r), float_color_to_int(g), float_color_to_int(b)))
+            color = (float_color_to_int(r), float_color_to_int(g), float_color_to_int(b))
+            colors.append(color)
+            hues.append(get_hue(color))
     set_colors = set(colors)
     if len(set_colors) == 1:
-        return -100
-    distances = []
-    it_colors = list(set_colors)
-    for i in range(len(it_colors) - 1):
-        distances.append(color_distance(it_colors[i], it_colors[i + 1]))
-    if max(distances) <= 20:
-        return -50
+        return -1000
+    set_hues = set(hues)
+    print(set_hues)
+    #TODO: calc distances for hues
+    # distances = []
+    # list_colors = list(set_colors)
+    # list_colors.sort()
+    # for i in range(len(list_colors) - 1):
+    #     distances.append(color_distance(list_colors[i], list_colors[i + 1]))
+
+    # print(color_distance(list_colors[0], list_colors[-1]))
+    # if max(distances) <= 0.05:
+    #     return -100
+    # elif max(distances) <= 0.2:
+    #     return -10
     return 1
 
 def check_art(art, functions, coord_system, depth):

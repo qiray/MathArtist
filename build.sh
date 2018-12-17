@@ -42,6 +42,7 @@ echo "Found python 3 - $PYTHON"
 PREBUILD=false
 CYTHON=false
 INSTALL=false
+CLEAN=false
 if [[ $# -eq 0 ]]; then
     PREBUILD=true
     CYTHON=true
@@ -67,8 +68,21 @@ while [[ $# -gt 0 ]]; do
         PREBUILD=true
         shift
         ;;
+        clean)
+        CLEAN=true
+        shift
+        ;;
+        *)
+        echo "Unknown argument"
+        exit 0
+        ;;
     esac
 done
+
+$CLEAN && {
+    rm *.c *.so *.pyd
+    exit 0
+}
 
 $PREBUILD && {
     echo "Installing requirements"
