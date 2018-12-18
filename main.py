@@ -38,7 +38,6 @@ from common import SIZE
 
 #TODO: add sin(x)/x
 #TODO: fix README
-#TODO: try to improve checker
 
 class DrawThread(QThread):
     def __init__(self, load_file=""):

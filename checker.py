@@ -38,58 +38,38 @@ def color_distance(c1, c2):
     b = abs(b1 - b2)/255
     return (r + g + b) / 3 #1 means opposit colors, 0 means same colors
 
-def get_hue(color):
-    (r, g, b) = color
-    R = r / 255
-    G = g / 255
-    B = b / 255
-    c_max = max(r, g, b)
-    c_min = min(r, g, b)
-    result = 0
-    delta = c_max - c_min
-    if delta == 0:
-        return 0
-    if c_max== r:
-        result = (G - B)/delta
-    elif c_max == g:
-        result = 2.0 + (B - R)/delta
-    else:
-        result = 4.0 + (R - G)/delta
-    result *= 60
-    result = result if result > 0 else 360 + result
-    return result
-
 def preview_score(art, coord_system):
     """Check colors count"""
     shift = [0, 0]
     d = 16
     size = SIZE #Is it normal?
     colors = []
-    hues = []
     for y in range(0, size, d):
         for x in range(0, size, d):
             u, v = coord_system(x, y, size, shift)
             (r, g, b) = art.eval(u, v)
             color = (float_color_to_int(r), float_color_to_int(g), float_color_to_int(b))
             colors.append(color)
-            hues.append(get_hue(color))
     set_colors = set(colors)
     if len(set_colors) == 1:
         return -1000
-    set_hues = set(hues)
-    print(set_hues)
-    #TODO: calc distances for hues
-    # distances = []
-    # list_colors = list(set_colors)
-    # list_colors.sort()
-    # for i in range(len(list_colors) - 1):
-    #     distances.append(color_distance(list_colors[i], list_colors[i + 1]))
-
-    # print(color_distance(list_colors[0], list_colors[-1]))
-    # if max(distances) <= 0.05:
-    #     return -100
-    # elif max(distances) <= 0.2:
-    #     return -10
+    side_size = size//d
+    count = side_size*side_size
+    start = 0
+    diff = 1
+    distances = []
+    while count > 0:
+        end = start + diff*side_size
+        for i in range(start, end, diff):
+            distances.append(color_distance(colors[i], colors[i - 1]))
+            count -= 1
+        start = end + side_size - 1 if diff > 0 else start + 1
+        diff = -diff
+    dist_max = max(distances)
+    if dist_max <= 0.05: #if distance is small the image has few colors
+        return -100
+    elif dist_max <= 0.15:
+        return math.ceil(dist_max)*100 - 15
     return 1
 
 def check_art(art, functions, coord_system, depth):
