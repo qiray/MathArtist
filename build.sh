@@ -27,10 +27,12 @@ build_pyinstaller() {
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         ADD_BINARY=--add-binary="/usr/lib64/libGL.so.1:lib"
     fi
-    pyinstaller --onefile --windowed main.py --hidden-import=palettes $ADD_BINARY --icon=app.ico
+    pyinstaller --onefile --windowed main.py -n mathartist --hidden-import=palettes $ADD_BINARY --icon=app.ico
     cp -r data dist/
     cp -r samples dist/
     cp icon.ico dist/
+    cp README.md dist/
+    cp LICENSE dist/
     mkdir -p dist/output
     echo "Done!"
 }
@@ -80,7 +82,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 $CLEAN && {
-    rm *.c *.so *.pyd
+    rm -f -- *.c *.so *.pyd
     exit 0
 }
 

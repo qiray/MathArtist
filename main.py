@@ -36,7 +36,6 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 from common import SIZE
 
-#TODO: add sin(x)/x
 #TODO: fix README
 
 class DrawThread(QThread):

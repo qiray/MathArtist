@@ -67,7 +67,7 @@ from checker import check_art
 APP_NAME = "MathArtist"
 VERSION_MAJOR = 0
 VERSION_MINOR = 9
-VERSION_BUILD = 4
+VERSION_BUILD = 5
 
 class Art():
     """Math art generator class"""
