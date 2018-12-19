@@ -2,7 +2,7 @@
 
 Tool for generating pictures using mathematical formulas.
 
-<img src="images/example7.png" alt="drawing" width="250px"/>
+<img src="images/example7.png" alt="drawing" width="200px"/>
 
 ## Algorithm
 
@@ -134,19 +134,27 @@ There are some hotkeys:
 
 ### Samples
 
-<img src="images/example1.png" alt="drawing" width="250px"/>
-<img src="images/example2.png" alt="drawing" width="250px"/>
-<img src="images/example3.png" alt="drawing" width="250px"/>
-<br/>
-<img src="images/example4.png" alt="drawing" width="250px"/>
-<img src="images/example5.png" alt="drawing" width="250px"/>
-<img src="images/example6.png" alt="drawing" width="250px"/>
-<br/>
-<img src="images/example7.png" alt="drawing" width="250px"/>
-<img src="images/example8.png" alt="drawing" width="250px"/>
-<img src="images/example9.png" alt="drawing" width="250px"/>
+<p float="left">
+  <img src="images/example1.png" alt="drawing" width="200px"/>
+  <img src="images/example2.png" alt="drawing" width="200px"/>
+  <img src="images/example3.png" alt="drawing" width="200px"/>
+</p>
+<p float="left">
+  <img src="images/example4.png" alt="drawing" width="200px"/>
+  <img src="images/example5.png" alt="drawing" width="200px"/>
+  <img src="images/example6.png" alt="drawing" width="200px"/>
+</p>
+<p float="left">
+  <img src="images/example7.png" alt="drawing" width="200px"/>
+  <img src="images/example8.png" alt="drawing" width="200px"/>
+  <img src="images/example9.png" alt="drawing" width="200px"/>
+</p>
 
 There is samples folder with some nice images in text format. You can use app's read file option ("Load image" button in GUI) to convert these texts into images.
+
+## Online content
+
+Math Artist also has it's own twitter account - https://twitter.com/math_artist. You are welcome to follow, like, retweet and comment.
 
 ## License
 

@@ -36,8 +36,6 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 from common import SIZE
 
-#TODO: fix README
-
 class DrawThread(QThread):
     def __init__(self, load_file=""):
         self.art = Art(use_checker=True)
@@ -112,7 +110,7 @@ class GUI(QWidget):
         QMessageBox.about(self, 'About', get_about_info())
 
     def show_online_help(self):
-        webbrowser.open('http://google.com') #TODO: open github readme
+        webbrowser.open('https://github.com/qiray/MathArtist')
 
     def save_image(self):
         if self.draw_thread:
