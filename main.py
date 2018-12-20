@@ -214,7 +214,6 @@ def parse_args():
     parser.add_argument('--console', action='store_true', help='Run in console mode (no window)')
     parser.add_argument('--name', type=str, help='Set image name')
     parser.add_argument('--about', action='store_true', help='Show about info')
-    parser.add_argument('--checker', action='store_true', help='Enable checker')
     parser.add_argument('--file', type=str, help='Load file')
     parser.add_argument('--generate_list', action='store_true', help='Generate operators\' list (developer option)')
     return parser.parse_args()
@@ -249,7 +248,7 @@ if __name__ == '__main__':
         if args.generate_list:
             print(get_new_list())
             exit(0)
-        art = Art(use_checker=args.checker, name=args.name, console=True, load_file=args.file)
+        art = Art(use_checker=True, name=args.name, console=True, load_file=args.file)
     else:
         app = QApplication(sys.argv)
         window = GUI()

@@ -11,7 +11,7 @@ To create new image we perform these steps:
 * Generate name using data folder with mulltiple nouns, adjectives, prepositions and pronouns and [names_generator](names_generator.py) module to convert single words into fun looking image name.
 * Select operators from predefined sets and coordinates conversion transformations. All coordinates are converted to range [-1, 1] because this range nicely fits to many mathematical operations. See [coords](coords.py) module for more information.
 * Generate expression tree using operators from previous step that convert each (x, y) point to color. There are multiple operators from simplest VariableX (which converts coordinate to (x, x, x) color) to difficult Mix and Closest (you can see their code in [operators](operators.pyx) module). Tree size is dynamic so there can be something simple like Mix(x, y, Well(x)) or long multiline formula which computing can take some minutes.
-* We can use [checker](checker.py) to check if generated formula is bad and recreate it. Checker is very simple - it thinks formula is good when it has different functions, has few well and tent functions (because they produce boring looking lines) and generates multicolor image (because the "Black square" by Malevich already exists). By the way sometimes checker decides that even bad formula should get a chance. It's not a bug, it's a feature.
+* We also use [checker](checker.py) to check if generated formula is bad and recreate it. Checker is very simple - it thinks formula is good when it has different functions, has few well and tent functions (because they produce boring looking lines) and generates multicolor image (because the "Black square" by Malevich already exists). By the way sometimes checker decides that even bad formula should get a chance. It's not a bug, it's a feature.
 * And now we convert each point of image to color using coordinates transform from step 2 and expression tree from step 3. After all points have their colors we can draw comleted image. That's all.
 
 ## Releases
@@ -87,8 +87,8 @@ In console mode app generates one image, saves it and exits.
 There are some extra modes:
 
 ```
-usage: MathArtist [-h] [--console] [--name NAME] [--about] [--checker]
-                  [--file FILE] [--generate_list]
+usage: MathArtist [-h] [--console] [--name NAME] [--about] [--file FILE]
+                  [--generate_list]
 
 Tool for generating pictures using mathematical formulas.
 
@@ -97,7 +97,6 @@ optional arguments:
   --console        Run in console mode (no window)
   --name           Set image name
   --about          Show about info
-  --checker        Enable checker
   --file FILE      Load file
   --generate_list  Generate operators' list (developer option)
 ```
