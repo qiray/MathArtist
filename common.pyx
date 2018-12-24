@@ -49,6 +49,8 @@
 # cython: language_level=3
 
 cimport libc.math as cmath
+import os
+import sys
 import itertools
 
 CONSOLE = 1
@@ -113,3 +115,12 @@ cpdef color color_binary(c1, c2, operator):
     cdef (int, int, int) colors1 = tuple([float_color_to_int(x) for x in c1])
     cdef (int, int, int) colors2 = tuple([float_color_to_int(x) for x in c2])
     return tuple([2*operator(x1, x2)/255.0 - 1 for x1, x2 in zip(colors1, colors2)])
+
+# Aux functions
+
+def get_app_path():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    elif __file__:
+        return os.path.dirname(__file__)
+    return ''

@@ -48,6 +48,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import sys
+import os
 import math
 import random
 import time
@@ -56,7 +57,7 @@ from datetime import datetime
 from PIL import Image, ImageDraw
 import numpy as np
 
-from common import rgb, int_rgb, SIZE
+from common import rgb, int_rgb, get_app_path, SIZE
 from operators import Palette
 from operator_lists import operatorsLists
 from coords import coord_transforms
@@ -103,7 +104,7 @@ class Art():
         self.img = Image.new('RGBA', (self.size, self.size))
         self.image_draw = ImageDraw.Draw(self.img)
         self.functions = {}
-        self.output_path = "output/"
+        self.output_path = os.path.join(get_app_path(), "output/") 
         self.console = console
         self.stop_work = False
         self.status = "Drawing"

@@ -26,11 +26,14 @@
 
 # Some ideas from http://ironigardinen.net/generatorer/art2/index.html
 
+import os
 import random
+
+from common import get_app_path
 
 def file_to_list(path):
     lines = []
-    with open(path) as f:
+    with open(os.path.join(get_app_path(), path)) as f:
         lines = f.read().splitlines()
     return lines
 
