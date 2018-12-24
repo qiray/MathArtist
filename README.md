@@ -169,7 +169,7 @@ I'd like to thank:
 
 Andrej Bauer for wonderful online random art project (http://www.random-art.org/online/), original Python randomart code (http://math.andrej.com/2010/04/21/random-art-in-python/) and great ideas which lead to this project.
 
-Matt DesLauriers for cool color-wander project (http://color-wander.surge.sh/) and (https://github.com/mattdesl/color-wander) and nice palettes used in this project.
+Matt DesLauriers for cool color-wander project (http://color-wander.surge.sh/ and https://github.com/mattdesl/color-wander) and nice palettes used in this project.
 
 Volodymyr Shymanskyy for his JS randomart project (https://github.com/vshymanskyy/randomart) that gave me some ideas such as mindepth and some operators.
 
