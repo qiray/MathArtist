@@ -238,7 +238,6 @@ def get_about_info():
         "This is free software under GNU GPL3; see the source for copying conditions\n")
 
 if __name__ == '__main__':
-
     signal.signal(signal.SIGINT, sigint_handler)
     args = parse_args() #parse command line arguments
     if args.about:

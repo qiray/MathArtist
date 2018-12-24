@@ -27,7 +27,7 @@ build_pyinstaller() {
     if [[ "$OSTYPE" == "linux-gnu" ]]; then
         ADD_BINARY=--add-binary="/usr/lib64/libGL.so.1:lib"
     fi
-    pyinstaller --onefile --windowed main.py -n mathartist --hidden-import=palettes $ADD_BINARY --icon=app.ico
+    pyinstaller --onefile --windowed main.py -n mathartist --hidden-import=palettes $ADD_BINARY --icon=icon.ico
     cp -r data dist/
     cp -r samples dist/
     cp icon.ico dist/
