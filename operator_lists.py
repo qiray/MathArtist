@@ -23,9 +23,7 @@ import math
 from common import SIZE
 from coords import (coord_transforms, linear_coord, tent_coord, sin_coord, polar, 
     curved_rotate_coord, rotate_coord, center)
-from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And,
-    Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSin, 
-    Or, Xor, Atan, Far, Wave, Chess)
+from full_list import *
 
 # The following lists of classes that are used for generation of expressions is
 # used by the generate function below. Each list should contain at least one

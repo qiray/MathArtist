@@ -58,6 +58,7 @@ def preview_score(art, coord_system):
     start = 0
     diff = 1
     distances = []
+    #Simulate flood-fill algorithm to get distance
     while count > 0:
         end = start + diff*side_size
         for i in range(start, end, diff):
@@ -89,14 +90,16 @@ def check_art(art, functions, coord_system, depth):
     well_tent = functions_count(functions, ['Well', 'Tent'])
     if well_tent >= 0.6*count: #there are too many well and tent functions
         result -= int(well_tent/count*100)
-    if depth <= 2 and well_tent >= 0.5*count: #small depth and many well and tent functions
-        result -= 30/depth
+    if depth <= 2: #small depth
+        result -= int(30/depth)
+        if well_tent >= 0.5*count: #many well and tent functions
+            result -= int(30/depth)
     if coord_system_name == 'polar': # If coord_system is polar, image is often good
         result = result if result > 0 else 10
     if coord_system_name == 'rotate_coord' or coord_system_name == 'center': # Add some extra score
         result += 50
     result += preview_score(art, coord_system)
-    if result < 0 and result > -50 and random.random() > 0.8: #sometimes even a bad picture should get a chance
+    if result < 0 and result > -50 and random.random() > 0.9: #sometimes even a bad picture should get a chance
         result = 1
     elif result < -50 and random.random() > 0.99:
         result = 0.1

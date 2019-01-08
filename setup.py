@@ -8,13 +8,13 @@ from Cython.Distutils import build_ext
 setup(
     ext_modules = [
         Extension(
-            'operators',
-            sources =["operators.pyx"],
+            'common',
+            sources =["common.pyx"],
             extra_compile_args=['-O3'],
         ),
         Extension(
-            'common',
-            sources =["common.pyx"],
+            'operators',
+            sources =["operators.pyx"],
             extra_compile_args=['-O3'],
         )
     ],

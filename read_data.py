@@ -19,9 +19,7 @@
 
 import parser
 import re
-from operators import (VariableX, VariableY, Random, Sum, Product, Mod, Sin, And,
-    Tent, Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, AbsSin,
-    Or, Xor, Atan, Far, Wave, Chess)
+from full_list import *
 from coords import (linear_coord, tent_coord, sin_coord, polar, curved_rotate_coord,
     rotate_coord, center)
 
