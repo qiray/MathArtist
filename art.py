@@ -1,6 +1,6 @@
 
 # MathArtist - tool for generating pictures using mathematical formulas.
-# Copyright (c) 2018, Yaroslav Zotov, https://github.com/qiray/
+# Copyright (c) 2018-2019, Yaroslav Zotov, https://github.com/qiray/
 # All rights reserved.
 
 # This file is part of MathArtist.
@@ -164,8 +164,12 @@ class Art():
                 self.update_functions_dict(op.__name__)
             return op()
         # randomly pick an operator whose arity > 0 and mindepth <= depth
-        if Art.use_depth and False:
-            op = random.choice([x for x in Art.nonterminals if x.mindepth <= depth])
+        if Art.use_depth:
+            nonterminals = [x for x in Art.nonterminals if x.mindepth <= depth]
+            if nonterminals: #if list is not empty
+                op = random.choice(nonterminals)
+            else:
+                op = random.choice(Art.nonterminals)
         else:
             op = random.choice(Art.nonterminals)
         if self.use_checker:

@@ -1,5 +1,5 @@
 
-# Copyright (c) 2018, Yaroslav Zotov, https://github.com/qiray/
+# Copyright (c) 2018-2019, Yaroslav Zotov, https://github.com/qiray/
 # All rights reserved.
 
 # This file is part of MathArtist.

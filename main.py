@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018, Yaroslav Zotov, https://github.com/qiray/
+# Copyright (c) 2018-2019, Yaroslav Zotov, https://github.com/qiray/
 # All rights reserved.
 
 # This file is part of MathArtist.
@@ -232,7 +232,7 @@ def get_version():
     return "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD)
 
 def get_about_info():
-    return ("\n" + APP_NAME + " " + get_version() + " Copyright (C) 2018 Yaroslav Zotov.\n" +
+    return ("\n" + APP_NAME + " " + get_version() + " Copyright (C) 2018-2019 Yaroslav Zotov.\n" +
         "Based on \"randomart\" Copyright (C) 2010, Andrej Bauer.\n"
         "This program comes with ABSOLUTELY NO WARRANTY.\n" +
         "This is free software under GNU GPL3; see the source for copying conditions\n")
