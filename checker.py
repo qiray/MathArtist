@@ -41,7 +41,7 @@ def color_distance(c1, c2):
 def preview_score(art, coord_system):
     """Check colors count"""
     shift = [0, 0]
-    d = 16
+    d = 32
     size = SIZE #Is it normal?
     colors = []
     for y in range(0, size, d):

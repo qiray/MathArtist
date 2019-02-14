@@ -57,6 +57,8 @@ from datetime import datetime
 from PIL import Image, ImageDraw
 import numpy as np
 
+from PyQt5 import QtCore
+
 from common import rgb, int_rgb, get_app_path, SIZE
 from operators import Palette
 from operator_lists import operatorsLists
