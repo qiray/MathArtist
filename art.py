@@ -319,3 +319,39 @@ class Art():
         result['shift'] = str(Art.polar_shift).replace("[", "(").replace("]", ")")
         result['formula'] = str(self.art)
         return result
+
+# values = [0]*65
+
+# class Worker(QtCore.QRunnable):
+#     def __init__(self, values, start, count):
+#         self.values = values
+#         self.start = start
+#         self.count = count
+#         super(Worker, self).__init__()
+
+#     def run(self):
+#         print('Running Worker {}'.format(self.start))
+#         for i in range(self.start, self.start + self.count):
+#             # print(i)
+#             self.values[i] = i
+
+# class Tasks(QtCore.QObject):
+#     def __init__(self):
+#         super(Tasks, self).__init__()
+#         self.pool = QtCore.QThreadPool.globalInstance()
+#         self.count = QtCore.QThread.idealThreadCount()
+#         self.pool.setMaxThreadCount(self.count)
+
+#     def start(self):
+#         count = len(values)//self.count
+#         print(count, self.count)
+#         for task in range(self.count):
+#             worker = Worker(values, task*count, count)
+#             self.pool.start(worker)
+#         worker = Worker(values, self.count*count, len(values) - self.count*count)
+#         self.pool.start(worker)
+#         self.pool.waitForDone()
+
+# tasks = Tasks()
+# tasks.start()
+# print(values)
