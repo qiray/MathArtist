@@ -245,6 +245,12 @@ class Art():
         if self.console:
             self.save_image_text()
 
+    def parallel_draw(self): #TODO: make this function
+        pass
+
+    def draw_one_thread(self): #TODO: make this function
+        pass
+
     def draw(self):
         if self.d < 1 or self.stop_work:
             self.end = time.time()
@@ -320,10 +326,11 @@ class Art():
         result['formula'] = str(self.art)
         return result
 
-# values = [0]*65
+# values = [0]*64
 
 # class Worker(QtCore.QRunnable):
-#     def __init__(self, values, start, count):
+#     def __init__(self, func, values, start, count):
+#         self.func = func
 #         self.values = values
 #         self.start = start
 #         self.count = count
@@ -336,19 +343,21 @@ class Art():
 #             self.values[i] = i
 
 # class Tasks(QtCore.QObject):
-#     def __init__(self):
+#     def __init__(self, func):
 #         super(Tasks, self).__init__()
 #         self.pool = QtCore.QThreadPool.globalInstance()
-#         self.count = QtCore.QThread.idealThreadCount()
+#         self.count = QtCore.QThread.idealThreadCount() - 1
+#         self.count = self.count if self.count > 0 else 1 #keep it positive
+#         self.func = func
 #         self.pool.setMaxThreadCount(self.count)
 
 #     def start(self):
 #         count = len(values)//self.count
 #         print(count, self.count)
 #         for task in range(self.count):
-#             worker = Worker(values, task*count, count)
+#             worker = Worker(self.func, values, task*count, count)
 #             self.pool.start(worker)
-#         worker = Worker(values, self.count*count, len(values) - self.count*count)
+#         worker = Worker(self.func, values, self.count*count, len(values) - self.count*count)
 #         self.pool.start(worker)
 #         self.pool.waitForDone()
 
