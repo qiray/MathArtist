@@ -245,11 +245,27 @@ class Art():
         if self.console:
             self.save_image_text()
 
-    def parallel_draw(self): #TODO: make this function
-        pass
+    def draw_one_thread(self, start, count, flag):
+        for y in range(start, start + count, self.d):
+            if self.stop_work:
+                return
+            for x in range(0, self.size, self.d):
+                if self.stop_work:
+                    return
+                #Convert coordinates to range [-1, 1]
+                u, v = Art.coord_transform(x, y, self.size, Art.polar_shift)
+                if not self.image_array[x][y]:
+                    (r, g, b) = self.art.eval(u, v)
+                    self.image_array[x][y] = int_rgb(r, g, b)
+                    if flag:
+                        self.image_draw.rectangle(
+                            ((x, y), (x + self.d, y + self.d)),
+                            fill=self.image_array[x][y]
+                        )
 
-    def draw_one_thread(self): #TODO: make this function
-        pass
+    def parallel_draw(self, flag):
+        tasks = Tasks(self.draw_one_thread, self.size, flag)
+        tasks.start()
 
     def draw(self):
         if self.d < 1 or self.stop_work:
@@ -258,6 +274,7 @@ class Art():
             self.status = "Completed in %g s" % (self.end - self.start)
             return
         flag = self.d > 1
+        # self.parallel_draw(flag)
         for y in range(0, self.size, self.d):
             if self.stop_work:
                 break
@@ -326,41 +343,36 @@ class Art():
         result['formula'] = str(self.art)
         return result
 
-# values = [0]*64
+#TODO: multiprocessing
 
-# class Worker(QtCore.QRunnable):
-#     def __init__(self, func, values, start, count):
-#         self.func = func
-#         self.values = values
-#         self.start = start
-#         self.count = count
-#         super(Worker, self).__init__()
+class Worker(QtCore.QRunnable):
+    def __init__(self, func, start, count, flag):
+        self.func = func
+        self.start = start
+        self.count = count
+        self.flag = flag
+        super(Worker, self).__init__()
 
-#     def run(self):
-#         print('Running Worker {}'.format(self.start))
-#         for i in range(self.start, self.start + self.count):
-#             # print(i)
-#             self.values[i] = i
+    def run(self):
+        self.func(self.start, self.count, self.flag)
 
-# class Tasks(QtCore.QObject):
-#     def __init__(self, func):
-#         super(Tasks, self).__init__()
-#         self.pool = QtCore.QThreadPool.globalInstance()
-#         self.count = QtCore.QThread.idealThreadCount() - 1
-#         self.count = self.count if self.count > 0 else 1 #keep it positive
-#         self.func = func
-#         self.pool.setMaxThreadCount(self.count)
+class Tasks(QtCore.QObject):
+    def __init__(self, func, total_count, flag):
+        super(Tasks, self).__init__()
+        self.pool = QtCore.QThreadPool.globalInstance()
+        self.thread_count = QtCore.QThread.idealThreadCount() - 2
+        self.thread_count = self.thread_count if self.thread_count > 0 else 1 #keep it positive
+        self.total_count = total_count
+        self.flag = flag
+        self.func = func
+        self.pool.setMaxThreadCount(self.thread_count)
 
-#     def start(self):
-#         count = len(values)//self.count
-#         print(count, self.count)
-#         for task in range(self.count):
-#             worker = Worker(self.func, values, task*count, count)
-#             self.pool.start(worker)
-#         worker = Worker(self.func, values, self.count*count, len(values) - self.count*count)
-#         self.pool.start(worker)
-#         self.pool.waitForDone()
-
-# tasks = Tasks()
-# tasks.start()
-# print(values)
+    def start(self):
+        count = self.total_count//self.thread_count
+        print(count, self.thread_count)
+        for task in range(self.thread_count):
+            worker = Worker(self.func, task*count, count, self.flag)
+            self.pool.start(worker)
+        worker = Worker(self.func, self.thread_count*count, self.total_count - self.thread_count*count, self.flag)
+        self.pool.start(worker)
+        self.pool.waitForDone()
