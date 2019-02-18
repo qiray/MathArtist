@@ -54,6 +54,8 @@ import random
 import time
 import hashlib
 from datetime import datetime
+from multiprocessing import Pool #TODO: use or remove
+from multiprocessing.pool import ThreadPool #TODO: use or remove
 from PIL import Image, ImageDraw
 import numpy as np
 
@@ -263,9 +265,29 @@ class Art():
                             fill=self.image_array[x][y]
                         )
 
+    def draw_one_pool_thread(self, y):
+        for x in range(0, self.size, self.d):
+            if self.stop_work:
+                return
+            #Convert coordinates to range [-1, 1]
+            u, v = Art.coord_transform(x, y, self.size, Art.polar_shift)
+            if not self.image_array[x][y]:
+                (r, g, b) = self.art.eval(u, v)
+                self.image_array[x][y] = int_rgb(r, g, b)
+
     def parallel_draw(self, flag):
         tasks = Tasks(self.draw_one_thread, self.size, flag)
         tasks.start()
+
+    def pool_draw(self): #TODO: make it work
+        # pool = Pool()
+        pool = ThreadPool()
+        # Open the urls in their own threads
+        # and return the results
+        pool.map(self.draw_one_pool_thread, [x for x in range(self.size)])
+        #close the pool and wait for the work to finish 
+        pool.close()
+        pool.join()
 
     def draw(self):
         if self.d < 1 or self.stop_work:
@@ -275,6 +297,7 @@ class Art():
             return
         flag = self.d > 1
         # self.parallel_draw(flag)
+        # self.pool_draw()
         for y in range(0, self.size, self.d):
             if self.stop_work:
                 break
@@ -344,6 +367,7 @@ class Art():
         return result
 
 #TODO: multiprocessing
+# http://toly.github.io/blog/2014/02/13/parallelism-in-one-line/
 
 class Worker(QtCore.QRunnable):
     def __init__(self, func, start, count, flag):

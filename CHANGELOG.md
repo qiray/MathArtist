@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Checker file - reduced count of checking squares in preview_score().
+- build.sh - install requirements with --user flag.
 
 ### Removed
 - Nothing

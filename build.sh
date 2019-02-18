@@ -88,7 +88,7 @@ $CLEAN && {
 
 $PREBUILD && {
     echo "Installing requirements"
-    $PYTHON -m pip install -r requirements.txt
+    $PYTHON -m pip install -r requirements.txt --user
 }
 
 $CYTHON && {
