@@ -54,8 +54,7 @@ import random
 import time
 import hashlib
 from datetime import datetime
-from multiprocessing import Pool #TODO: use or remove
-from multiprocessing.pool import ThreadPool #TODO: use or remove
+from pathos.multiprocessing import ProcessingPool as Pool
 from PIL import Image, ImageDraw
 import numpy as np
 
@@ -247,47 +246,14 @@ class Art():
         if self.console:
             self.save_image_text()
 
-    def draw_one_thread(self, start, count, flag):
-        for y in range(start, start + count, self.d):
-            if self.stop_work:
-                return
-            for x in range(0, self.size, self.d):
-                if self.stop_work:
-                    return
-                #Convert coordinates to range [-1, 1]
-                u, v = Art.coord_transform(x, y, self.size, Art.polar_shift)
-                if not self.image_array[x][y]:
-                    (r, g, b) = self.art.eval(u, v)
-                    self.image_array[x][y] = int_rgb(r, g, b)
-                    if flag:
-                        self.image_draw.rectangle(
-                            ((x, y), (x + self.d, y + self.d)),
-                            fill=self.image_array[x][y]
-                        )
-
-    def draw_one_pool_thread(self, y):
-        for x in range(0, self.size, self.d):
-            if self.stop_work:
-                return
-            #Convert coordinates to range [-1, 1]
-            u, v = Art.coord_transform(x, y, self.size, Art.polar_shift)
-            if not self.image_array[x][y]:
-                (r, g, b) = self.art.eval(u, v)
-                self.image_array[x][y] = int_rgb(r, g, b)
-
-    def parallel_draw(self, flag):
-        tasks = Tasks(self.draw_one_thread, self.size, flag)
-        tasks.start()
-
     def pool_draw(self): #TODO: make it work
-        # pool = Pool()
-        pool = ThreadPool()
-        # Open the urls in their own threads
-        # and return the results
-        pool.map(self.draw_one_pool_thread, [x for x in range(self.size)])
-        #close the pool and wait for the work to finish 
-        pool.close()
-        pool.join()
+        # myA = A(10)
+        # print(myA.result)
+        # myA.njobs = 3
+        # print(myA.start())
+
+        pd = PoolDraw(self.image_array, self.size, self.art, self.d )
+        pd.start()
 
     def draw(self):
         if self.d < 1 or self.stop_work:
@@ -296,7 +262,6 @@ class Art():
             self.status = "Completed in %g s" % (self.end - self.start)
             return
         flag = self.d > 1
-        # self.parallel_draw(flag)
         # self.pool_draw()
         for y in range(0, self.size, self.d):
             if self.stop_work:
@@ -366,37 +331,35 @@ class Art():
         result['formula'] = str(self.art)
         return result
 
+# class A(object):
+#     def __init__(self, njobs=1000):
+#         self.map = Pool().map
+#         self.njobs = njobs
+#         self.start()
+#     def start(self):
+#         self.result = self.map(self.RunProcess, range(self.njobs))
+#         return self.result
+#     def RunProcess(self, i):
+#         return i*i
+
+class PoolDraw(object):
+    def __init__(self, image_array, size, art, d):
+        self.map = Pool().map
+        self.image_array = image_array
+        self.size = size
+        self.art = art
+        self.d = d
+    def start(self):
+        return self.map(self.draw_one_line, range(self.size))
+    def draw_one_line(self, y):
+        for x in range(0, self.size, self.d):
+            # if self.stop_work:
+            #     return
+            #Convert coordinates to range [-1, 1]
+            u, v = Art.coord_transform(x, y, self.size, Art.polar_shift)
+            if not self.image_array[x][y]:
+                (r, g, b) = self.art.eval(u, v)
+                self.image_array[x][y] = int_rgb(r, g, b)
+
 #TODO: multiprocessing
 # http://toly.github.io/blog/2014/02/13/parallelism-in-one-line/
-
-class Worker(QtCore.QRunnable):
-    def __init__(self, func, start, count, flag):
-        self.func = func
-        self.start = start
-        self.count = count
-        self.flag = flag
-        super(Worker, self).__init__()
-
-    def run(self):
-        self.func(self.start, self.count, self.flag)
-
-class Tasks(QtCore.QObject):
-    def __init__(self, func, total_count, flag):
-        super(Tasks, self).__init__()
-        self.pool = QtCore.QThreadPool.globalInstance()
-        self.thread_count = QtCore.QThread.idealThreadCount() - 2
-        self.thread_count = self.thread_count if self.thread_count > 0 else 1 #keep it positive
-        self.total_count = total_count
-        self.flag = flag
-        self.func = func
-        self.pool.setMaxThreadCount(self.thread_count)
-
-    def start(self):
-        count = self.total_count//self.thread_count
-        print(count, self.thread_count)
-        for task in range(self.thread_count):
-            worker = Worker(self.func, task*count, count, self.flag)
-            self.pool.start(worker)
-        worker = Worker(self.func, self.thread_count*count, self.total_count - self.thread_count*count, self.flag)
-        self.pool.start(worker)
-        self.pool.waitForDone()
