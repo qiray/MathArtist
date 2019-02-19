@@ -4,7 +4,7 @@
 #example for cpp code
 
 cdef extern from "example.cpp":
-    void awesomeFunc()
-    
-cpdef myf():
-    awesomeFunc()
+    void cppFunc()
+
+cpdef call_cpp():
+    cppFunc()

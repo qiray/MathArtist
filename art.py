@@ -54,7 +54,6 @@ import random
 import time
 import hashlib
 from datetime import datetime
-from pathos.multiprocessing import ProcessingPool as Pool
 from PIL import Image, ImageDraw
 import numpy as np
 
@@ -71,7 +70,7 @@ from checker import check_art
 APP_NAME = "MathArtist"
 VERSION_MAJOR = 0
 VERSION_MINOR = 9
-VERSION_BUILD = 9
+VERSION_BUILD = 10
 
 class Art():
     """Math art generator class"""
@@ -246,15 +245,6 @@ class Art():
         if self.console:
             self.save_image_text()
 
-    def pool_draw(self): #TODO: make it work
-        # myA = A(10)
-        # print(myA.result)
-        # myA.njobs = 3
-        # print(myA.start())
-
-        pd = PoolDraw(self.image_array, self.size, self.art, self.d )
-        pd.start()
-
     def draw(self):
         if self.d < 1 or self.stop_work:
             self.end = time.time()
@@ -262,7 +252,6 @@ class Art():
             self.status = "Completed in %g s" % (self.end - self.start)
             return
         flag = self.d > 1
-        # self.pool_draw()
         for y in range(0, self.size, self.d):
             if self.stop_work:
                 break
@@ -330,36 +319,3 @@ class Art():
         result['shift'] = str(Art.polar_shift).replace("[", "(").replace("]", ")")
         result['formula'] = str(self.art)
         return result
-
-# class A(object):
-#     def __init__(self, njobs=1000):
-#         self.map = Pool().map
-#         self.njobs = njobs
-#         self.start()
-#     def start(self):
-#         self.result = self.map(self.RunProcess, range(self.njobs))
-#         return self.result
-#     def RunProcess(self, i):
-#         return i*i
-
-class PoolDraw(object):
-    def __init__(self, image_array, size, art, d):
-        self.map = Pool().map
-        self.image_array = image_array
-        self.size = size
-        self.art = art
-        self.d = d
-    def start(self):
-        return self.map(self.draw_one_line, range(self.size))
-    def draw_one_line(self, y):
-        for x in range(0, self.size, self.d):
-            # if self.stop_work:
-            #     return
-            #Convert coordinates to range [-1, 1]
-            u, v = Art.coord_transform(x, y, self.size, Art.polar_shift)
-            if not self.image_array[x][y]:
-                (r, g, b) = self.art.eval(u, v)
-                self.image_array[x][y] = int_rgb(r, g, b)
-
-#TODO: multiprocessing
-# http://toly.github.io/blog/2014/02/13/parallelism-in-one-line/

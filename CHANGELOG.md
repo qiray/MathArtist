@@ -1,16 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.9.9] - 2019-02-14
+## [0.9.10] - 2019-02-19
 ### Added
 - This file.
 
 ### Changed
 - Checker file - reduced count of checking squares in preview_score().
-- build.sh - install requirements with --user flag.
+- [build.sh](build.sh) - install requirements with --user flag.
 
-### Removed
-- Nothing
+## [0.9.9] - 2018-12-24
+### Changed
+- First release version.
 
-<!-- [1.0.0]: yandex.ru
-[0.0.1]: https://google.ru -->
+
+[0.9.10]: https://github.com/qiray/MathArtist/releases/tag/0.9.10
+[0.9.9]: https://github.com/qiray/MathArtist/releases/tag/0.9.9
