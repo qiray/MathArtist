@@ -153,7 +153,7 @@ There is samples folder with some nice images in text format. You can use app's 
 
 ## Online content
 
-Math Artist also has it's own twitter account - https://twitter.com/math_artist. You are welcome to follow, like, retweet and comment.
+Math Artist also has it's own Twitter (https://twitter.com/math_artist) and Instagram (https://www.instagram.com/qarmath/) accounts. You are welcome to follow, like, repost and comment.
 
 ## License
 
