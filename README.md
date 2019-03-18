@@ -16,7 +16,9 @@ To create new image we perform these steps:
 
 ## Releases
 
-<!-- TODO: add release builds link -->
+You can download the last release here: 
+
+https://github.com/qiray/MathArtist/releases
 
 ## Requirements
 
