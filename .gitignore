@@ -11,4 +11,4 @@ output/*.png
 *.c
 *.pyd
 *.html
-caller.cpp
+*.cpp

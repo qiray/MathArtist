@@ -31,7 +31,7 @@ from full_list import *
 
 fulllist = (VariableX, VariableY, Random, Sum, Product, Mod, Sin, Tent, AbsSin,
         Well, Level, Mix, Palette, Not, RGB, Closest, White, SinCurve, And, Or,
-        Atan, Xor, Far, Wave, Chess)
+        Atan, Xor, Far, Wave, Chess, Fibonacci)
 
 operatorsLists = [
     fulllist,
@@ -62,6 +62,11 @@ operatorsLists = [
     (VariableX, VariableY, Palette, Random, Mix, Well, Tent, Chess),
     (VariableX, VariableY, Palette, Random, Mix, Well, Tent, SinCurve),
     (VariableX, VariableY, Palette, Random, Mix, SinCurve, Sin, AbsSin, Atan),
+    (VariableX, VariableY, Fibonacci, Mix),
+    (VariableX, VariableY, Fibonacci, Mix, Well),
+    (VariableX, VariableY, Random, Sum, Fibonacci, Sin, Tent, Well, Level, Mix, Palette),
+    (VariableX, VariableY, Palette, Fibonacci, Mix, Well, Tent, SinCurve),
+    (VariableX, VariableY, White, Palette, Random, Palette, Sin, SinCurve, Mix, Fibonacci),
 
     # these lists were made by this program
     (White, Palette, Random, VariableX, VariableY, Far, Well, Sin, AbsSin, Product),

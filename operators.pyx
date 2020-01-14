@@ -157,6 +157,28 @@ class Chess():
         isOdd ^= int(cmath.floor(y/self.wY)) & 1
         return (-1, -1, -1) if isOdd else (1, 1, 1)
 
+class Fibonacci():
+    arity = 0
+    mindepth = 3
+    fib_array = [0, 1]
+    def __init__(self):
+        pass
+    def __repr__(self):
+        return "Fibonacci()"
+    def eval(self, x, y):
+        result = (self.fibonacci(len(Fibonacci.fib_array) + 1)%255)/255 - 128
+        return (result, result, result)
+    def fibonacci(self, n):
+        if n < 0:
+            return Fibonacci.fib_array[0]
+        elif n < len(Fibonacci.fib_array):
+            return Fibonacci.fib_array[n]
+        else:
+            max_limit = 200 if n > 200 else n + 1
+            for i in range(len(Fibonacci.fib_array), max_limit): 
+                Fibonacci.fib_array.append(Fibonacci.fib_array[i - 1] + Fibonacci.fib_array[i - 2])
+            return Fibonacci.fib_array[max_limit - 1]
+
 # Nonterminals:
 
 class Well():

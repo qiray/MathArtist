@@ -17,12 +17,6 @@ setup(
             sources =["operators.pyx"],
             extra_compile_args=['-O3'],
         ),
-        # Extension(
-        #     'caller',
-        #     sources =["caller.pyx"],
-        #     language="c++",
-        #     extra_compile_args=['-O3'],
-        # ), #this is just an example
     ],
     cmdclass = {'build_ext': build_ext}
 )
