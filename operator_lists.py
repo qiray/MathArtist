@@ -1,5 +1,5 @@
 
-# Copyright (c) 2018, Yaroslav Zotov, https://github.com/qiray/
+# Copyright (c) 2018, 2021, Yaroslav Zotov, https://github.com/qiray/
 # All rights reserved.
 
 # This file is part of MathArtist.
@@ -18,11 +18,7 @@
 # along with MathArtist.  If not, see <https://www.gnu.org/licenses/>.
 
 import random
-import math
 
-from common import SIZE
-from coords import (coord_transforms, linear_coord, tent_coord, sin_coord, polar, 
-    curved_rotate_coord, rotate_coord, center)
 from full_list import *
 
 # The following lists of classes that are used for generation of expressions is
@@ -51,7 +47,7 @@ operatorsLists = [
     (VariableX, VariableY, Palette, And, Or, Xor), #squares
     (VariableX, VariableY, Random, Palette, Mix, Well, Sin, SinCurve, Tent, AbsSin),
     (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Sum, Mod), #sometimes dark
-    (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Product, 
+    (VariableX, VariableY, White, Palette, Random, AbsSin, Mix, Level, RGB, Product,
         Sum, Mod, Well, Tent),
     (VariableX, VariableY, White, Palette, Random, RGB, Sin, SinCurve, Atan, Mix, Closest),
     (VariableX, VariableY, White, Palette, Random, RGB, Far, Closest, Mix, Well),
@@ -72,7 +68,7 @@ operatorsLists = [
     (White, Palette, Random, VariableX, VariableY, Far, Well, Sin, AbsSin, Product),
     (Random, White, VariableY, VariableX, Palette, SinCurve, Level, Atan, Not, Far, Wave, Or, Xor),
     (Palette, Random, VariableY, White, VariableX, Well, Mix, Sin, Sum, Not, Tent, Level, Far, And),
-    (VariableY, VariableX, Random, Product, SinCurve, Mod, Closest, Tent, Well, Sum, RGB, Atan, Xor, 
+    (VariableY, VariableX, Random, Product, SinCurve, Mod, Closest, Tent, Well, Sum, RGB, Atan, Xor,
         Not, And, Wave, Mix, Level, AbsSin),
     (VariableX, VariableY, SinCurve, AbsSin, Sum, Level),
     (Random, Palette, VariableY, VariableX, And, Sum, Mod),
@@ -83,7 +79,7 @@ operatorsLists = [
     (White, Random, VariableY, Palette, Xor, Far, Sin, Not, Mod, And, Atan, Sum, Wave, Level, Well),
     (Random, Palette, VariableY, VariableX, Not, Sin, AbsSin, Product, Far, Or, Atan, Tent, Mod, Xor,
         Wave, Sum),
-    (VariableX, VariableY, White, Mod, Product, Atan, RGB, Mix, SinCurve, Xor, And, Level, Sin, 
+    (VariableX, VariableY, White, Mod, Product, Atan, RGB, Mix, SinCurve, Xor, And, Level, Sin,
         AbsSin, Well, Tent),
 ]
 

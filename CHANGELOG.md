@@ -1,9 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Current]
+### Changed
+- [operator_lists.py](operator_lists.py) - removed unused imports.
+
 ## [0.9.11] - 2020-01-14
 ### Changed
-- [operators.pyx](operators.pyx) - added Fibonacci operator,
+- [operators.pyx](operators.pyx) - added Fibonacci operator.
 
 ## [0.9.10] - 2019-02-19
 ### Added

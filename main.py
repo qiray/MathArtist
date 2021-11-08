@@ -36,6 +36,8 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from art import Art, APP_NAME, VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD
 from common import SIZE
 
+# TODO: use multiprocessing or something similar
+
 class DrawThread(QThread):
     def __init__(self, load_file=""):
         self.art = Art(use_checker=True)

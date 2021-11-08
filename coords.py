@@ -1,5 +1,5 @@
 
-# Copyright (c) 2018, Yaroslav Zotov, https://github.com/qiray/
+# Copyright (c) 2018, 2021, Yaroslav Zotov, https://github.com/qiray/
 # All rights reserved.
 
 # This file is part of MathArtist.
@@ -18,6 +18,8 @@
 # along with MathArtist.  If not, see <https://www.gnu.org/licenses/>.
 
 import math
+
+# TODO: comments for coords transforms
 
 def linear_coord(x, y, size, polar_shift=None):
     u = 2 * x/size - 1.0
@@ -52,7 +54,7 @@ def polar(x, y, size, polar_shift):
     v = 0 if x == 0 else math.atan(y/x)*2/math.pi
     return u, v
 
-def center(x, y, size, polar_shift):
+def center(x, y, size, polar_shift=None):
     half = size/2
     if x >= half:
         x = size - x
@@ -62,5 +64,5 @@ def center(x, y, size, polar_shift):
     v = 2 * y/half - 1.0
     return u, v
 
-coord_transforms = [linear_coord, tent_coord, sin_coord, polar, curved_rotate_coord, 
+coord_transforms = [linear_coord, tent_coord, sin_coord, polar, curved_rotate_coord,
     rotate_coord, center] #It's nice to find more conversions
